@@ -96,6 +96,15 @@
   .label { display: inline-block; min-width: 5.5em; color: var(--muted); }
   .foot { margin: 12px 0 0; font-size: .72rem; color: var(--muted); }
   .card-footer { margin-top: 14px; display: flex; justify-content: flex-end; }
+  .wa-btn {
+    display: block; margin-top: 16px; text-align: center; text-decoration: none;
+    font-size: .95rem; font-weight: 700;
+    color: var(--ink); background: var(--accent-soft);
+    border: 2px solid var(--accent); border-radius: 999px;
+    padding: 10px 16px;
+  }
+  .wa-btn:hover { border-color: var(--ink); }
+  .wa-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .theme-toggle {
     font: inherit; font-size: .8rem; font-weight: 600;
     color: var(--ink); background: var(--accent-soft);
@@ -126,6 +135,8 @@
       <p><span class="label">WhatsApp</span><a href="https://wa.me/221000000000">+221 00 000 00 00</a></p>
       <p class="foot">Coordonnées fictives (à remplacer) · Projet étudiant GET 409 Atelier IA, Swiss UMEF University, campus de Dakar</p>
     </section>
+
+    <a class="wa-btn" href="https://wa.me/221000000000" target="_blank" rel="noopener">Écrire à Jàng sur WhatsApp</a>
 
     <footer class="card-footer">
       <button type="button" class="theme-toggle" id="theme-toggle"></button>
