@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jàng — appel aux professeurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@600&family=IBM+Plex+Mono:wght@500&family=Schibsted+Grotesk:wght@800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #0E7565;
+    --ink: #10231E;
+    --paper: #F6F9F8;
+    --grid: #DCE8E4;
+    --muted: #52665F;
+    --red: #D2382A;
+    --chimie: #7C4DDB;
+    --physique: #0B84C6;
+    --head: "Schibsted Grotesk", system-ui, sans-serif;
+    --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+    --hand: "Caveat", system-ui, sans-serif;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--grid);
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    font-family: var(--body);
+    color: var(--ink);
+  }
+
+  /* A4 sheet at a fixed design size (794 x 1123 px = 210 x 297 mm at 96 dpi), scaled to the window
+     by --s (set by the script at the end). A fixed size keeps text proportions identical on any
+     screen and avoids browser minimum-font-size clamping. Inside, sizes are in cqw (1cqw = 1% of sheet width). */
+  .frame { width: calc(794px * var(--s, 1)); height: calc(1123px * var(--s, 1)); overflow: hidden; position: relative; }
+  .page {
+    width: 794px; height: 1123px;
+    transform: scale(var(--s, 1)); transform-origin: 0 0;
+    container-type: inline-size;
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 4.762cqw 4.762cqw;
+    overflow: hidden;
+    position: relative;
+  }
+  .sheet {
+    position: absolute; inset: 0;
+    padding: 4.5cqw 7cqw 3.5cqw;
+    /* fixed rows: only the middle row (benefits + phone) absorbs the remaining height */
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto auto auto;
+  }
+
+  /* Header */
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .brand { font-family: var(--head); font-weight: 800; font-size: 4.6cqw; color: var(--green); line-height: 1; }
+  .brand small { display: block; font-family: var(--body); font-weight: 400; font-size: 1.75cqw; color: var(--muted); margin-top: .7cqw; }
+  .chips { display: flex; gap: 1.4cqw; }
+  .chip {
+    font-family: var(--body); font-weight: 700; font-size: 1.8cqw;
+    background: var(--paper); color: var(--ink);
+    border: .25cqw solid var(--ink); border-left-width: 1.2cqw;
+    border-radius: 1cqw; padding: .6cqw 1.6cqw;
+  }
+  .chip.phy { border-left-color: var(--physique); }
+  .chip.chi { border-left-color: var(--chimie); }
+
+  /* Headline */
+  h1 {
+    font-family: var(--head); font-weight: 800;
+    font-size: 5.8cqw; line-height: 1.06; letter-spacing: -.02cqw;
+    margin: 2cqw 0 1cqw; color: var(--ink);
+  }
+  h1 em { font-style: normal; color: var(--green); }
+  .lead { font-size: 2.1cqw; line-height: 1.38; margin: 0; color: var(--ink); }
+  .lead strong { color: var(--green); }
+
+  /* Middle: benefits + phone */
+  .mid { display: grid; grid-template-columns: 1fr 45cqw; gap: 1cqw; margin-top: 2cqw; min-height: 0; }
+  .benefits { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.8cqw; justify-content: center; }
+  .benefits li { display: grid; grid-template-columns: 6.4cqw 1fr; gap: 2cqw; align-items: start; }
+  .num {
+    font-family: var(--mono); font-weight: 500; font-size: 3.4cqw; line-height: 1;
+    width: 6.4cqw; height: 6.4cqw; display: grid; place-items: center;
+    border: .3cqw solid var(--green); color: var(--green); border-radius: 1.2cqw; background: var(--paper);
+  }
+  .benefits h2 { font-family: var(--head); font-weight: 800; font-size: 2.8cqw; line-height: 1.1; margin: 0 0 .5cqw; }
+  .benefits p { margin: 0; font-size: 2.05cqw; line-height: 1.35; color: var(--ink); }
+  .benefits .k { font-family: var(--mono); font-weight: 500; font-size: 1.95cqw; }
+
+  /* Phone column: the frame takes the row height, the image scales to fit it (never cropped). */
+  .phonecol {
+    position: relative; min-height: 0; height: 100%;
+    display: grid; grid-template-rows: minmax(0, 1fr) auto; justify-items: end;
+  }
+  .phone {
+    height: 100%; min-height: 0; max-width: 31cqw;
+    display: flex; background: var(--ink); border-radius: 4.6cqw; padding: 1.3cqw;
+  }
+  .phone img {
+    display: block; height: 100%; width: auto; max-width: 100%; min-height: 0;
+    aspect-ratio: 800 / 1278; object-fit: contain; border-radius: 3.4cqw; background: #fff;
+  }
+  .caption {
+    max-width: 31cqw; margin: .8cqw 0 0; padding-bottom: .4cqw; text-align: left;
+    font-size: 1.55cqw; line-height: 1.3; color: var(--muted);
+  }
+
+  /* Red pen: correction annotation only */
+  .note {
+    position: absolute; left: 0; top: 1.5cqw; width: 13.5cqw;
+    font-family: var(--hand); font-weight: 600; color: var(--red);
+    font-size: 3.3cqw; line-height: .95; transform: rotate(-5deg);
+  }
+  .note svg { display: block; margin: .4cqw 0 0 5cqw; width: 8cqw; height: 6cqw; }
+
+  /* Ask */
+  .ask {
+    margin-top: 1.8cqw; background: #fff; border: .3cqw solid var(--ink); border-radius: 1.6cqw;
+    padding: 1.4cqw 2.6cqw; display: grid; grid-template-columns: auto 1fr 1fr 1fr; gap: 2.2cqw; align-items: center;
+  }
+  .ask h2 { font-family: var(--head); font-weight: 800; font-size: 2.6cqw; line-height: 1.05; margin: 0; }
+  .ask .item { font-size: 1.95cqw; line-height: 1.25; }
+  .ask .item b { display: block; font-family: var(--head); font-weight: 800; font-size: 2.9cqw; color: var(--green); line-height: 1; margin-bottom: .4cqw; }
+
+  /* CTA + contact */
+  .cta { margin-top: 1.8cqw; display: grid; grid-template-columns: 1fr auto; gap: 2.4cqw; align-items: center; }
+  .cta-btn {
+    background: var(--green); color: #fff; font-family: var(--head); font-weight: 800;
+    font-size: 2.9cqw; line-height: 1.1; padding: 1.5cqw 2.6cqw; border-radius: 1.6cqw; max-width: 60cqw;
+  }
+  .cta-btn span { display: block; font-family: var(--body); font-weight: 400; font-size: 1.7cqw; line-height: 1.25; margin-top: .5cqw; }
+  .contact { font-size: 1.9cqw; line-height: 1.7; }
+  .contact .ph { font-family: var(--mono); font-weight: 500; font-size: 1.75cqw; background: var(--grid); padding: .1cqw .8cqw; border-radius: .6cqw; white-space: nowrap; }
+
+  /* Footer */
+  .honest { margin: 2.2cqw 0 0; font-size: 1.7cqw; line-height: 1.35; color: var(--muted); }
+  .honest strong { color: var(--ink); }
+  footer {
+    margin-top: 1.6cqw; padding-top: 1.3cqw; border-top: .3cqw solid var(--ink);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 2cqw;
+    font-size: 1.65cqw; color: var(--muted);
+  }
+  footer .sign { font-family: var(--head); font-weight: 800; color: var(--green); font-size: 2cqw; white-space: nowrap; }
+
+  @media print {
+    :root { --s: 1 !important; }
+    body { background: none; display: block; min-height: 0; }
+    .frame { overflow: visible; }
+    .page { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+<main class="page">
+  <div class="sheet">
+
+    <div class="top">
+      <div class="brand">Jàng<small>correcteur d’exercices du Bac sur WhatsApp</small></div>
+      <div class="chips"><span class="chip phy">Physique</span><span class="chip chi">Chimie</span></div>
+    </div>
+
+    <h1>Vous enseignez la physique-chimie ? <em>Offrez 1&nbsp;heure</em> à vos futurs élèves.</h1>
+    <p class="lead">Aidez-nous à valider les <strong>14 corrigés de référence</strong> de Jàng pour la Terminale&nbsp;S2. Ils sont écrits par notre équipe et <strong>en cours de validation par des professeurs</strong>.</p>
+
+    <div class="mid">
+      <ul class="benefits">
+        <li>
+          <span class="num">1</span>
+          <div><h2>La première erreur, d’abord</h2><p>L’élève voit où il s’est trompé, pas seulement une note.</p></div>
+        </li>
+        <li>
+          <span class="num">2</span>
+          <div><h2>Un corrigé de référence</h2><p>Puis la méthode, relue par des professeurs grâce à vous.</p></div>
+        </li>
+        <li>
+          <span class="num">3</span>
+          <div><h2>Un exercice similaire</h2><p>Pour réviser seul, le soir même, sur son téléphone.</p></div>
+        </li>
+      </ul>
+
+      <div class="phonecol">
+        <div class="note">ta première erreur, d’abord !
+          <svg viewBox="0 0 80 60" fill="none" stroke="#D2382A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6 C 8 34, 30 46, 68 44"/><path d="M54 32 L 70 44 L 54 54"/></svg>
+        </div>
+        <div class="phone">
+          <img src="hero.jpg" width="800" height="1278" alt="Capture de notre prototype Jàng sur téléphone : « Ta première erreur », « La méthode », puis « À toi », avec la mention « Jàng peut se tromper : en cas de doute, demande à un professeur ».">
+        </div>
+        <p class="caption">Capture réelle de notre prototype. Jàng peut se tromper : en cas de doute, demande à un professeur.</p>
+      </div>
+    </div>
+
+    <section class="ask">
+      <h2>Ce que<br>nous vous<br>demandons</h2>
+      <div class="item"><b>1 heure</b>pour relire les 14 corrigés de référence.</div>
+      <div class="item"><b>À distance</b>depuis chez vous, sur votre téléphone ou ordinateur.</div>
+      <div class="item"><b>À votre rythme</b>en une fois ou en plusieurs fois.</div>
+    </section>
+
+    <div class="cta">
+      <div class="contact">
+        Date limite de réponse : <span class="ph">[date à définir]</span><br>
+        E-mail : <span class="ph">[e-mail à définir]</span> &nbsp;·&nbsp; WhatsApp : <span class="ph">[numéro à définir]</span>
+      </div>
+      <div class="cta-btn">Je donne 1 heure<span>Écrivez-nous, nous vous envoyons les corrigés.</span></div>
+    </div>
+
+    <footer>
+      <span>Projet étudiant GET 409 — Swiss UMEF University, campus de Dakar</span>
+      <span class="sign">On apprend de ses erreurs.</span>
+    </footer>
+
+  </div>
+</main>
+</div>
+<script>
+  // Fit the fixed A4 sheet (794 x 1123 px) into the window. Without JS, the sheet shows at 100 %.
+  (function () {
+    var root = document.documentElement;
+    function fit() {
+      root.style.setProperty('--s', Math.min(window.innerWidth / 794, window.innerHeight / 1123));
+    }
+    fit();
+    window.addEventListener('resize', fit);
+  })();
+</script>
+</body>
+</html>
