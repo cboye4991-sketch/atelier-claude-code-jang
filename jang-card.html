@@ -4,26 +4,39 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Jàng — Carte de visite</title>
+<script>
+  try {
+    var t = localStorage.getItem('jang-theme');
+    if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
 <style>
   :root {
     --bg: #f4f1ea;
     --card: #ffffff;
     --ink: #1c2b24;
     --muted: #5b6b63;
-    --accent: #0f7b4f;
+    --accent: #17935f; /* identique dans les deux thèmes : ≥3:1 sur fond clair et sombre */
     --accent-soft: #e3f3ea;
     --line: #e2ded3;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
       --bg: #101613;
       --card: #18211c;
       --ink: #edf2ee;
       --muted: #9db0a5;
-      --accent: #4cc790;
       --accent-soft: #1f3529;
       --line: #2a3a31;
     }
+  }
+  :root[data-theme="dark"] {
+    --bg: #101613;
+    --card: #18211c;
+    --ink: #edf2ee;
+    --muted: #9db0a5;
+    --accent-soft: #1f3529;
+    --line: #2a3a31;
   }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
@@ -65,7 +78,7 @@
   }
   .tags li {
     background: var(--accent-soft);
-    color: var(--accent);
+    color: var(--ink);
     border-radius: 999px;
     padding: 6px 12px;
     font-size: .82rem;
@@ -82,6 +95,15 @@
   .contact a:hover, .contact a:focus-visible { color: var(--accent); }
   .label { display: inline-block; min-width: 5.5em; color: var(--muted); }
   .foot { margin: 12px 0 0; font-size: .72rem; color: var(--muted); }
+  .card-footer { margin-top: 14px; display: flex; justify-content: flex-end; }
+  .theme-toggle {
+    font: inherit; font-size: .8rem; font-weight: 600;
+    color: var(--ink); background: var(--accent-soft);
+    border: 1px solid var(--accent); border-radius: 999px;
+    padding: 6px 14px; cursor: pointer;
+  }
+  .theme-toggle:hover { border-color: var(--ink); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
 </head>
 <body>
@@ -104,6 +126,30 @@
       <p><span class="label">WhatsApp</span><a href="https://wa.me/221000000000">+221 00 000 00 00</a></p>
       <p class="foot">Coordonnées fictives (à remplacer) · Projet étudiant GET 409 Atelier IA, Swiss UMEF University, campus de Dakar</p>
     </section>
+
+    <footer class="card-footer">
+      <button type="button" class="theme-toggle" id="theme-toggle"></button>
+    </footer>
   </main>
+  <script>
+    (function () {
+      var root = document.documentElement, btn = document.getElementById('theme-toggle');
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      function current() { return root.dataset.theme || (mq.matches ? 'dark' : 'light'); }
+      function label() {
+        var dark = current() === 'dark';
+        btn.textContent = dark ? '☀ Mode clair' : '☾ Mode sombre';
+        btn.setAttribute('aria-label', dark ? 'Passer au thème clair' : 'Passer au thème sombre');
+      }
+      btn.addEventListener('click', function () {
+        var next = current() === 'dark' ? 'light' : 'dark';
+        root.dataset.theme = next;
+        try { localStorage.setItem('jang-theme', next); } catch (e) {}
+        label();
+      });
+      mq.addEventListener('change', label);
+      label();
+    })();
+  </script>
 </body>
 </html>
