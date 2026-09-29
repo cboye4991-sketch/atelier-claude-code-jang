@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan marketing Jàng</title>
+<meta name="description" content="Positionnement, 3 piliers, calendrier de 4 semaines, 7 améliorations de la landing, 5 idées d'acquisition et 3 quick wins pour Jàng, chacun relié à l'analyse concurrentielle.">
+<style>
+:root{
+  --green:#0E7565;      /* vert Jàng */
+  --ink:#10231E;        /* texte principal */
+  --paper:#F6F9F8;      /* fond */
+  --grid:#DCE8E4;       /* carreaux */
+  --muted:#52665F;      /* texte secondaire */
+  --red:#D2382A;        /* stylo rouge : corrections et annotations seulement */
+  --bubble:#DCF8C6;     /* bulle élève */
+  --chat:#ECE5DD;       /* fond de conversation */
+  --chimie:#7C4DDB; --physique:#0B84C6; --maths:#C77700;
+  --head:"Schibsted Grotesk",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --hand:"Caveat",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;color-scheme:light}
+body{
+  margin:0;color:var(--ink);background-color:var(--paper);
+  font:400 1.0625rem/1.55 var(--body);
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:var(--head);font-weight:800;margin:0;color:var(--ink);text-wrap:balance}
+h1{font-size:clamp(2.2rem,8vw,3.4rem);line-height:1.05;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,5vw,2rem);line-height:1.15;margin-bottom:8px}
+h3{font-size:1.15rem;line-height:1.25;margin-bottom:6px}
+p{margin:0 0 12px;text-wrap:pretty}
+a{color:var(--green);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#fff;padding:8px 12px;border-radius:4px;z-index:9}
+.skip:focus{left:8px}
+.mono{font:500 .9em var(--mono)}
+
+/* feuille : le contenu est posé sur du papier uni, les carreaux restent autour */
+.sheet{background:var(--paper);border:1px solid var(--grid);border-radius:6px;padding:20px 16px;margin:0 0 20px}
+section{padding:28px 0 8px}
+.lead{color:var(--muted);max-width:62ch}
+.kicker{font:500 .8rem var(--mono);color:var(--green);letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px}
+
+/* annotation au stylo rouge : corrections et notes de marge uniquement */
+.marge{font:600 1.25rem/1.2 var(--hand);color:var(--red)}
+
+/* puces de preuve */
+.ev{display:inline-block;font:500 .78rem/1.3 var(--mono);color:var(--green);background:var(--paper);border:1px solid var(--green);border-radius:3px;padding:1px 6px;margin:2px 4px 2px 0;text-decoration:none;white-space:nowrap}
+.ev:hover{background:var(--green);color:#fff}
+.proofs{margin:14px 0 0;padding-top:10px;border-top:1px dashed var(--grid);font-size:.9rem;color:var(--muted)}
+.proofs b{color:var(--ink)}
+
+/* en-tête */
+header.top{padding:32px 0 8px}
+.brand{font:800 1rem var(--head);color:var(--green);margin:0 0 10px}
+.tagline{font:600 1.15rem/1.35 var(--head);color:var(--ink);margin:14px 0 6px;max-width:34ch}
+.who{color:var(--muted);font-size:.95rem;margin:0 0 16px}
+.notice{border-left:4px solid var(--green);background:var(--paper);padding:10px 14px;border-radius:0 4px 4px 0;margin:0 0 16px}
+nav.toc ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 10px}
+nav.toc a{display:inline-block;padding:8px 10px;min-height:44px;border:1px solid var(--grid);border-radius:4px;background:var(--paper);font-weight:700;text-decoration:none}
+nav.toc a:hover{border-color:var(--green)}
+
+/* grilles de cartes */
+.cards{display:grid;gap:16px}
+.card{background:var(--paper);border:1px solid var(--grid);border-radius:6px;padding:16px;border-top:4px solid var(--green)}
+.card .num{font:800 .95rem var(--head);color:var(--green);margin:0 0 4px}
+.card dl{margin:0}
+.card dt{font:700 .8rem var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:10px}
+.card dd{margin:2px 0 0}
+.tag{display:inline-block;font:700 .82rem/1.3 var(--body);border:1px solid var(--grid);border-radius:3px;padding:1px 8px 1px 6px;margin:0 6px 4px 0;background:var(--paper)}
+.tag::before{content:"";display:inline-block;width:.6em;height:.6em;border-radius:50%;margin-right:6px;background:var(--muted)}
+.tag.chimie::before{background:var(--chimie)}
+.tag.physique::before{background:var(--physique)}
+.tag.maths::before{background:var(--maths)}
+.eff{font-size:.85rem;color:var(--muted)}
+
+/* positionnement */
+.pos{margin:14px 0;padding:0}
+.pos div{display:grid;gap:2px;padding:10px 0;border-top:1px dashed var(--grid)}
+.pos div:first-child{border-top:0}
+.pos dt{font:700 .8rem var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.04em}
+.pos dd{margin:0}
+.statement{font:600 1.1rem/1.5 var(--head);margin:0 0 12px}
+
+/* calendrier */
+.week{background:var(--paper);border:1px solid var(--grid);border-radius:6px;margin:0 0 16px;overflow:hidden}
+.week>header{background:var(--green);color:#fff;padding:10px 16px}
+.week>header h3{color:#fff;margin:0}
+.week>header p{margin:2px 0 0;font-size:.95rem}
+.week ul{list-style:none;margin:0;padding:0}
+.week li{padding:12px 16px;border-top:1px solid var(--grid);display:grid;gap:4px}
+.week li:first-child{border-top:0}
+.canal{font:500 .8rem var(--mono);color:var(--ink)}
+.canal span{color:var(--muted)}
+.week li p{margin:0}
+
+/* aperçus de messages */
+.msg{background:var(--chat);border-radius:8px;padding:12px;margin:8px 0 12px}
+.msg .b{background:var(--bubble);border-radius:8px;padding:8px 12px;max-width:44ch;white-space:pre-line;color:var(--ink);font:400 .95rem/1.45 var(--body)}
+.msg.li .b{background:var(--paper);max-width:62ch}
+.msg small{display:block;margin-top:6px;color:var(--muted);font-size:.8rem}
+
+/* tableaux de suivi */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.95rem}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border:1px solid var(--grid)}
+th{background:var(--paper);font:700 .85rem var(--head)}
+
+ul.plain{margin:6px 0 12px;padding-left:20px}
+ul.plain li{margin:2px 0}
+ol.qw{padding-left:0;list-style:none;display:grid;gap:16px;counter-reset:qw}
+ol.qw>li{counter-increment:qw;background:var(--paper);border:1px solid var(--grid);border-radius:6px;padding:16px 16px 14px 16px;border-top:4px solid var(--green)}
+ol.qw>li::before{content:"Quick win " counter(qw);font:500 .8rem var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px}
+.box{display:inline-block;width:1em;height:1em;border:2px solid var(--ink);border-radius:2px;vertical-align:-2px;margin-right:6px}
+
+#preuves ul{padding-left:0;list-style:none;display:grid;gap:8px}
+#preuves li{padding:8px 12px;border:1px solid var(--grid);border-radius:4px;background:var(--paper)}
+#preuves li:target{border-color:var(--green);box-shadow:0 0 0 3px var(--grid)}
+#preuves li b{font-family:var(--mono);font-weight:500;color:var(--green)}
+
+footer{margin-top:24px;background:var(--green);color:#fff;padding:28px 0 32px}
+footer p{margin:0 0 10px;max-width:70ch}
+footer a{color:#fff}
+.signoff{font:800 1.15rem var(--head)}
+
+@media(min-width:700px){
+  .wrap{padding:0 24px}
+  .sheet{padding:24px 28px}
+  .cards.three{grid-template-columns:repeat(3,1fr)}
+  .cards.two{grid-template-columns:1fr 1fr}
+  .pos div{grid-template-columns:190px 1fr;gap:16px}
+  .week li{grid-template-columns:210px 1fr;gap:16px}
+}
+@media print{
+  body{background-image:none}
+  nav.toc,.skip{display:none}
+  .sheet,.card,.week{break-inside:avoid}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#positionnement">Aller au contenu</a>
+
+<header class="top">
+  <div class="wrap">
+    <p class="brand">Jàng — correcteur d'exercices du Bac sur WhatsApp</p>
+    <h1>Plan marketing de Jàng</h1>
+    <p class="tagline">Tu révises seul ? Jàng te montre où tu t'es trompé.</p>
+    <p class="who">Projet étudiant de Cheikh BOYE et Adama DIOP · GET 409 Atelier IA · Swiss UMEF University, campus de Dakar · Relevés concurrents du 29/09/2026</p>
+
+    <div class="notice">
+      <p><b>Corrigés en cours de validation par des professeurs.</b> Aucun chiffre d'utilisateurs ni de résultats n'existe à ce jour. Tout manque est écrit <span class="marge">[à mesurer]</span> ou <span class="marge">[à décider]</span>, jamais rempli à la place.</p>
+    </div>
+
+    <div class="sheet">
+      <h2 style="font-size:1.15rem">Comment lire les preuves</h2>
+      <p class="lead">Chaque section se termine par ses preuves. Un clic sur une puce mène à la ligne correspondante dans <a href="#preuves">la liste des preuves</a>.</p>
+      <p>
+        <a class="ev" href="#p-a4">A §4</a> = <span class="mono">competitive-analysis.md</span>, section 4 ·
+        <a class="ev" href="#p-s1">S1</a> <a class="ev" href="#p-s2">S2</a> <a class="ev" href="#p-s3">S3</a> = les trois fichiers de <span class="mono">sources/</span> ·
+        <a class="ev" href="#p-lp">L:216</a> = ligne 216 de la landing <span class="mono">index.html</span>.
+      </p>
+      <p class="eff">Les concurrents ne sont lus que sur trois pages. « Non observé » veut dire « pas vu dans nos sources », pas « n'existe pas » <a class="ev" href="#p-a6">A §6</a>.</p>
+    </div>
+
+    <nav class="toc" aria-label="Sections du plan">
+      <ul>
+        <li><a href="#positionnement">1. Positionnement</a></li>
+        <li><a href="#piliers">2. Trois piliers</a></li>
+        <li><a href="#calendrier">3. Calendrier 4 semaines</a></li>
+        <li><a href="#landing">4. Sept améliorations landing</a></li>
+        <li><a href="#acquisition">5. Cinq idées d'acquisition</a></li>
+        <li><a href="#quickwins">6. Trois quick wins</a></li>
+        <li><a href="#mesures">7. À mesurer</a></li>
+        <li><a href="#preuves">8. Preuves</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+<!-- ============ 1. POSITIONNEMENT ============ -->
+<section id="positionnement" aria-labelledby="pos-t">
+  <p class="kicker">1 · Positionnement</p>
+  <h2 id="pos-t">Ce que Jàng est, et pour qui</h2>
+  <div class="sheet">
+    <p class="statement">Pour les élèves de Terminale S2 qui révisent seuls en lycée régional, Jàng est le correcteur d'exercices de physique-chimie du Bac sur WhatsApp. L'élève envoie sa réponse. Jàng lui montre sa première erreur en la comparant à un corrigé de référence, puis lui propose un exercice similaire.</p>
+    <dl class="pos">
+      <div><dt>Public</dt><dd>Terminale S2, lycées régionaux, révision en solitaire, forfait data limité. Persona de conception : Aminata Diallo, 17 ans, Kaffrine. C'est un personnage, pas une utilisatrice réelle.</dd></div>
+      <div><dt>Ce qui change</dt><dd>Le retour porte sur <b>sa propre réponse</b>. Nomad met en avant des annales corrigées, Groupe Réussite des corrigés en PDF. Aucune des trois sources ne mentionne l'explication de l'erreur de l'élève.
+        <br><a class="ev" href="#p-a5-1">A §5.1</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s2">S2</a><a class="ev" href="#p-s3">S3</a></dd></div>
+      <div><dt>Terrain précis</dt><dd>Physique-chimie, Bac S2, Sénégal. Nomad liste « Physique » et « Chimie » parmi neuf matières. Groupe Réussite est sur les maths.
+        <br><a class="ev" href="#p-a6">A §6</a><a class="ev" href="#p-a7-2">A §7.2</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s2">S2</a></dd></div>
+      <div><dt>Canal</dt><dd>Un message WhatsApp, sans installer d'application. Les appels à l'action observés mènent vers un téléchargement (Nomad) ou des cours à domicile (Groupe Réussite).
+        <br><a class="ev" href="#p-a5-5">A §5.5</a><a class="ev" href="#p-a7-3">A §7.3</a></dd></div>
+      <div><dt>Preuve de sérieux</dt><dd>La transparence : corrigés en cours de validation par des professeurs, et aucun chiffre sans mesure.
+        <br><a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-a5-6">A §5.6</a></dd></div>
+    </dl>
+    <p class="marge">à tester avec de vrais élèves : les mots exacts</p>
+  </div>
+
+  <div class="cards two">
+    <article class="card">
+      <h3>Version élèves (tu)</h3>
+      <p>« Tu révises seul ? Jàng te montre où tu t'es trompé. »</p>
+      <p class="eff">Phrase d'accroche à tester : « Envoie ta réponse, Jàng t'explique ton erreur. » <a class="ev" href="#p-a7-1">A §7.1</a></p>
+    </article>
+    <article class="card">
+      <h3>Version enseignants et partenaires (vous)</h3>
+      <p>« Jàng aide vos élèves de S2 à repérer leur première erreur en physique-chimie, à partir de corrigés de référence que des professeurs sont en train de valider. Vous pouvez y contribuer. »</p>
+    </article>
+  </div>
+
+  <div class="sheet" style="margin-top:20px">
+    <h3>Ce que ce positionnement n'affirme pas</h3>
+    <ul class="plain">
+      <li>Pas « le seul » sur ce créneau. C'est une absence constatée dans trois pages, pas une étude de marché.</li>
+      <li>Pas « plus léger » qu'un concurrent. Le poids par usage n'est documenté chez aucun d'eux, et pas encore mesuré chez nous.</li>
+      <li>Pas « corrigés validés ». Ils sont en cours de validation.</li>
+    </ul>
+    <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a6">A §6 (réserves)</a><a class="ev" href="#p-a4">A §4</a><a class="ev" href="#p-a5-6">A §5.6</a></p>
+  </div>
+</section>
+
+<!-- ============ 2. PILIERS ============ -->
+<section id="piliers" aria-labelledby="pil-t">
+  <p class="kicker">2 · Piliers de marque</p>
+  <h2 id="pil-t">Trois piliers, une seule voix</h2>
+  <p class="lead">Voix : bienveillante, claire, directe. Tutoiement pour les élèves, vouvoiement pour les professeurs et partenaires. Phrases courtes.</p>
+  <div class="cards three">
+    <article class="card">
+      <p class="num">Pilier 1</p>
+      <h3>La première erreur, d'abord</h3>
+      <dl>
+        <dt>Promesse</dt><dd>Montrer où le raisonnement dérape, puis le corrigé de référence, puis un exercice similaire. Dans cet ordre.</dd>
+        <dt>On dit</dt><dd>« première erreur », « corrigé de référence », « exercice similaire », « se corriger seul ».</dd>
+        <dt>On évite</dt><dd>« l'IA qui sait tout », « corrige tout ».</dd>
+        <dt>Pourquoi</dt><dd>Le corrigé est un document, pas un retour sur la copie de l'élève.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-1">A §5.1</a><a class="ev" href="#p-a6">A §6</a><a class="ev" href="#p-a7-1">A §7.1</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s2">S2</a></p>
+    </article>
+    <article class="card">
+      <p class="num">Pilier 2</p>
+      <h3>Un geste, sur WhatsApp</h3>
+      <dl>
+        <dt>Promesse</dt><dd>Écrire un message. Pas d'application à installer, pas de compte à créer.</dd>
+        <dt>On dit</dt><dd>« sur WhatsApp », « réviser seul », « le soir même ».</dd>
+        <dt>Garde-fou</dt><dd>« Léger en données » reste un <b>objectif</b> (moins de 100 Ko). <span class="marge">[à mesurer]</span> avant toute promesse.</dd>
+        <dt>Pourquoi</dt><dd>Les concurrents envoient vers une application ou des cours à domicile.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-5">A §5.5</a><a class="ev" href="#p-a7-3">A §7.3</a><a class="ev" href="#p-a6">A §6 (poids non documenté)</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s2">S2</a></p>
+    </article>
+    <article class="card">
+      <p class="num">Pilier 3</p>
+      <h3>Honnête avec toi</h3>
+      <dl>
+        <dt>Promesse</dt><dd>Dire ce qui est validé, ce qui ne l'est pas encore, et que Jàng peut se tromper.</dd>
+        <dt>On dit</dt><dd>« corrigés en cours de validation par des professeurs », « Jàng peut se tromper : en cas de doute, demande à un professeur. »</dd>
+        <dt>On évite</dt><dd>les promesses absolues, les superlatifs, tout chiffre sans mesure.</dd>
+        <dt>Pourquoi</dt><dd>Nomad affiche « +3pts de moyenne gagnés » et FoondaMate « +100k total users ». Ce sont des déclarations non vérifiées. Jàng n'a pas de données propres à afficher.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-6">A §5.6</a><a class="ev" href="#p-a5-3">A §5.3</a><a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s3">S3</a></p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 3. CALENDRIER ============ -->
+<section id="calendrier" aria-labelledby="cal-t">
+  <p class="kicker">3 · Calendrier</p>
+  <h2 id="cal-t">Quatre semaines, sans budget</h2>
+  <p class="lead">Rythme tenable à deux : 2 Statuts WhatsApp, 1 message de Chaîne et 1 post LinkedIn par semaine. Plus 1 créneau libre pour répondre aux retours réels.</p>
+
+  <div class="sheet">
+    <h3>Avant de commencer</h3>
+    <ul class="plain">
+      <li><b>Un contact WhatsApp réel</b> : numéro et lien <span class="marge">[à définir]</span>. Aucune publication d'appel à l'action sans lui. <a class="ev" href="#p-a7-3">A §7.3</a></li>
+      <li><b>Une Chaîne WhatsApp créée</b> par l'équipe.</li>
+      <li><b>Un canal réel pour les professeurs.</b> Le formulaire de la landing n'envoie rien pour l'instant <a class="ev" href="#p-lp">L:492</a>. Le post LinkedIn de la semaine 1 doit donner un contact <span class="marge">[à définir]</span>, ou attendre que le formulaire soit relié.</li>
+      <li><b>Le quick win 1</b> (avertissement sur la landing) fait avant le premier post, car les posts renvoient vers la landing. <a href="#quickwins">Voir la section 6</a>.</li>
+    </ul>
+  </div>
+
+  <article class="week">
+    <header><h3>Semaine 1 · Montrer une erreur corrigée</h3><p>Objectif : faire comprendre la promesse en un coup d'œil.</p></header>
+    <ul>
+      <li>
+        <div class="canal">WhatsApp Statut <span>· élèves · tu</span></div>
+        <div><p><b>Lundi.</b> Énoncé de <span class="tag chimie">Chimie</span><span class="mono">JNG-PC-01</span> en texte, avec l'invitation à répondre. Draft ci-dessous.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a7-1">A §7.1</a><a class="ev" href="#p-lp">L:329</a></p></div>
+      </li>
+      <li>
+        <div class="canal">WhatsApp Statut <span>· élèves · tu</span></div>
+        <div><p><b>Jeudi.</b> La première erreur de l'exemple illustré (volume en litres), avec l'avertissement. Draft ci-dessous.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a5-1">A §5.1</a><a class="ev" href="#p-a5-6">A §5.6</a><a class="ev" href="#p-lp">L:239</a></p></div>
+      </li>
+      <li>
+        <div class="canal">WhatsApp Chaîne <span>· élèves · tu</span></div>
+        <div><p><b>Message de présentation :</b> « Comment ça marche en 3 messages ». 1. Tu envoies l'identifiant et ta réponse. 2. Jàng montre ta première erreur. 3. Tu reçois un exercice similaire.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a5-5">A §5.5</a><a class="ev" href="#p-a7-3">A §7.3</a></p></div>
+      </li>
+      <li>
+        <div class="canal">LinkedIn <span>· enseignants, partenaires · vous</span></div>
+        <div><p><b>Présentation du projet</b> et appel à relecture des corrigés. Draft ci-dessous.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-a5-6">A §5.6</a></p></div>
+      </li>
+    </ul>
+  </article>
+
+  <article class="week">
+    <header><h3>Semaine 2 · Les unités</h3><p>Objectif : parler d'une difficulté que l'élève reconnaît (mL/L, nm/m, kΩ/µF).</p></header>
+    <ul>
+      <li>
+        <div class="canal">WhatsApp Statut <span>· élèves · tu</span></div>
+        <div><p><span class="tag physique">Physique</span><span class="mono">JNG-PC-12</span> (500 nm). Question du jour : « En quelle unité faut-il mettre la longueur d'onde avant de calculer ? » Le choix « Les unités » existe déjà dans le quiz de la landing.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a7-2">A §7.2</a><a class="ev" href="#p-lp">L:379</a></p></div>
+      </li>
+      <li>
+        <div class="canal">WhatsApp Statut <span>· élèves · tu</span></div>
+        <div><p><span class="tag physique">Physique</span><span class="mono">JNG-PC-10</span> (R = 10 kΩ, C = 100 µF). Même idée : convertir avant de calculer.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a5-1">A §5.1</a><a class="ev" href="#p-lp">L:333</a></p></div>
+      </li>
+      <li>
+        <div class="canal">WhatsApp Chaîne <span>· élèves · tu</span></div>
+        <div><p><b>Mémo « unités » à recopier dans ton cahier</b>, en texte seul, quelques lignes. Voir l'idée d'acquisition 2.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a6">A §6</a><a class="ev" href="#p-a5-2">A §5.2</a></p></div>
+      </li>
+      <li>
+        <div class="canal">LinkedIn <span>· enseignants, partenaires · vous</span></div>
+        <div><p><b>Coulisses :</b> comment un corrigé de référence est écrit par l'équipe, puis relu. Demander la relecture d'un exercice précis (identifiant).</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-a5-6">A §5.6</a></p></div>
+      </li>
+    </ul>
+  </article>
+
+  <article class="week">
+    <header><h3>Semaine 3 · La méthode</h3><p>Objectif : montrer que Jàng vérifie d'abord le choix de la loi, pas seulement le calcul.</p></header>
+    <ul>
+      <li>
+        <div class="canal">WhatsApp Statut <span>· élèves · tu</span></div>
+        <div><p><span class="tag physique">Physique</span><span class="mono">JNG-PC-07</span> (plan incliné). Conseil : « Avant de calculer, écris en une phrase quelle loi tu utilises. »</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a7-2">A §7.2</a><a class="ev" href="#p-lp">L:377</a></p></div>
+      </li>
+      <li>
+        <div class="canal">WhatsApp Statut <span>· élèves · tu</span></div>
+        <div><p><span class="tag chimie">Chimie</span><span class="mono">JNG-PC-03</span> (acide faible). Même conseil de méthode.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a7-2">A §7.2</a><a class="ev" href="#p-lp">L:330</a></p></div>
+      </li>
+      <li>
+        <div class="canal">WhatsApp Chaîne <span>· élèves · tu</span></div>
+        <div><p><b>Rendez-vous du soir :</b> un exercice à heure fixe, à tester avec les élèves. Voir l'idée d'acquisition 5.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a5-5">A §5.5</a></p></div>
+      </li>
+      <li>
+        <div class="canal">LinkedIn <span>· enseignants, partenaires · vous</span></div>
+        <div><p><b>Point d'étape honnête :</b> 5 exercices de physique-chimie disponibles avec corrigé de référence. Nombre relu par des professeurs : <span class="marge">[à mesurer]</span>. Nouvel appel à relecture.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-lp">L:329-334</a></p></div>
+      </li>
+    </ul>
+  </article>
+
+  <article class="week">
+    <header><h3>Semaine 4 · Refaire pour vérifier</h3><p>Objectif : mettre en avant l'exercice similaire, puis décider avec des observations réelles.</p></header>
+    <ul>
+      <li>
+        <div class="canal">WhatsApp Statut <span>· élèves · tu</span></div>
+        <div><p>Reprise de l'exercice le plus envoyé <span class="marge">[à mesurer]</span> : « Tu as compris ton erreur ? Refais-le à ta façon. »</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a5-1">A §5.1</a></p></div>
+      </li>
+      <li>
+        <div class="canal">WhatsApp Chaîne <span>· élèves · tu</span></div>
+        <div><p><b>Bilan des trois premières semaines,</b> uniquement avec ce qui a réellement eu lieu. Aucun témoignage inventé.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a5-6">A §5.6</a></p></div>
+      </li>
+      <li>
+        <div class="canal">LinkedIn <span>· enseignants, partenaires · vous</span></div>
+        <div><p><b>Invitation aux établissements et associations</b> qui voudraient essayer Jàng avec leurs élèves. Aucun partenaire cité tant qu'aucun n'a accepté.</p>
+        <p class="proofs" style="margin-top:6px;border:0;padding:0"><a class="ev" href="#p-a5-2">A §5.2</a><a class="ev" href="#p-a7-4">A §7.4</a></p></div>
+      </li>
+      <li>
+        <div class="canal">Équipe <span>· décision</span></div>
+        <div><p>Relire le tableau de suivi (section 7). Garder ce qui a eu des réponses, arrêter le reste.</p></div>
+      </li>
+    </ul>
+  </article>
+
+  <div class="sheet">
+    <h3>Drafts de la semaine 1</h3>
+
+    <p><b>Statut du lundi (tu)</b></p>
+    <div class="msg"><div class="b">JNG-PC-01 🧪
+2,0 g de NaOH dans 500 mL. M = 40 g/mol.
+Calcule C, puis le pH.
+Envoie-nous ta réponse sur WhatsApp : [lien à définir]
+Jàng t'explique ta première erreur.
+À ce soir sur WhatsApp.</div><small>Aucune correction n'est affichée ici.</small></div>
+
+    <p><b>Statut du jeudi (tu)</b></p>
+    <div class="msg"><div class="b">Exemple illustré (ce n'est pas la copie d'un vrai élève).
+Ligne 2 : C = 0,05 / 500 = 1×10⁻⁴ mol/L
+Première erreur : le volume doit être en litres. 500 mL = 0,500 L.
+Jàng peut se tromper : en cas de doute, demande à un professeur.
+Corrigés en cours de validation par des professeurs.
+On apprend de ses erreurs.</div><small>Une correction est affichée : l'avertissement et la mention de validation sont obligatoires.</small></div>
+
+    <p><b>Post LinkedIn (vous)</b></p>
+    <div class="msg li"><div class="b">Jàng est un projet étudiant (GET 409 Atelier IA, Swiss UMEF University, campus de Dakar).
+Sur WhatsApp, un élève de Terminale S2 envoie sa réponse à un exercice de physique-chimie. Jàng lui montre sa première erreur à partir d'un corrigé de référence.
+Ces corrigés sont écrits par notre équipe et sont en cours de validation par des professeurs. Vous enseignez la physique-chimie ? Votre relecture nous aiderait : [contact à définir].
+Jàng — réviser seul, mais pas sans aide.</div><small>Vouvoiement. Aucun chiffre, aucun partenaire, aucun témoignage.</small></div>
+
+    <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a7-1">A §7.1</a><a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-a5-6">A §5.6</a><a class="ev" href="#p-lp">L:225-239</a></p>
+  </div>
+</section>
+
+<!-- ============ 4. LANDING ============ -->
+<section id="landing" aria-labelledby="land-t">
+  <p class="kicker">4 · Landing page</p>
+  <h2 id="land-t">Sept améliorations pour <span class="mono" style="font-size:.7em">../03-landing/v2-skill/index.html</span></h2>
+  <p class="lead">Chaque point part de ce que la page dit aujourd'hui (numéro de ligne), et de l'analyse. À faire dans une branche séparée, en respectant le <span class="mono">CLAUDE.md</span> du dossier : tokens existants, <span class="mono">el()</span> et <span class="mono">textContent</span>, pas de <span class="mono">innerHTML</span>.</p>
+
+  <div class="cards">
+    <article class="card">
+      <p class="num">Amélioration 1 · Effort faible</p>
+      <h3>Raccourcir le sous-titre du hero</h3>
+      <dl>
+        <dt>Aujourd'hui <a class="ev" href="#p-lp">L:216</a></dt><dd>Un paragraphe de plusieurs phrases, qui finit par « sans gaspiller ton forfait ».</dd>
+        <dt>Proposition</dt><dd>« Envoie ton exercice et ta réponse sur WhatsApp. Jàng t'explique ta première erreur, puis te propose un exercice similaire. » Tester la version « Envoie ta réponse, Jàng t'explique ton erreur » avec des élèves.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-1">A §5.1</a><a class="ev" href="#p-a7-1">A §7.1</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Amélioration 2 · Effort faible</p>
+      <h3>Nommer le terrain : « Physique-chimie · Bac S2 · Sénégal »</h3>
+      <dl>
+        <dt>Aujourd'hui <a class="ev" href="#p-lp">L:6-7</a> <a class="ev" href="#p-lp">L:216</a></dt><dd>Le hero dit « Bac S2, physique-chimie » sans « Sénégal ». Le mot n'apparaît que dans la méta-description.</dd>
+        <dt>Proposition</dt><dd>Une ligne courte au-dessus de l'accroche, et un titre de page aligné sur le nom de marque : « Jàng — correcteur d'exercices du Bac sur WhatsApp ».</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a7-2">A §7.2</a><a class="ev" href="#p-a1">A §1</a><a class="ev" href="#p-a2">A §2</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s2">S2</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Amélioration 3 · Effort moyen</p>
+      <h3>Un seul geste : « Écrire sur WhatsApp »</h3>
+      <dl>
+        <dt>Aujourd'hui <a class="ev" href="#p-lp">L:218-219</a> <a class="ev" href="#p-lp">L:446</a></dt><dd>Les deux boutons du hero mènent à des ancres de la page. Il n'y a aucun lien WhatsApp dans le fichier (vérifié). Le résultat du quiz dit « Sur WhatsApp, envoie… » sans bouton.</dd>
+        <dt>Proposition</dt><dd>Bouton principal « Écrire sur WhatsApp » dans le hero et dans le résultat du quiz. Le quiz devient l'action secondaire. Lien avec numéro <span class="marge">[à définir]</span> : ne pas publier de lien factice.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-5">A §5.5</a><a class="ev" href="#p-a7-3">A §7.3</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s2">S2</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Amélioration 4 · Effort faible</p>
+      <h3>Avertissement et validation à côté de la correction</h3>
+      <dl>
+        <dt>Aujourd'hui <a class="ev" href="#p-lp">L:239</a> <a class="ev" href="#p-lp">L:321-322</a></dt><dd>La légende sous l'exemple dit seulement « Exemple illustré ». La mention de validation par des enseignants n'est que dans le pied de page. Le résultat du quiz n'a ni l'un ni l'autre.</dd>
+        <dt>Proposition</dt><dd>Sous l'exemple du hero et sur le résultat du quiz : « Corrigés en cours de validation par des professeurs. Jàng peut se tromper : en cas de doute, demande à un professeur. »</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-a5-6">A §5.6</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Amélioration 5 · Effort faible</p>
+      <h3>Un bloc « Prix et conditions » dès le haut de page</h3>
+      <dl>
+        <dt>Aujourd'hui</dt><dd>La page ne dit rien du prix ni des conditions.</dd>
+        <dt>Proposition</dt><dd>Une ligne sous le hero : prix ou gratuité <span class="marge">[à décider]</span>, et ce que Jàng demande à l'élève. On n'écrit « gratuit » que si l'équipe le décide.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-3">A §5.3</a><a class="ev" href="#p-a7-5">A §7.5</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s2">S2</a><a class="ev" href="#p-s3">S3</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Amélioration 6 · Effort moyen</p>
+      <h3>Ne promettre le poids qu'une fois mesuré</h3>
+      <dl>
+        <dt>Aujourd'hui <a class="ev" href="#p-lp">L:216</a> <a class="ev" href="#p-lp">L:271</a> <a class="ev" href="#p-lp">L:11</a></dt><dd>Le hero dit « sans gaspiller ton forfait », une promesse non mesurée. La carte « Léger en données » parle d'un objectif de moins de 100 Ko, ce qui est correct. Le fichier <span class="mono">index.html</span> pèse 26 927 octets (mesuré le 29/09/2026), mais les polices Google Fonts chargées ligne 11 ne sont pas mesurées.</dd>
+        <dt>Proposition</dt><dd>Retirer « sans gaspiller ton forfait » tant qu'il n'y a pas de mesure. Mesurer la page complète et un échange type, puis écrire les chiffres mesurés. En attendant : « objectif : moins de 100 Ko ».</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a6">A §6 (réserves)</a><a class="ev" href="#p-a7-3">A §7.3</a><a class="ev" href="#p-a5-6">A §5.6</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Amélioration 7 · Effort moyen</p>
+      <h3>Faire de « Professeur volontaire » une vraie porte d'entrée</h3>
+      <dl>
+        <dt>Aujourd'hui <a class="ev" href="#p-lp">L:288</a> <a class="ev" href="#p-lp">L:492</a></dt><dd>Section tout en bas, en tutoiement (« Tu enseignes… ») alors que les professeurs se vouvoient. Le formulaire n'envoie rien, et son message de succès le dit.</dd>
+        <dt>Proposition</dt><dd>« Vous enseignez la physique-chimie ? Aidez-nous à relire les corrigés de référence. » Ajouter un lien depuis la mention de validation du hero, et préciser ce qui est demandé (relire un exercice identifié). Garder le message « rien n'a été envoyé » tant que le formulaire n'est pas relié. Le relier avant le post LinkedIn de la semaine 1, ou donner un contact <span class="marge">[à définir]</span>.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-a5-6">A §5.6</a></p>
+    </article>
+  </div>
+
+  <div class="sheet" style="margin-top:20px">
+    <p class="marge">à trancher par l'équipe : hors analyse</p>
+    <p><b>Écart d'identité.</b> La landing utilise ses propres jetons (bleu stylo, rouge en soulignement de titres et ombres de boutons, polices Bricolage Grotesque et Kalam). L'identité Jàng demande le vert #0E7565, le rouge réservé aux corrections, et Schibsted Grotesk, Atkinson Hyperlegible, IBM Plex Mono et Caveat. Le <span class="mono">CLAUDE.md</span> de <span class="mono">v2-skill</span> impose ses jetons, et l'analyse concurrentielle n'a observé aucune couleur. Ce n'est donc pas compté parmi les sept points : c'est une décision à prendre, pas une recommandation fondée sur les preuves.</p>
+    <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a4">A §4 (couleurs : non observé)</a><a class="ev" href="#p-lp">L:13-26</a></p>
+  </div>
+</section>
+
+<!-- ============ 5. ACQUISITION ============ -->
+<section id="acquisition" aria-labelledby="acq-t">
+  <p class="kicker">5 · Acquisition</p>
+  <h2 id="acq-t">Cinq idées que les concurrents ne montrent pas</h2>
+  <p class="lead">« Ne montrent pas » veut dire : absent des trois pages lues. Aucune de ces idées ne demande de budget.</p>
+  <div class="cards">
+    <article class="card">
+      <p class="num">Idée 1</p>
+      <h3>Le défi « trouve la première erreur »</h3>
+      <dl>
+        <dt>Idée</dt><dd>Un Statut montre un calcul faux d'un exemple illustré. L'élève cherche la ligne fautive, puis vérifie en envoyant sa propre réponse à un exercice.</dd>
+        <dt>Pourquoi c'est différent</dt><dd>Aucune source ne mentionne l'explication de l'erreur de l'élève. Les appels à l'action observés mènent hors de l'échange.</dd>
+        <dt>Garde-fou</dt><dd>« Exemple illustré, pas la copie d'un vrai élève », plus l'avertissement.</dd>
+        <dt>Mesure</dt><dd>Réponses reçues par Statut <span class="marge">[à mesurer]</span>.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-1">A §5.1</a><a class="ev" href="#p-a5-5">A §5.5</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s2">S2</a><a class="ev" href="#p-s3">S3</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Idée 2</p>
+      <h3>L'exercice à recopier dans le cahier</h3>
+      <dl>
+        <dt>Idée</dt><dd>Sur la Chaîne, un mémo en texte seul (unités, méthode) court, fait pour être recopié à la main. C'est l'univers « cahier corrigé » de la marque.</dd>
+        <dt>Pourquoi c'est différent</dt><dd>Le Sénégal est traité comme une étiquette de catalogue, pas comme un contexte d'usage (données, révision seul). Le poids par usage n'est documenté chez aucun concurrent.</dd>
+        <dt>Garde-fou</dt><dd>Ne pas écrire « plus léger » : le poids reste <span class="marge">[à mesurer]</span>.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-2">A §5.2</a><a class="ev" href="#p-a6">A §6 (réserves)</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Idée 3</p>
+      <h3>Le corrigé relu, avec le nom du relecteur</h3>
+      <dl>
+        <dt>Idée</dt><dd>Quand un professeur a relu un corrigé <b>et donné son accord</b>, l'indiquer sur l'exercice : « relu par [nom du professeur] ». Les professeurs deviennent des relais crédibles.</dd>
+        <dt>Pourquoi c'est différent</dt><dd>Les concurrents s'appuient sur des chiffres déclarés (« +3pts de moyenne gagnés », « +100k total users »). Jàng peut s'appuyer sur une validation visible.</dd>
+        <dt>Garde-fou</dt><dd>Jamais avant une relecture réelle et un accord écrit. Aucun nom inventé.</dd>
+        <dt>Mesure</dt><dd>Nombre de corrigés relus <span class="marge">[à mesurer]</span>.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-6">A §5.6</a><a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s3">S3</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Idée 4</p>
+      <h3>L'affichette d'une page pour la salle de classe</h3>
+      <dl>
+        <dt>Idée</dt><dd>Une page imprimable, texte seul : la liste des exercices disponibles, comment envoyer sa réponse, l'avertissement. Proposée aux professeurs volontaires pour leur salle de classe.</dd>
+        <dt>Pourquoi c'est différent</dt><dd>Les canaux observés sont l'application (Nomad) et le PDF ou le cours à domicile (Groupe Réussite). Aucun ne s'appuie sur le professeur du lycée comme relais.</dd>
+        <dt>Garde-fou</dt><dd>À proposer seulement quand le contact WhatsApp existe et que l'exercice concerné a un corrigé.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-2">A §5.2</a><a class="ev" href="#p-a5-5">A §5.5</a><a class="ev" href="#p-s1">S1</a><a class="ev" href="#p-s2">S2</a></p>
+    </article>
+
+    <article class="card">
+      <p class="num">Idée 5</p>
+      <h3>Le rendez-vous du soir</h3>
+      <dl>
+        <dt>Idée</dt><dd>Un exercice de la Chaîne à heure fixe, le soir, et la correction « le soir même » pour ceux qui répondent. Ouvre l'habitude de réviser un peu chaque jour.</dd>
+        <dt>Pourquoi c'est différent</dt><dd>Aucune source ne décrit un rythme d'usage ni une correction le soir même. Les offres observées sont des catalogues à consulter.</dd>
+        <dt>Garde-fou</dt><dd>L'heure est <span class="marge">[à tester]</span> avec de vrais élèves : on ne suppose pas leur emploi du temps.</dd>
+      </dl>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a5-5">A §5.5</a><a class="ev" href="#p-a4">A §4 (type d'offre)</a></p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 6. QUICK WINS ============ -->
+<section id="quickwins" aria-labelledby="qw-t">
+  <p class="kicker">6 · Cette semaine</p>
+  <h2 id="qw-t">Trois quick wins, zéro budget</h2>
+  <p class="lead">Ordre conseillé. Chaque étape dit ce que tu dois observer ensuite. Le point 1 modifie la landing : le faire sur une branche, après un commit.</p>
+  <ol class="qw">
+    <li>
+      <h3><span class="box" aria-hidden="true"></span>Mettre l'avertissement là où la correction est visible</h3>
+      <p>Ajouter sous <span class="mono">figcaption</span> (L:239) et dans le résultat du quiz : « Corrigés en cours de validation par des professeurs. Jàng peut se tromper : en cas de doute, demande à un professeur. » Effort estimé : faible.</p>
+      <p><b>À observer :</b> à la largeur d'un téléphone, la phrase est visible juste sous l'exemple, sans descendre jusqu'au pied de page.</p>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a7-4">A §7.4</a><a class="ev" href="#p-a5-6">A §5.6</a><a class="ev" href="#p-lp">L:239</a></p>
+    </li>
+    <li>
+      <h3><span class="box" aria-hidden="true"></span>Mesurer avant de promettre</h3>
+      <p>Ouvrir la landing avec les outils du navigateur (onglet Réseau, cache désactivé) et noter le poids total avec les polices. Puis faire un échange de test avec Jàng et lire la consommation de données du téléphone avant et après. Écrire les deux valeurs dans un document d'équipe.</p>
+      <p><b>À observer :</b> deux nombres notés, avec la date. Tant qu'ils manquent, la landing parle d'« objectif » et non de promesse. Voir l'amélioration 6.</p>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a6">A §6 (réserves)</a><a class="ev" href="#p-a7-3">A §7.3</a><a class="ev" href="#p-lp">L:271</a></p>
+    </li>
+    <li>
+      <h3><span class="box" aria-hidden="true"></span>Fermer les trous du relevé concurrent</h3>
+      <p>Avec un vrai navigateur : lire la page Nomad (tarifs, premier écran), chercher la physique-chimie sur Groupe Réussite, et lire le site officiel de FoondaMate (WhatsApp, langues, prix). Consigner dans un fichier à part ce qui est vu, avec l'URL et la date.</p>
+      <p><b>À observer :</b> chaque case « non observé » du tableau A §4 est soit remplie avec une source, soit gardée telle quelle. Trois points comptent le plus : FoondaMate sur WhatsApp, les prix, et FoondaMate en français. Le positionnement repose sur des absences.</p>
+      <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-a7-5">A §7.5</a><a class="ev" href="#p-ann">A annexe</a><a class="ev" href="#p-a4">A §4</a></p>
+    </li>
+  </ol>
+</section>
+
+<!-- ============ 7. MESURES ============ -->
+<section id="mesures" aria-labelledby="mes-t">
+  <p class="kicker">7 · Suivi</p>
+  <h2 id="mes-t">Ce qu'il faut mesurer, et ce qui manque</h2>
+  <p class="lead">Aucune cible chiffrée n'est posée : il n'y a pas de mesure de départ. La landing n'a pas de traceur externe et n'en aura pas. Le comptage se fait à la main, dans un tableau d'équipe.</p>
+  <div class="sheet">
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Élément</th><th>Comment le relever</th><th>Valeur</th></tr></thead>
+        <tbody>
+          <tr><td>Messages reçus avec un identifiant d'exercice</td><td>Comptage manuel, par semaine</td><td><span class="marge">[à mesurer]</span></td></tr>
+          <tr><td>Réponses à chaque Statut</td><td>Comptage manuel, par Statut</td><td><span class="marge">[à mesurer]</span></td></tr>
+          <tr><td>Professeurs qui proposent une relecture</td><td>Contacts reçus</td><td><span class="marge">[à mesurer]</span></td></tr>
+          <tr><td>Corrigés relus par un professeur</td><td>Liste tenue par l'équipe</td><td><span class="marge">[à mesurer]</span></td></tr>
+          <tr><td>Poids de la landing et d'un échange</td><td>Quick win 2</td><td><span class="marge">[à mesurer]</span></td></tr>
+          <tr><td>Numéro et lien WhatsApp</td><td>Décision de l'équipe</td><td><span class="marge">[à définir]</span></td></tr>
+          <tr><td>Prix ou gratuité</td><td>Décision de l'équipe</td><td><span class="marge">[à décider]</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="sheet">
+    <h3>Limites du relevé</h3>
+    <ul class="plain">
+      <li>Couleurs des trois concurrents : non observées.</li>
+      <li>FoondaMate : site officiel illisible. Les informations viennent d'une fiche MIT Solve, et « WhatsApp » n'y est pas confirmé.</li>
+      <li>Groupe Réussite : page maths seulement, sous-titre incohérent (« camerounais »).</li>
+      <li>Nomad : contenu Sénégal et exercices interactifs non détaillés.</li>
+      <li>Trois pages lues, pas une étude de marché : d'autres acteurs peuvent exister.</li>
+    </ul>
+    <p class="proofs"><b>Preuves :</b> <a class="ev" href="#p-ann">A annexe</a><a class="ev" href="#p-a6">A §6</a></p>
+  </div>
+</section>
+
+<!-- ============ 8. PREUVES ============ -->
+<section id="preuves" aria-labelledby="pr-t">
+  <p class="kicker">8 · Preuves</p>
+  <h2 id="pr-t">D'où vient chaque recommandation</h2>
+  <p class="lead">Fichiers dans <span class="mono">06-plugins/</span>. La landing est dans <span class="mono">../03-landing/v2-skill/</span>.</p>
+  <ul>
+    <li id="p-a1"><b>A §1</b> · Nomad Education, page « Terminale S2 - Sénégal » : neuf matières, appels à l'action vers le téléchargement, tarifs non affichés, WhatsApp non mentionné.</li>
+    <li id="p-a2"><b>A §2</b> · Groupe Réussite, annales de maths : PDF séparés, appel à l'action « Cours de maths à domicile », physique-chimie non observé.</li>
+    <li id="p-a3"><b>A §3</b> · FoondaMate : site illisible, fiche MIT Solve, français et Sénégal non observés, WhatsApp à confirmer.</li>
+    <li id="p-a4"><b>A §4</b> · Tableau comparatif : couleurs, prix et WhatsApp, avec les cases « non observé ».</li>
+    <li id="p-a5"><b>A §5</b> · Motifs communs :
+      <ul style="margin-top:6px">
+        <li id="p-a5-1"><b>A §5.1</b> · Le corrigé est un document, pas un retour sur la copie de l'élève.</li>
+        <li id="p-a5-2"><b>A §5.2</b> · Le Sénégal est une étiquette de catalogue, pas un contexte d'usage.</li>
+        <li id="p-a5-3"><b>A §5.3</b> · Les tarifs sont absents des pages lues.</li>
+        <li id="p-a5-4"><b>A §5.4</b> · Le français est la langue des deux acteurs francophones ; FoondaMate est décrit en anglais et langues d'Afrique australe.</li>
+        <li id="p-a5-5"><b>A §5.5</b> · Les appels à l'action mènent hors de l'échange : application, cours à domicile.</li>
+        <li id="p-a5-6"><b>A §5.6</b> · Chaque concurrent s'appuie sur un chiffre déclaré, non vérifié.</li>
+      </ul></li>
+    <li id="p-a6"><b>A §6</b> · Le créneau de Jàng et ses réserves : trois pages lues, poids par usage non documenté, comparaison « plus léger » à mesurer avant de l'affirmer.</li>
+    <li id="p-a7"><b>A §7</b> · Cinq recommandations :
+      <ul style="margin-top:6px">
+        <li id="p-a7-1"><b>A §7.1</b> · Mettre la correction de la réponse de l'élève en tête du message.</li>
+        <li id="p-a7-2"><b>A §7.2</b> · Cibler « Physique-chimie · Bac S2 · Sénégal ».</li>
+        <li id="p-a7-3"><b>A §7.3</b> · Faire de WhatsApp l'appel à l'action unique.</li>
+        <li id="p-a7-4"><b>A §7.4</b> · Être transparent sur l'état de validation des corrigés, sans chiffres non mesurés.</li>
+        <li id="p-a7-5"><b>A §7.5</b> · Afficher prix et conditions dès la première page, et compléter le relevé avec un vrai navigateur.</li>
+      </ul></li>
+    <li id="p-ann"><b>A annexe</b> · Lacunes du relevé : couleurs, FoondaMate, prix, Nomad, Groupe Réussite.</li>
+    <li id="p-s1"><b>S1</b> · <a href="sources/01-nomad-education.md">sources/01-nomad-education.md</a></li>
+    <li id="p-s2"><b>S2</b> · <a href="sources/02-groupe-reussite.md">sources/02-groupe-reussite.md</a></li>
+    <li id="p-s3"><b>S3</b> · <a href="sources/03-foondamate.md">sources/03-foondamate.md</a></li>
+    <li id="p-lp"><b>L</b> · <span class="mono">../03-landing/v2-skill/index.html</span>, lignes citées : 6-7 (titre et méta), 11 (polices externes), 13-26 (jetons), 216 (sous-titre), 218-219 (boutons), 225-239 (exemple), 271 (carte « léger »), 288 (formulaire), 321-322 (pied de page), 329-334 (exercices), 377-379 (difficultés du quiz), 446 (résultat du quiz), 492 (message du formulaire).</li>
+  </ul>
+  <p class="eff"><a class="ev" href="#p-a5">A §5</a><a class="ev" href="#p-a7">A §7</a> renvoient aux listes ci-dessus. Le fichier complet est <a href="competitive-analysis.md">competitive-analysis.md</a>.</p>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Corrigés en cours de validation par des professeurs.</b> Jàng peut se tromper : en cas de doute, demande à un professeur.</p>
+    <p>Jàng (« apprendre » en wolof) est un projet étudiant de Cheikh BOYE et Adama DIOP, GET 409 Atelier IA, Swiss UMEF University, campus de Dakar. Aminata est un personnage de conception, pas une utilisatrice réelle. Ce plan ne contient aucun partenaire, école, témoignage ni chiffre inventé.</p>
+    <p class="signoff">Jàng — réviser seul, mais pas sans aide.</p>
+  </div>
+</footer>
+</body>
+</html>
