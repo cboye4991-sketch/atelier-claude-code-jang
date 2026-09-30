@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atelier Claude Code · Jàng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Schibsted+Grotesk:wght@800&display=swap">
+<style>
+:root{--paper:#F6F9F8;--grid:#DCE8E4;--ink:#10231E;--muted:#52665F;--line:#C9D8D3;--card:#FFFFFF;--green:#0E7565;--soft:#DDEFEA;
+--display:"Schibsted Grotesk","Arial Narrow",system-ui,sans-serif;--body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root{--paper:#0D1513;--grid:#16221E;--ink:#E4EEEA;--muted:#9DB2AA;--line:#27352F;--card:#131D1A;--green:#35C2A1;--soft:#16312A;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font-family:var(--body);line-height:1.55}
+main{max-width:880px;margin:0 auto;padding:32px 16px 56px;display:flex;flex-direction:column;gap:22px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(32px,6vw,50px);line-height:1.05;margin:0}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+p{margin:0;max-width:66ch;color:var(--muted)}
+.main-link{display:block;background:var(--green);color:var(--paper);text-decoration:none;border-radius:12px;padding:16px 18px;font-weight:700;font-size:18px}
+.main-link span{display:block;font-weight:400;font-size:14.5px;opacity:.9}
+ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+li a{display:flex;flex-direction:column;gap:2px;height:100%;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+li a:hover,li a:focus-visible{border-color:var(--green)}
+.id{font-family:var(--mono);font-size:12.5px;color:var(--green)}
+.t{font-weight:700}.d{font-size:14px;color:var(--muted)}
+footer{font-size:13.5px;color:var(--muted)}
+footer a{color:var(--green)}
+</style>
+</head>
+<body>
+<main>
+  <span class="eyebrow">Atelier Claude Code · E00 → E07 · projet Jàng</span>
+  <h1>Atelier Claude Code, version Jàng</h1>
+  <p>Cheikh BOYE et Adama DIOP · GET 409 Atelier IA · Swiss UMEF University, campus de Dakar. Chaque réalisation ci-dessous a été produite avec Claude Code en suivant les épisodes de l'atelier ; les prompts exacts et les transcriptions sont dans le dépôt.</p>
+  <a class="main-link" href="RENDU.html">Rendu complet de l'atelier<span>Ce qui a été demandé, ce qui a été fait et les preuves, épisode par épisode.</span></a>
+  <ul>
+    <li><a href="03-landing/v2-skill/index.html"><span class="id">E03 · V2</span><span class="t">Landing page Jàng (frontend-design)</span><span class="d">Quiz « trouve ton exercice », 6 exercices, formulaire professeur.</span></a></li>
+    <li><a href="03-landing/v1-no-skill/index.html"><span class="id">E03 · V1</span><span class="t">Landing page sans skill</span><span class="d">La même page, version de référence.</span></a></li>
+    <li><a href="01-hello/jang-card.html"><span class="id">E01 · E02</span><span class="t">Carte de visite web</span><span class="d">Thème clair/sombre mémorisé, bouton WhatsApp.</span></a></li>
+    <li><a href="05-brand/flyer-appel-professeurs.html"><span class="id">E05</span><span class="t">Flyer « appel aux professeurs »</span><span class="d">Généré avec la skill /jang-brand.</span></a></li>
+    <li><a href="05-brand/email-suivi-professeur.html"><span class="id">E05</span><span class="t">Email de suivi</span><span class="d">Aux couleurs de la marque.</span></a></li>
+    <li><a href="06-plugins/marketing-plan.html"><span class="id">E06</span><span class="t">Plan marketing</span><span class="d">Plugin marketing, à partir de l'analyse concurrentielle.</span></a></li>
+    <li><a href="https://github.com/cboye4991-sketch/atelier-claude-code-jang/blob/main/06-plugins/competitive-analysis.md"><span class="id">E06</span><span class="t">Analyse concurrentielle</span><span class="d">3 concurrents, sources citées.</span></a></li>
+    <li><a href="https://github.com/cboye4991-sketch/atelier-claude-code-jang/blob/main/jang-app/CLAUDE.md"><span class="id">E07</span><span class="t">CLAUDE.md de l'app web Jàng</span><span class="d">Projet fil rouge, branche phase-1.</span></a></li>
+  </ul>
+  <footer>Code source, prompts et transcriptions : <a href="https://github.com/cboye4991-sketch/atelier-claude-code-jang">github.com/cboye4991-sketch/atelier-claude-code-jang</a></footer>
+</main>
+</body>
+</html>
