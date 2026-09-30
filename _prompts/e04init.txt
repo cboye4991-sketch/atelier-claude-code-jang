@@ -1,0 +1,1 @@
+Please analyze this codebase and create a CLAUDE.md file, which will be given to future instances of Claude Code to operate in this repository. Include the commands needed to preview or test, and the high-level architecture and structure that would require reading multiple files to understand. Do not include generic development practices or obvious instructions.

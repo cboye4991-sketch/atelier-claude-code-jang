@@ -1,0 +1,24 @@
+# Transcription Claude Code — E06-2-rapport
+# Prompt envoyé : voir _prompts/
+⏺ Bash(ls -la sources/ && wc -c sources/*)
+⏺ Bash(cd /home/claude/claude-lab/06-plugins/sources && for f in *; do echo "=== $f"; cat "$f"; echo; done)
+⏺ Read(/home/claude/claude-lab/06-plugins/sources/01-nomad-education.md)
+⏺ Read(/home/claude/claude-lab/06-plugins/sources/02-groupe-reussite.md)
+⏺ Read(/home/claude/claude-lab/06-plugins/sources/03-foondamate.md)
+⏺ Write(/home/claude/claude-lab/06-plugins/competitive-analysis.md)
+⏺ J'ai écrit `competitive-analysis.md`, le seul fichier touché. Je ne l'ai pas relu après l'écriture. Il contient une section par concurrent, le tableau comparatif, les motifs communs, le créneau de Jàng et 5 recommandations, plus une annexe qui liste les lacunes du relevé.
+
+**Ce que vous devriez observer en l'ouvrant**
+- Chaque affirmation renvoie à `01-nomad-education.md`, `02-groupe-reussite.md` ou `03-foondamate.md`, avec l'URL en tête de section.
+- Toutes les couleurs sont « non observé », faute de capture.
+- Les chiffres des concurrents sont attribués comme des déclarations : « +3pts de moyenne gagnés » chez Nomad, « +100k total users » chez FoondaMate.
+- Rien n'est inventé sur Jàng. Seul le cadrage de votre demande est repris, cité comme « brief Jàng ».
+
+**Points à connaître**
+- **FoondaMate :** le site officiel était illisible, donc tout vient de la fiche MIT Solve. Cette fiche ne mentionne pas WhatsApp. Seul l'intitulé du relevé parle de « chatbot d'étude sur WhatsApp ». Je l'ai marqué « à confirmer » et non comme un fait.
+- **Créneau de Jàng :** aucun des trois ne mentionne la correction de la réponse de l'élève. « Non mentionné » n'est pas une preuve d'absence. Le texte le dit, et précise que trois pages lues ne font pas une étude de marché.
+- **Groupe Réussite :** son sous-titre dit « camerounais » sur une page Sénégal. Je l'ai signalé dans la section et dans l'annexe.
+
+**Étape suivante (vous avez un CLAUDE.md qui la demande)**
+Aucun changement risqué ici. Vous pouv
+== RESULT success cost 0.1799288 turns 7

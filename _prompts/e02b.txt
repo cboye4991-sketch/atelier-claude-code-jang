@@ -1,0 +1,1 @@
+Garde la même couleur verte d'accent dans les deux thèmes et mets le bouton dans le pied de page de la carte, pas en haut à droite. Donne-moi le plan corrigé, sans rien modifier.

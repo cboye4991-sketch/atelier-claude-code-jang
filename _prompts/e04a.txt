@@ -1,0 +1,5 @@
+Context: You just generated CLAUDE.md with /init for this landing page project.
+Task: Rewrite CLAUDE.md as a concise onboarding brief (under 60 lines): project purpose, file layout, design rules (fonts, palette tokens, spacing), content rules (French copy, no invented users, schools, testimonials or figures; the 6 exercise IDs must stay identical to the Dify knowledge base), how to preview, and a "Do / Don't" list.
+Constraints: No generic advice you could infer from the code. No task list or changelog inside CLAUDE.md.
+Definition of done: CLAUDE.md is under 60 lines and every line is specific to this project.
+Files to touch: `CLAUDE.md` only.

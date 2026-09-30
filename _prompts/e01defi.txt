@@ -1,0 +1,1 @@
+Ajoute un bouton « Écrire à Jàng sur WhatsApp » qui ouvre la conversation avec un lien wa.me vers le numéro (fictif) de la carte. Ne change rien d'autre.

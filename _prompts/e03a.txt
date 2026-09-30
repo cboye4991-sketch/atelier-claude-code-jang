@@ -1,0 +1,12 @@
+Context: Jàng ("apprendre" in Wolof) is a student project (GET 409 Atelier IA, Swiss UMEF University, Dakar campus) by Cheikh BOYE and Adama DIOP: a WhatsApp corrector for Senegalese Bac physics-chemistry exercises, for Terminale S2 students in regional high schools who revise alone because they have no teacher. The student sends an exercise ID and their answer; Jàng explains the first mistake, checked against a reference answer, and sends a similar exercise — the same evening, in under 100 KB of data. Persona: Aminata Diallo, 17, Terminale S2 in Kaffrine, entry-level Android phone, daily data bundle.
+Task: Build a single-page landing site in `index.html` with: a hero (name + tagline "Tu révises seul ? Jàng te montre où tu t'es trompé."), a 3-step interactive "exercise finder" quiz (subject: Chimie / Physique -> chapter -> "what do you struggle with": calculation / method / units) that ends with a recommended exercise ID from the list below, a grid of 4 features (first-mistake explanation, reference answer, similar exercise, light on data), an exercise grid with the 6 exercises below (ID, subject, chapter, short statement, status badge), and a "Volunteer teacher" contact form (name, email, phone, message) validated client-side only.
+Exercises (ID | subject | chapter | statement | status):
+JNG-PC-01 | Chimie | Solutions et pH | 2,0 g de NaOH dans 500 mL : calcule C puis le pH | Corrigé disponible
+JNG-PC-03 | Chimie | Acides faibles | pH d'une solution d'acide éthanoïque à 1,0×10⁻² mol/L (pKa = 4,8) | Corrigé disponible
+JNG-MA-01 | Maths | Suites numériques | Étudier la convergence d'une suite récurrente | En préparation
+JNG-PC-07 | Physique | Lois de Newton | Solide sur un plan incliné à 30° : accélération et vitesse après 2,0 m | Corrigé disponible
+JNG-PC-10 | Physique | Dipôle RC | R = 10 kΩ, C = 100 µF : constante de temps et tension à t = τ | Corrigé disponible
+JNG-PC-12 | Physique | Effet photoélectrique | Cellule au césium éclairée à 500 nm : énergie cinétique maximale | Corrigé disponible
+Constraints: One self-contained HTML file, no frameworks, French copy. Do NOT invent users, schools, testimonials, ratings or figures; the footer says the reference answers are being validated by teachers. Do not use any design skill.
+Definition of done: The file opens in a browser, the quiz works end to end, the layout holds at 360px. List the sections you built.
+Files to touch: `index.html` only.

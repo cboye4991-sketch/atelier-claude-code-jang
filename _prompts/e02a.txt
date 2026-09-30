@@ -1,0 +1,5 @@
+Context: `jang-card.html` currently has a single colour theme.
+Task: Plan (do not edit yet) how to add the opposite theme (light if the card is dark, dark if it is light) that follows `prefers-color-scheme`, plus a manual light/dark toggle whose choice is remembered in localStorage.
+Constraints: Keep the existing palette and accent colour; derive the second theme from it. No new files. Keep the file self-contained.
+Definition of done: A numbered plan listing the CSS tokens you will add, the toggle markup and JS, and how you will test it.
+Files to touch: `jang-card.html` (after plan approval only).

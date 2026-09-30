@@ -1,0 +1,41 @@
+# Transcription Claude Code — E07-3-context
+# Prompt envoyé : voir _prompts/
+⏺ ## Context Usage
+
+**Model:** claude-sonnet-5-5  
+**Tokens:** 25.8k / 500k (5%)
+
+### Estimated usage by category
+
+| Category | Tokens | Percentage |
+|----------|--------|------------|
+| System prompt | 2.9k | 0.6% |
+| System tools | 15.8k | 3.2% |
+| MCP tools (deferred) | 10.1k | 2.0% |
+| System tools (deferred) | 22.3k | 4.5% |
+| Memory files | 2.3k | 0.5% |
+| Skills | 4.7k | 0.9% |
+| Messages | 10 | 0.0% |
+| Free space | 441.2k | 88.2% |
+| Autocompact buffer | 33k | 6.6% |
+
+### MCP Tools
+
+| Tool | Server | Tokens |
+|------|--------|--------|
+| mcp__claude-in-chrome__browser_batch | claude-in-chrome | 564 |
+| mcp__claude-in-chrome__computer | claude-in-chrome | 2k |
+| mcp__claude-in-chrome__file_upload | claude-in-chrome | 425 |
+| mcp__claude-in-chrome__find | claude-in-chrome | 326 |
+| mcp__claude-in-chrome__form_input | claude-in-chrome | 284 |
+| mcp__claude-in-chrome__get_page_text | claude-in-chrome | 204 |
+| mcp__claude-in-chrome__gif_creator | claude-in-chrome | 880 |
+| mcp__claude-in-chrome__javascript_tool | claude-in-chrome | 412 |
+| mcp__claude-in-chrome__list_connected_browsers | claude-in-chrome | 464 |
+| mcp__claude-in-chrome__navigate | claude-in-chrome | 558 |
+| mcp__claude-in-chrome__read_console_messages | claude-in-chrome | 559 |
+| mcp__claude-in-chrome__read_network_requests | claude-in-chrome | 464 |
+| mcp__claude-in-chrome__read_page | claude-in-chrome | 543 |
+| mcp__claude-in-chrome__resize_window | claude-in-chrome | 248 |
+| mcp__claude-in-chrome__selec
+== RESULT success cost 0 turns 0

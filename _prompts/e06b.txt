@@ -1,0 +1,5 @@
+Context: `competitive-analysis.md` and `sources/` are in this folder. The marketing plugin is installed. The current Jàng landing page is `../03-landing/v2-skill/index.html`.
+Task: Using the marketing plugin, produce `marketing-plan.html`: a positioning statement for Jàng, 3 brand pillars, a 4-week content calendar (WhatsApp Status/Channel + LinkedIn for teachers and partners), 7 landing-page improvements for ../03-landing/v2-skill/index.html, 5 acquisition ideas competitors do not show, and 3 quick wins for this week (student team with no budget).
+Constraints: Ground every recommendation in the analysis (cite the competitor section or source file). Apply /jang-brand (palette, fonts, voice, honesty rules). French copy. Self-contained HTML (no screenshots exist: do not reference any). No invented figures, schools or partners.
+Definition of done: The page opens offline and each section points back to its evidence.
+Files to touch: `marketing-plan.html` only.

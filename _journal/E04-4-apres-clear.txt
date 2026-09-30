@@ -1,0 +1,19 @@
+# Transcription Claude Code — E04-4-apres-clear
+# Prompt envoyé : voir _prompts/
+⏺ ## Règles de contenu
+
+- **Langue** : tout le texte est en français, avec le tutoiement informel.
+- **Rien d'inventé** : pas d'utilisateurs, d'écoles, de témoignages ni de chiffres. Pas de « 1 200 élèves », pas de notes, pas de logos. Pas de statistiques, de preuve sociale ni de tarifs.
+- **Identifiants d'exercices** : les 6 IDs doivent rester identiques à ceux de la base de connaissances Dify : `JNG-PC-01`, `JNG-PC-03`, `JNG-PC-07`, `JNG-PC-10`, `JNG-PC-12` et `JNG-MA-01`. On ne renomme, ne renumérote et n'ajoute rien ici sans l'entrée correspondante dans Dify.
+- **`JNG-MA-01`** : il est `ok:false` (« En préparation ») et reste hors de `CHAPTERS`, donc le quiz ne le recommande jamais.
+- **Formulaire bénévole** : il n'est relié à rien. Son message de succès doit continuer à dire que rien n'a été envoyé, et on n'ajoute pas de fausse confirmation « envoyé ».
+
+## Polices
+
+- **`--display`** : Bricolage Grotesque, pour l'interface et les titres.
+- **`--hand`** : Kalam, pour l'écriture manuscrite de l'élève et les corrections.
+
+Les deux viennent de Google Fonts. Hors ligne, le site retombe sur les polices système.
+
+Ces informations viennent du CLAUDE.md déjà chargé dans le contexte. Je n'ai ouvert aucun fichier.
+== RESULT success cost 0.05704739999999999 turns 1

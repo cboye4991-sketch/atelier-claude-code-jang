@@ -1,0 +1,18 @@
+# Transcription Claude Code — E04-2-claude-md-court
+# Prompt envoyé : voir _prompts/
+⏺ Write(/home/claude/claude-lab/03-landing/v2-skill/CLAUDE.md)
+⏺ Bash(wc -l /home/claude/claude-lab/03-landing/v2-skill/CLAUDE.md)
+⏺ I rewrote `CLAUDE.md` as an onboarding brief and it is 49 lines, under your 60-line limit. I touched only that file.
+
+It covers these sections:
+- **Purpose:** what Jàng is and where `v2-skill` sits in the `03-landing` experiment.
+- **File layout:** `index.html` is the whole project, with a map of its sections and script parts.
+- **Design rules:** the palette tokens, the two fonts, the 24px ruled-line spacing and the breakpoints.
+- **Content rules:** French copy in the informal "tu" form, nothing invented, the form not wired to a server, and the six exercise IDs.
+- **Preview:** how to open or serve the page and what to check by hand.
+- **Do / Don't:** short lists.
+
+Two things to check:
+- **Sixth ID:** the six IDs are the ones in the `EX` array: `JNG-PC-01`, `JNG-PC-03`, `JNG-PC-07`, `JNG-PC-10`, `JNG-PC-12` and `JNG-MA-01`. `JNG-MA-01` is marked "En préparation" and the quiz doesn't recommend it. Confirm that's the sixth ID in your Dify knowledge base.
+- **Dify match:** I haven't seen the Dify knowledge base, so I couldn't check that these IDs match it.
+== RESULT success cost 0.21082840000000003 turns 3

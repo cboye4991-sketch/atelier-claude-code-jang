@@ -1,0 +1,17 @@
+# Transcription Claude Code — E01-premier-prompt
+# Prompt envoyé : voir _prompts/
+RAW Warning: no stdin data received in 3s, proceeding without it. If piping from a slow command, redirect stdin explicitly: < /dev/null to skip, or wait longer.
+
+⏺ Write(/home/claude/claude-lab/01-hello/jang-card.html)
+⏺ I created `jang-card.html`, the only file touched. I haven't opened it in a browser, so the 360px layout is untested.
+
+- **Content (in French):** the card shows the name "Jàng" with "« apprendre » en wolof", a one-line pitch, and the two authors' names. There are four tags drawn only from your description:
+  - Annales du Bac, Terminale S2
+  - Explication de la première erreur
+  - Corrigé de référence relu par un enseignant
+  - Exercice similaire + quelques messages de data
+
+  I added no user numbers, partner schools, awards or testimonials.
+- **Contact block:** the email `contact@exemple.sn` and the WhatsApp number `+221 00 000 00 00` (linked to `wa.me/221000000000`) are placeholders, and the card says so on screen. Replace them before sharing.
+- **Layout:** it is a single self-contained file with inline CSS, no external dependencies and no JavaScript. The card is centred on one screen, uses flexible widths with wrapping tags for small screens, and has an automatic dark mode.
+== RESULT success cost 0.0726932 turns 2

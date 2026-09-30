@@ -1,0 +1,5 @@
+Context: Same project and same content as ../v1-no-skill/index.html (Jàng, WhatsApp corrector for Bac physics-chemistry, Terminale S2, regional high schools in Senegal, persona Aminata in Kaffrine on a cheap Android with a daily data bundle). The frontend-design skill is installed in this project.
+Task: Rebuild the landing page from scratch in `index.html` using the frontend-design skill: a distinctive, production-grade art direction rooted in the student's real world — a squared school notebook corrected in red pen, where a WhatsApp conversation arrives — not a generic AI look.
+Constraints: Same sections, data and quiz logic as v1 (hero, 3-step exercise finder, 4 features, 6 exercise cards, volunteer-teacher form). One self-contained HTML file, French copy, no invented users, testimonials or figures. Keep it light for low data (no images or videos; CSS/SVG only; at most 2 Google Fonts families). Respect prefers-reduced-motion.
+Definition of done: The page opens in a browser, the quiz works, the layout holds at 360px. Explain your art direction in 5 lines (typography, palette, layout, motion, one signature detail).
+Files to touch: `index.html` only.

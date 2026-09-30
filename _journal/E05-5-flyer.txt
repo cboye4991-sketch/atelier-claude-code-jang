@@ -1,0 +1,32 @@
+# Transcription Claude Code — E05-5-flyer
+# Prompt envoyé : voir _prompts/
+⏺ Bash(ls -la && python3 -c "
+from PIL import Image
+im=Image.open('hero.jpg');print(im.size)")
+⏺ Read(/home/claude/claude-lab/05-brand/hero.jpg)
+⏺ Write(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Bash(which chromium chromium-browser google-chrome playwright 2>/dev/null; python3 -c "import playwright" 2>&1 | head -1)
+⏺ Bash(sed -i \
+ -e 's|width: 32cqw; background: var(--ink)|width: 30cqw; background: var(--ink)|' \
+ -e 's|.phonecol { position: relative; display: flex; justify-content: flex-end; align-items: flex-start; }|.phonecol { position: relative; display: flex; flex-direction: column; align-items: flex-end; }|' \
+ -e 's|position: absolute; right: 0; bottom: 0; width: 32cqw;|width: 30cqw; margin-top: 1.2cqw !important;|' \
+ -e '/<p class="honest">/d' \
+ flyer-appel-professeurs.html && grep -n "phonecol {\|\.caption\|width: 30cqw\|honest\"" flyer-appel-professeurs.html)
+⏺ Je passe par l'outil d'édition à la place.
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ J'ai créé `flyer-appel-professeurs.html` dans `/home/claude/claude-lab/05-brand/`, mais je ne l'ai pas ouvert dans un navigateur. Mes commandes de vérification (rendu et capture) ont demandé une autorisation que je n'ai pas obtenue. Le rapport 210:297, la lisibilité de l'image et l'absence de débordement vertical restent donc à confirmer.
+
+**À vérifier à l'ouverture (`hero.jpg` doit être dans le même dossier)**
+- **Format :** la feuille garde un rapport 210:297 quelle que soit la fenêtre, et tout le texte se redimensionne avec elle. En impression, `@page` est réglé sur A4 sans marge.
+- **Image :** `hero.jpg` est affichée en entier dans un cadre de téléphone (largeur fixée, hauteur automatique), sans recadrage. Les lignes « Ta première erreur », « La méthode » et « Jàng peut se tromper… » doivent rester lisibles.
+- **Débordement :** j'ai estimé la hauteur à la main, avec peu de marge. Si le pied de page est coupé, réduisez `.phone { width: 30cqw }` à environ 27cqw.
+
+**Contenu du flyer**
+- **En-tête :** titre « Vous enseignez la physique-chimie ? Offrez 1 heure à vos futurs élèves. », chips Physique et Chimie avec leurs couleurs de matière.
+- **3 bénéfices pour les élèves :** la première erreur d'abord, un corrigé de référence, un exercice similaire.
+- **Ce que nous demandons :** 1 heure, à distance, à votre rythme.
+- **Contact :** date, e-mail et WhatsApp restent en placeholders `[… à définir]`, à remplir avant impression.
+- **Appel à l'action :** bouton vert « Je donne 1 heur
+== RESULT success cost 0.49115439999999994 turns 9

@@ -1,0 +1,22 @@
+# Transcription Claude Code — E07-2-ecriture
+# Prompt envoyé : voir _prompts/
+⏺ Write(/home/claude/claude-lab/jang-app/CLAUDE.md)
+⏺ Bash(wc -l CLAUDE.md && grep -n "^## " CLAUDE.md && git status --short)
+⏺ `CLAUDE.md` est écrit et fait **96 lignes**, donc sous la limite de 120. C'est le seul fichier touché, et je n'ai pas fait de commit.
+
+`grep` confirme les 9 sections, dans l'ordre : What this is, Stack & versions, Commands, Folder structure, Conventions, Domain terms, Data budget rules, Workflow, Never. `git status` montre uniquement `CLAUDE.md` en non suivi.
+
+Aucune consigne ne concerne une seule tâche. Je n'ai pas relu le fichier ligne par ligne pour ça.
+
+Pour la structure des dossiers, j'ai proposé une réécriture Firebase de `/api/**` vers la fonction, au lieu de figer `/api/corriger`. Ça laisse le nom de la route libre.
+
+Deux ajouts qui ne figuraient pas dans le brief :
+- **Tutoiement :** un exemple avec le tutoiement ("Envoie ton exercice") et son contre-exemple au vouvoiement.
+- **Regle de travail :** je rappelle de créer une branche avant un changement risqué, comme demandé dans ton `~/.claude/CLAUDE.md`.
+
+Comme prévu, le fichier ne fixe aucun numéro de version : il renvoie à `package.json`. Il faudra compléter la section "Stack & versions" après la mise en place du projet.
+
+**À observer :** ouvre `CLAUDE.md` à la racine du dépôt. Tu dois y voir les 9 titres `##` listés ci-dessus.
+
+Tu veux que je commite ce fichier, ou tu préfères le relire d'abord ?
+== RESULT success cost 0.6054806 turns 3

@@ -1,0 +1,1 @@
+/compact garde les décisions de design et les noms de fichiers

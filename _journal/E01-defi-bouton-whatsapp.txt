@@ -1,0 +1,15 @@
+# Transcription Claude Code — E01-defi-bouton-whatsapp
+# Prompt envoyé : voir _prompts/
+⏺ Bash(ls -la && git status --short && grep -rniE "whatsapp|wa\.me|\+?[0-9]{2,3}[ .]?[0-9]{2}[ .]?[0-9]{3}" --exclude-dir=.git --exclude-dir=node_modules . | head -30)
+⏺ Bash(ls -la /home/claude/claude-lab/01-hello)
+⏺ Read(/home/claude/claude-lab/01-hello/jang-card.html)
+⏺ Edit(/home/claude/claude-lab/01-hello/jang-card.html)
+⏺ Edit(/home/claude/claude-lab/01-hello/jang-card.html)
+⏺ J'ai ajouté le bouton « Écrire à Jàng sur WhatsApp » dans `jang-card.html`, sous la section contact. Je ne l'ai pas testé dans un navigateur.
+
+- **Lien :** il pointe vers `https://wa.me/221000000000`, le même numéro fictif que celui de la carte. Il s'ouvre dans un nouvel onglet.
+- **Style :** c'est un lien stylé en bouton, avec les couleurs du thème clair et du thème sombre, comme le bouton de thème. J'ai choisi un fond clair avec bordure verte plutôt qu'un fond vert plein, parce que le texte blanc sur le vert de la carte ne serait pas assez contrasté.
+- **Rien d'autre modifié :** j'ai seulement ajouté un peu de CSS (`.wa-btn`) et une balise `<a>`.
+
+Le numéro apparaît maintenant à deux endroits (le lien existant dans les coordonnées et le bouton). Il faudra le remplacer aux deux quand vous aurez le vrai.
+== RESULT success cost 0.0955806 turns 6

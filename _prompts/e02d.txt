@@ -1,0 +1,1 @@
+Ajoute à `jang-card.html` un thème clair/sombre qui suit `prefers-color-scheme`, plus un bouton clair/sombre dont le choix est mémorisé dans localStorage. Garde la même couleur verte d'accent dans les deux thèmes (avec un contraste lisible) et mets le bouton dans le pied de page de la carte. Aucun nouveau fichier. Résume en 3 lignes.

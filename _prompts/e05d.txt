@@ -1,0 +1,4 @@
+Context: `hero.jpg` is in this folder: a real screenshot of OUR Jàng MVP on a phone, showing a real correction (first mistake, method, similar exercise). 
+Task: Create `flyer-appel-professeurs.html`, a one-page A4-proportioned flyer calling physics-chemistry teachers to volunteer 1 hour to validate Jàng's 14 reference answers for Terminale S2: headline, 3 benefits for the students, what we ask (1 hour, remote, at your pace), date/contact placeholders, call to action, footer "Projet étudiant GET 409 — Swiss UMEF University, campus de Dakar".
+Constraints: Apply /jang-brand exactly (palette, fonts, red only for correction marks, honesty rules). Use `hero.jpg` as the hero image inside a phone frame; do not crop the correction text. Self-contained HTML (the image can be referenced as hero.jpg next to the file).
+Definition of done: The flyer renders at a 210:297 ratio in the browser; the image is visible and readable.

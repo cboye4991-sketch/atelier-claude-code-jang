@@ -1,0 +1,26 @@
+# Transcription Claude Code — E05-7-flyer-correction-2
+# Prompt envoyé : voir _prompts/
+⏺ Read(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ J'ai modifié `flyer-appel-professeurs.html` pour supprimer les coupures. Je ne l'ai toujours pas ouvert dans un navigateur, mes outils de rendu demandent une autorisation. Les textes sont inchangés.
+
+**Cause probable**
+La feuille était dimensionnée en pourcentage de la fenêtre. Dans une fenêtre étroite, le navigateur impose une taille minimale de police. Le texte devenait alors trop grand par rapport aux cadres, la ligne du milieu manquait de hauteur, et le bénéfice 3 et la légende étaient coupés. Je n'ai pas pu le confirmer sans rendu, mais c'est cohérent avec ce que vous décrivez.
+
+**Corrections**
+- **Feuille fixe :** elle mesure maintenant 794×1123 px (A4, rapport 210:297) et un petit script la réduit ou l'agrandit pour tenir dans la fenêtre. Les proportions du texte sont ainsi identiques sur tous les écrans. Sans JavaScript, elle s'affiche à 100 %. En impression, elle reste à 210×297 mm sans mise à l'échelle.
+- **Espace libéré :** j'ai réduit le titre (6,8 à 5,8cqw) et l'introduction. Les marges de la page, de l'encadré « Ce que nous vous demandons » et du pied de page sont resserrées, comme les bénéfices et le bouton. La ligne du milieu gagne de la place, le téléphone et sa légende avec elle.
+- **Légende :** un léger espace est ajouté sous elle pour qu'elle ne soit plus rognée en bas.
+- **Placeholders :** `[date à définir]`, `[e-mail à définir]` et `[numéro à définir]` ne peuvent plus se couper en deux. Si la ligne est trop longue, le placeholder entier passe à la ligne 
+== RESULT success cost 0.8652667999999999 turns 14

@@ -1,0 +1,67 @@
+# Transcription Claude Code — E06-4-plan-marketing
+# Prompt envoyé : voir _prompts/
+⏺ Je commence par lire l'analyse concurrentielle, les sources et la landing actuelle.
+⏺ Bash(ls -la . sources && wc -c competitive-analysis.md sources/* ../03-landing/v2-skill/index.html && git status --short | head)
+⏺ Read(/home/claude/claude-lab/06-plugins/competitive-analysis.md)
+⏺ Bash(cat sources/*.md && ls .claude && cat .claude/* 2>/dev/null | head -50)
+⏺ Read(/home/claude/claude-lab/03-landing/v2-skill/index.html)
+⏺ Skill(marketing:campaign-plan)
+⏺ Bash(cd /home/claude/claude-lab/03-landing/v2-skill && grep -n -i -E "wa\.me|whatsapp\.com|api\.whatsapp" index.html | head; echo "--- lignes citées"; sed -n '6p;216p;239p;288p;492p' index.html | cut -c1-140)
+⏺ La landing n'a aucun lien WhatsApp, et les lignes citées correspondent. Le dossier de travail a changé, donc j'écris avec un chemin absolu dans `06-plugins`.
+⏺ Write(/home/claude/claude-lab/06-plugins/marketing-plan.html)
+⏺ Je vérifie maintenant les ancres, les mots interdits, les ressources externes et le poids du fichier.
+⏺ Bash(cd /home/claude/claude-lab/06-plugins && python3 - <<'EOF'
+import re,html
+s=open('marketing-plan.html',encoding='utf-8').read()
+ids=set(re.findall(r'id="([^"]+)"',s))
+hrefs=set(re.findall(r'href="#([^"]+)"',s))
+print("ancres cassées:",sorted(hrefs-ids))
+print("ids dupliqués:",[i for i in ids if len(re.findall(r'id="%s"'%re.escape(i),s))>1])
+txt=re.sub(r'<style.*?</style>','',s,flags=re.S).lower()
+for w in ["révolutionnaire","magique","garanti","100 %","meilleur","l'ia qui sait tout","capture","screenshot","http://","https://","<script","<img","<link"]:
+    print(w, len(re.findall(re.escape(w),txt)))
+print("hex hors palette:",sorted(set(re.findall(r'#[0-9A-Fa-f]{6}\b',s))))
+print("octets:",len(s.encode()))
+for f in re.findall(r'href="([^#"][^"]*)"',s): print("lien fichier:",f)
+EOF
+ls sources competitive-analysis.md >/dev/null && git status --short)
+⏺ Ma commande combinait `cd` et `git`, donc elle a été bloquée. Je relance sans `git`, avec des chemins absolus.
+⏺ Bash(python3 - <<'EOF'
+import re,os
+p='/home/claude/claude-lab/06-plugins/marketing-plan.html'
+s=open(p,encoding='utf-8').read()
+ids=set(re.findall(r'id="([^"]+)"',s))
+hrefs=set(re.findall(r'href="#([^"]+)"',s))
+print("ancres cassées:",sorted(hrefs-ids))
+print("ids dupliqués:",[i for i in ids if len(re.findall(r'id="%s"'%re.escape(i),s))>1])
+txt=re.sub(r'<style.*?</style>','',s,flags=re.S).lower()
+for w in ["révolutionnaire","magique","garanti","100 %","meilleur","l'ia qui sait tout","capture","screenshot","http://","https://","<script","<img","<link"]:
+    print(repr(w), len(re.findall(re.escape(w),txt)))
+print("hex utilisés:",sorted(set(x.upper() for x in re.findall(r'#[0-9A-Fa-f]{6}\b',s))))
+print("octets:",len(s.encode()))
+for f in re.findall(r'href="([^#"][^"]*)"',s):
+    print("lien fichier:",f, os.path.exists(os.path.join('/home/claude/claude-lab/06-plugins',f)))
+EOF)
+⏺ Le script Python demande une approbation. Je passe par des commandes `grep` simples et en lecture seule.
+⏺ Bash(f=/home/claude/claude-lab/06-plugins/marketing-plan.html; wc -c $f; grep -c -i -E "révolutionnaire|magique|garanti|meilleur|capture|screenshot|https?://|<script|<img|<link" $f; grep -o -E '#[0-9A-Fa-f]{6}\b' $f | tr a-f A-F | sort -u | tr '\n' ' ')
+⏺ One ligne correspond à un mot interdit ou à une ressource externe. Je la localise.
+⏺ Bash(f=/home/claude/claude-lab/06-plugins/marketing-plan.html; grep -n -i -o -E ".{30}(révolutionnaire|magique|garanti|meilleur|capture|screenshot|https?://|<script|<img|<link).{20}" $f; echo ---; grep -o -E 'href="#[^"]+"' $f | sed 's/href="#//;s/"//' | sort -u > /tmp/h.txt 2>/dev/null; grep -o -E ' id="[^"]+"' $f | sed 's/ id="//;s/"//' | sort -u > /tmp/i.txt 2>/dev/null; comm -23 /tmp/h.txt /tmp/i.txt)
+⏺ Bash(grep -n -i -o -E ".{30}(révolutionnaire|magique|garanti|meilleur|capture|screenshot|https?://|<script|<img|<link).{20}" /home/claude/claude-lab/06-plugins/marketing-plan.html)
+⏺ Ce seul résultat est la liste « On évite » du pilier 3, qui cite ces mots comme à ne pas employer. Pour qu'aucun mot interdit n'apparaisse dans la page, je la reformule.
+⏺ Edit(/home/claude/claude-lab/06-plugins/marketing-plan.html)
+⏺ Le plan est écrit dans `/home/claude/claude-lab/06-plugins/marketing-plan.html`. Je ne l'ai pas ouvert dans un navigateur : je n'ai vérifié que par recherche de texte. Les 11 couleurs sont toutes dans la palette Jàng. Il n'y a ni ressource externe, ni script, ni image, ni référence à une capture d'écran, et plus aucun mot interdit. J'ai relu à l'œil les ancres des puces de preuve, mais mon script de contrôle automatique a été bloqué. Ouvre la page une fois pour confirmer que les puces mènent bien à leur ligne dans la section « Preuves ».
+
+Le fichier pèse environ 49 Ko, donc sous l'objectif de 100 Ko.
+
+**Contenu**
+1. **Positionnement.** Une phrase de positionnement, une version pour les élèves (tu) et une pour les enseignants (vous), et ce que le positionnement n'affirme pas (« le seul », « plus léger », « corrigés validés »).
+2. **Trois piliers.** « La première erreur, d'abord », « Un geste, sur WhatsApp » et « Honnête avec toi ».
+3. **Calendrier de 4 semaines.** Statut, Chaîne et LinkedIn, avec les exercices réels de la landing. Trois messages sont rédigés pour la semaine 1.
+4. **Sept améliorations de la landing.** Chacune cite des numéros de ligne de `index.html`.
+5. **Cinq idées d'acquisition** sans budget, que les trois pages lues ne montrent pas.
+6. **Trois quick wins** pour cette semaine, avec ce que tu dois observer après chacun.
+
+Les sections 7 et 8 ajoutent un tableau des valeurs à mesurer et la liste des preuves.
+
+Chaque recommandation renvoie à une puce de preuve :
+== RESULT success cost 1.0737664 turns 15

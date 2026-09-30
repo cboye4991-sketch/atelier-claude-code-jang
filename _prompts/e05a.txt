@@ -1,0 +1,16 @@
+Context: I want a reusable brand identity for Jàng that I can invoke in any project. Jàng ("apprendre" in Wolof) is a student project (GET 409 Atelier IA, Swiss UMEF University, Dakar campus, team Cheikh BOYE & Adama DIOP): a WhatsApp corrector for Senegalese Bac physics-chemistry exercises for Terminale S2 students in regional high schools who revise alone because they have no teacher. Persona: Aminata Diallo, 17, Kaffrine, entry-level Android, daily data bundle. Reference answers are written by the team and still "to be validated by a teacher".
+Task: Create a personal skill at `~/.claude/skills/jang-brand/SKILL.md` that stores the full brand identity and tells you to apply it to every output of the conversation (emails, posts, HTML pages, documents, UI copy).
+Input:
+- Name: Jàng — correcteur d'exercices du Bac sur WhatsApp
+- Tagline: « Tu révises seul ? Jàng te montre où tu t'es trompé. »
+- Palette (art direction "le cahier corrigé"): brand green #0E7565, ink #10231E, paper #F6F9F8 with grid lines #DCE8E4, secondary text #52665F, correction red #D2382A (ONLY for corrections/annotations, never decoration), student bubble #DCF8C6, chat background #ECE5DD; subject colours Chimie #7C4DDB, Physique #0B84C6, Maths #C77700
+- Typography: headings Schibsted Grotesk 800; body Atkinson Hyperlegible 400/700; IDs and formulas IBM Plex Mono 500; handwritten annotations Caveat 600 (red)
+- Voice: bienveillant, clair, direct (tutoiement for students, vouvoiement for teachers and schools), precise, never salesy; short sentences readable on a small screen
+- Words to use: première erreur, corrigé de référence, exercice similaire, réviser seul, annales du Bac, le soir même, moins de 100 Ko, se corriger seul
+- Words to avoid: révolutionnaire, magique, garanti, 100 % fiable, « l'IA qui sait tout », meilleur, n'importe quel chiffre d'utilisateurs ou de réussite non mesuré
+- Honesty rules: always say reference answers are being validated by teachers; add "Jàng peut se tromper : en cas de doute, demande à un professeur" where a correction is shown; never invent schools, partners, testimonials or figures
+- Sign-off phrases: « À ce soir sur WhatsApp. » · « On apprend de ses erreurs. » · « Jàng — réviser seul, mais pas sans aide. »
+- Data rule: every output meant for students must stay light (no heavy images or video)
+Constraints: Frontmatter with `name`, `description` and `disable-model-invocation: true` (I trigger it myself with /jang-brand). Under 120 lines. All inputs are provided above: do not ask me questions, write the file.
+Definition of done: `/jang-brand` appears in the slash menu of a new session and prints a one-line confirmation when invoked.
+Files to touch: `~/.claude/skills/jang-brand/SKILL.md` only.

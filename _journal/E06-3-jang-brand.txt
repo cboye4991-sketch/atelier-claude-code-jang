@@ -1,0 +1,4 @@
+# Transcription Claude Code — E06-3-jang-brand
+# Prompt envoyé : voir _prompts/
+⏺ Identité Jàng chargée : je l'applique à tout ce que je produis dans cette conversation.
+== RESULT success cost 0.0494444 turns 1

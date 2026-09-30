@@ -1,0 +1,21 @@
+# Transcription Claude Code — E02-1-plan
+# Prompt envoyé : voir _prompts/
+⏺ Read(/home/claude/claude-lab/01-hello/jang-card.html)
+⏺ Write(/home/claude/labhome/.claude/plans/context-jang-card-html-currently-has-stateful-cosmos.md)
+⏺ `jang-card.html` already has both themes. Lines 8–16 are the light theme and lines 17–27 are a dark theme that follows `prefers-color-scheme`, both built from the same green accent. So the part that follows the system setting is done. What's missing is the manual toggle and remembering the choice. The plan below adds those and keeps both colour sets unchanged.
+
+**Plan** (also saved to `.claude/plans/context-jang-card-html-currently-has-stateful-cosmos.md`):
+
+1. **CSS tokens.** No colour values change, only how each theme is switched on:
+   - `:root` keeps the light values and gets two additions: `color-scheme: light` and `--shadow: rgba(0,0,0,.08)`. `--shadow` replaces the shadow colour hard-coded on `.card`.
+   - The dark values get `color-scheme: dark` and `--shadow: rgba(0,0,0,.45)`.
+   - The dark values are applied in two places:
+     - `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {…} }` follows the system unless the user picked light.
+     - `:root[data-theme="dark"] {…}` forces dark when the user picked it.
+   - `.card` gets `position: relative`.
+   - A new `.theme-toggle` style uses only the existing tokens: `--accent-soft` background, `--accent` text, `--line` border, a visible focus ring, and a tap area of at least 36px.
+
+2. **Markup.** A button goes first inside `<main class="card">`, top-right:
+   `<button class="theme-toggle" type="button" aria-pressed="false" aria-label="Activer le thème sombre">🌙</button>`
+   It shows the theme you woul
+== RESULT success cost 0.39997540000000004 turns 3

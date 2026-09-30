@@ -1,0 +1,21 @@
+# Transcription Claude Code — E02-2-plan-corrige
+# Prompt envoyé : voir _prompts/
+⏺ Write(/home/claude/labhome/.claude/plans/context-jang-card-html-currently-has-stateful-cosmos.md)
+⏺ Voici le plan corrigé. Je n'ai pas touché à `jang-card.html` ; seul le fichier de plan est mis à jour.
+
+**Point important :** le vert unique serait `#0f7b4f`, celui du thème clair. C'est le seul qui reste lisible sur fond blanc : `#4cc790` sur blanc ne donne qu'environ 2,1:1. Sur la carte sombre, `#0f7b4f` donne environ 3,1:1, ce qui suffit pour le titre mais pas pour le petit texte. Le plan prévoit donc deux ajustements, sans changer le vert.
+
+**Plan corrigé**
+
+1. **Couleurs**
+   - `--accent: #0f7b4f` est défini une seule fois, sur `:root`, et n'est plus redéfini en sombre.
+   - Le thème sombre garde ses autres valeurs actuelles (fond, carte, texte, gris, vert pâle, filets). On ajoute `color-scheme` et une variable `--shadow` pour l'ombre, dans les deux thèmes.
+   - Le thème sombre s'applique à deux endroits :
+     - `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {…} }` suit le système, sauf si l'utilisateur a choisi clair ;
+     - `:root[data-theme="dark"] {…}` s'applique quand l'utilisateur a choisi sombre.
+   - Premier ajustement : les **tags** deviennent des pastilles vertes pleines avec texte blanc (environ 5,3:1 dans les deux thèmes).
+   - Second ajustement : au **survol d'un lien**, le texte garde sa couleur et le soulignement devient un trait vert plein.
+
+2. **Bouton dans le pied de carte**
+   - Le paragraphe `.foot` et le bouton sont regroupés dans un `<div class="foot-row">` en flex, avec la note à gauche et le bouton à droite. Sur écran étr
+== RESULT success cost 0.6186184 turns 2

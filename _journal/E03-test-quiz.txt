@@ -1,0 +1,2 @@
+v1-no-skill | scrollWidth@360 = 360 | résultat JNG-PC-10 visible: True | erreurs JS: aucune
+v2-skill | scrollWidth@360 = 360 | résultat JNG-PC-10 visible: True | erreurs JS: aucune

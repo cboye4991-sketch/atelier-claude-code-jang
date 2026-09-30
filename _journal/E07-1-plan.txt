@@ -1,0 +1,16 @@
+# Transcription Claude Code — E07-1-plan
+# Prompt envoyé : voir _prompts/
+⏺ Bash(ls -la && git log --oneline -5 2>/dev/null; wc -l CLAUDE.md 2>/dev/null; ls docs .claude 2>/dev/null; cat package.json 2>/dev/null | head -40)
+⏺ Write(/home/claude/labhome/.claude/plans/context-new-project-j-ng-polymorphic-iverson.md)
+⏺ Le plan est prêt, mais je n'ai encore rien écrit dans le dépôt : on est en mode plan. Il est dans `/home/claude/labhome/.claude/plans/context-new-project-j-ng-polymorphic-iverson.md`. L'outil de validation du plan (ExitPlanMode) n'est pas disponible dans cette session, donc j'attends ta réponse ici.
+
+**Ce qu'il y a dans le dépôt :** `jang-app` ne contient que `.git`. Il n'y a ni commit, ni `package.json`, ni `CLAUDE.md`.
+
+**Ce que je propose :** créer un seul fichier, `CLAUDE.md`, en anglais, d'environ 100 à 110 lignes. Il aura les 9 sections demandées, dans l'ordre :
+1. **What this is** : le produit, les élèves visés, les 3 pages, et la phase 2 WhatsApp à ne pas construire maintenant.
+2. **Stack & versions** : Node 22, Vite, React, TypeScript strict, Firebase Hosting, Cloud Functions 2nd gen avec le secret `DIFY_API_KEY`, puis Firestore plus tard. Je n'écris aucun numéro de version inventé : la référence sera `package.json`, et cette section sera à compléter après la mise en place du projet.
+3. **Commands** : dev, build, test, émulateurs et deploy. On ne déploie que sur demande.
+4. **Folder structure (target)** : `src/pages`, `src/components`, `src/lib`, `src/data/exercises.ts`, `functions/src`, `docs/decisions.md`.
+5. **Conventions** : pas de `any`, règles de nommage, code en anglais, textes de l'interface en français avec tutoiement, identité visuelle avec `/jang-brand`.
+6. **Domain terms** : `JNG-PC-xx`, corrigé de référence, first mistake, similar exercise, série, chapit
+== RESULT success cost 0.3839692 turns 3

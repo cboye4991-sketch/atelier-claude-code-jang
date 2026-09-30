@@ -1,0 +1,4 @@
+# Transcription Claude Code — E04-5-defi-francais
+# Prompt envoyé : voir _prompts/
+⏺ Une branche Git est un pointeur léger et mobile vers un commit, qui représente une ligne de développement indépendante. Elle vous permet de travailler sur une fonctionnalité ou un correctif sans toucher à la branche principale, puis de fusionner (merge) vos changements quand ils sont prêts.
+== RESULT success cost 0.0473984 turns 1

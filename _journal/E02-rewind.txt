@@ -1,0 +1,7 @@
+$ git status --short
+ M jang-card.html
+# Retour arrière (équivalent de Échap Échap → Restore code) :
+$ git restore jang-card.html
+$ git status
+On branch main
+nothing to commit, working tree clean

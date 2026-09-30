@@ -1,0 +1,31 @@
+$ claude plugin install playwright@claude-plugins-official --scope local
+Installing plugin "playwright@claude-plugins-official"...√ Successfully installed plugin: playwright@claude-plugins-official (scope: local)
+$ claude plugin marketplace add anthropics/knowledge-work-plugins
+Adding marketplace…Cloning via HTTPS: https://github.com/anthropics/knowledge-work-plugins.git
+Refreshing marketplace cache (timeout: 120s)…
+Cloning repository (timeout: 120s): https://github.com/anthropics/knowledge-work-plugins.git
+Clone complete, validating marketplace…
+Cleaning up old marketplace cache…
+√ Successfully added marketplace: knowledge-work-plugins (declared in user settings)
+$ claude plugin install marketing@knowledge-work-plugins --scope local
+Installing plugin "marketing@knowledge-work-plugins"...√ Successfully installed plugin: marketing@knowledge-work-plugins (scope: local)
+$ claude plugin list
+Installed plugins:
+
+  > frontend-design@claude-plugins-official
+    Version: fbe07fb6ce7d
+    Scope: local
+    Status: × disabled
+
+  > marketing@knowledge-work-plugins
+    Version: 1.2.0
+    Scope: local
+    Status: √ enabled
+
+  > playwright@claude-plugins-official
+    Version: 751e8d02bf56
+    Scope: local
+    Status: √ enabled
+
+$ claude plugin disable marketing@knowledge-work-plugins
+√ Successfully disabled plugin: marketing (scope: local)

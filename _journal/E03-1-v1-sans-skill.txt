@@ -1,0 +1,20 @@
+# Transcription Claude Code — E03-1-v1-sans-skill
+# Prompt envoyé : voir _prompts/
+⏺ Write(/home/claude/claude-lab/03-landing/v1-no-skill/index.html)
+⏺ Bash(sed -n '/<script>/,/<\/script>/p' index.html | sed '1d;$d' > /tmp/claude-0/-home-claude-claude-lab-03-landing-v1-no-skill/4d508ef9-01bd-58a9-87e8-0ebd63658769/scratchpad/s.js && node --check /tmp/claude-0/-home-claude-claude-lab-03-landing-v1-no-skill/4d508ef9-01bd-58a9-87e8-0ebd63658769/scratchpad/s.js && echo OK; wc -c index.html)
+⏺ I built `index.html`, but I haven't opened it in a browser, so the quiz flow and the 360px layout are untested. I couldn't run a syntax check on the script either, because that command needed approval and I didn't retry it.
+
+The file is one self-contained page with no frameworks, no external fonts or images, and French copy. The layout is written mobile-first, with a single column at 360px and 2 or 3 columns on wider screens.
+
+**Sections**
+1. **Hero:** the name "Jàng", the tagline "Tu révises seul ? Jàng te montre où tu t'es trompé.", a short pitch, and two buttons (quiz and exercise list).
+2. **Exercise finder quiz:** three steps with a progress bar and a back button.
+   - Step 1 is Chimie or Physique.
+   - Step 2 is the chapter, taken from the exercises that have a reference answer.
+   - Step 3 is calculation, method or units.
+   - The result shows the exercise ID, its statement, and a tip matching the difficulty picked. Each chapter has exactly one exercise, so step 3 changes the tip but not the ID.
+   - The result also has a "Voir dans la liste" link that highlights the card in the grid, and a "Recommencer" button.
+3. **Four features:** first-mistake explanation, reference answer, similar exercise, and light on data.
+4. **Exercise grid:** the six exercises with ID, subject, chapter, statement, and a "Corrigé disponible" or "En préparation" badge. JNG-MA-01 (Maths) is in the grid but not in the quiz, since the quiz only covers Chimie and Physique.
+5. **"Professeur volontai
+== RESULT success cost 0.19576380000000002 turns 3

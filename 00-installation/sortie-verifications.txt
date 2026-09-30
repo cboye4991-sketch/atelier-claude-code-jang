@@ -1,0 +1,25 @@
+$ claude --version
+2.1.285 (Claude Code)
+$ node --version
+v22.22.2
+$ git --version
+git version 2.43.0
+$ npm view @anthropic-ai/claude-code version
+2.1.285
+$ [ -n "$ANTHROPIC_API_KEY" ] && echo "CLE API PRESENTE" || echo "pas de cle API"
+pas de cle API
+$ claude doctor
+Claude Code doctor
+
+Running: native (2.1.285)
+Commit: afb212976052
+Platform: linux-x64
+Path: /opt/claude-code/bin/claude
+Config install method: unknown
+Search: OK (/usr/bin/rg)
+Auto-updates: disabled (set by env: DISABLE_AUTOUPDATER)
+Auto-update channel: latest
+Last update attempt: none recorded
+Managed settings (remote): not fetched — not available in sandboxed sessions
+Organization policy: Loaded from api.anthropic.com
+

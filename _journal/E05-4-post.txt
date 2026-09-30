@@ -1,0 +1,27 @@
+# Transcription Claude Code — E05-4-post
+# Prompt envoyé : voir _prompts/
+⏺ Write(/home/claude/claude-lab/05-brand/post-linkedin.md)
+⏺ J'ai enregistré le post dans `/home/claude/claude-lab/05-brand/post-linkedin.md`. Il fait environ 125 mots, sous la limite de 150 (compté à la main).
+
+```
+Dans les coulisses de Jàng : un seul réglage dans Dify, et tout change.
+
+Nous construisons la base de connaissances de Jàng, notre correcteur d'exercices du Bac sur WhatsApp. Première question : quelle taille de chunk ?
+
+- 500 : Dify coupe chaque exercice en 3 morceaux.
+- 1000 : 10 exercices sur 14 sont encore coupés en deux. L'identifiant se retrouve séparé de son corrigé de référence. Les symboles ×, √, τ, Ω coûtent beaucoup de tokens.
+- 2000 : chaque exercice tient en un seul morceau (312 à 485 tokens).
+
+La leçon : pour un correcteur, un exercice = un chunk. Sinon, le corrigé peut être rattaché au mauvais exercice.
+
+Nos corrigés de référence sont en cours de validation par des professeurs.
+
+#Dify #EdTech #Bac
+
+On apprend de ses erreurs.
+```
+
+**Auto-contrôle**
+- **Règles appliquées :** voix directe, phrases courtes et sans mot interdit. Seuls vos chiffres figurent dans le post (3, 10 sur 14, 312 à 485), aucun chiffre inventé. La mention « corrigés en cours de validation par des professeurs » y est. Il y a 3 hashtags, et la phrase de clôture « On apprend de ses erreurs. » est tirée de la liste de la marque.
+- **Choix à vérifier :** j'ai utilisé « nous » plutôt que tu ou vous, car le post s'adresse à un public mixte. La phrase « Jàng peut se tromper… » est absente, car aucune correction n'est affichée. J'ai placé les hashta
+== RESULT success cost 0.24066719999999997 turns 2

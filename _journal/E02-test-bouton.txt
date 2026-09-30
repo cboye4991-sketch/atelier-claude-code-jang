@@ -1,0 +1,3 @@
+label avant: ☾ Mode sombre
+apres reload data-theme: dark | localStorage: {"jang-theme":"dark"}
+label apres: ☀ Mode clair

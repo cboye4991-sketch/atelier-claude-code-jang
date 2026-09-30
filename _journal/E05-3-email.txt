@@ -1,0 +1,41 @@
+# Transcription Claude Code — E05-3-email
+# Prompt envoyé : voir _prompts/
+⏺ Write(/home/claude/claude-lab/05-brand/email-suivi-professeur.html)
+⏺ Bash(python3 - <<'E'
+import re,html
+t=open('email-suivi-professeur.html').read()
+t=re.sub(r'<(head|style)[\s\S]*?</\1>','',t)
+t=html.unescape(re.sub(r'<[^>]+>',' ',t))
+print(len(t.split()))
+print(re.findall(r'révolutionnaire|magique|garanti|fiable|meilleur|sait tout',t,re.I))
+E)
+⏺ J'ai créé `email-suivi-professeur.html` dans `/home/claude/claude-lab/05-brand/`. Le contrôle automatique a demandé une autorisation, donc je n'ai pas pu le lancer. J'ai compté à la main : environ 123 mots, objet et signature compris, sous la limite de 180. Aucun mot interdit n'y figure.
+
+**Version texte brut**
+
+```
+Objet : Merci pour la démo de Jàng
+
+Bonjour <nom du professeur>,
+
+Merci de nous avoir accueillis hier au <lycée> et d'avoir laissé vos élèves de Terminale S2 essayer Jàng.
+
+Nos corrigés de référence sont écrits par notre équipe. Ils sont en cours de validation par des professeurs, et votre regard nous aiderait beaucoup.
+
+Nous vous enverrons les 14 corrigés de référence de la base de connaissances d'ici 10 jours, pour que vous puissiez les vérifier.
+
+Pouvons-nous fixer un appel de 30 minutes pour convenir ensemble de la manière dont vous les validez ? Indiquez-nous deux ou trois créneaux qui vous conviennent.
+
+Cordialement,
+Cheikh BOYE et Adama DIOP
+Jàng — GET 409 Atelier IA, UMEF, campus de Dakar
+
+Jàng — réviser seul, mais pas sans aide.
+```
+
+**Ce que vous devriez observer dans le fichier HTML** (à ouvrir dans un navigateur) :
+- **Mise en page :** fond papier `#F6F9F8`, filet vert `#0E7565` en haut, titre en vert, texte d'encre `#10231E`.
+- **Compatibilité e-mail :** styles inline et mise en page en tableau, sans image.
+- **Placeholders :** `<nom du professeur>` et `<lycée>` restent visibles sur un fond gris-vert clair.
+- **Polices :** Schibsted Grotesk et Atkinso
+== RESULT success cost 0.1719096 turns 3

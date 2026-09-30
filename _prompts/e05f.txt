@@ -1,0 +1,1 @@
+Encore deux défauts : le texte du bénéfice 3 (« …sur son téléphone ») et la légende sous le téléphone sont coupés en bas. Réduis l'espace ailleurs (titre, marges) pour que tout soit visible sans coupure. Les placeholders date/e-mail/WhatsApp ne doivent pas se couper au milieu. Ne change pas les textes.

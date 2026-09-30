@@ -1,0 +1,16 @@
+# Transcription Claude Code — E04-1-init
+# Prompt envoyé : voir _prompts/
+⏺ Bash(git ls-files | head -100 && ls -la && cat CLAUDE.md README* package.json 2>/dev/null | head -100)
+⏺ Bash(grep -n -E "<script|<link|<style|</style|<section|<nav|<header|<footer|@media|:root|--[a-z-]+:|font-family|data-theme|id=\"" index.html | head -120; git log --oneline | head; ls ..)
+⏺ Bash(grep -n -E "<script|<link|<style|</style|<section|<nav|<header|<footer|@media|:root|--[a-z-]+:|font-family|data-theme|id=\"" index.html | head -120)
+⏺ Bash(git log --oneline | head -5)
+⏺ Bash(sed -n 1,8p index.html; sed -n 326,600p index.html)
+⏺ Write(/home/claude/claude-lab/03-landing/v2-skill/CLAUDE.md)
+⏺ I've written `CLAUDE.md` in `v2-skill/`. It's finished, and I haven't run the page.
+
+- **Commands:** there's no build or test suite. You preview by opening `index.html` or running `python3 -m http.server`, and the checks are manual.
+- **Structure:** `index.html` is the whole project, with one `<style>` block, the markup, and one vanilla-JS script.
+- **What ties the script together:** the `EX` array drives both the exercise grid and the quiz result. The `CHAPTERS` list is separate and hand-maintained, so a new exercise has to be added to both. The volunteer form validates on the client only and isn't connected to a server.
+- **Conventions:** copy is in French, spacing follows the 24px notebook-line grid, and the accessibility attributes should stay.
+- **Sibling directories:** I didn't look inside them. The line about them in `CLAUDE.md` comes from the `03-landing` naming and the commit message, so check it.
+== RESULT success cost 0.12836840000000002 turns 7

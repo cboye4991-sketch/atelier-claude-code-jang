@@ -1,0 +1,27 @@
+# Transcription Claude Code — E05-6-flyer-correction
+# Prompt envoyé : voir _prompts/
+⏺ Bash(file /home/claude/claude-lab/05-brand/hero.jpg)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ Edit(/home/claude/claude-lab/05-brand/flyer-appel-professeurs.html)
+⏺ J'ai corrigé la mise en page dans `flyer-appel-professeurs.html`, mais je ne l'ai pas rendue dans un navigateur : mes commandes de rendu demandent toujours une autorisation. Les textes sont inchangés.
+
+**Cause**
+Le téléphone avait une hauteur fixe, plus grande que la place restante sur la feuille. Il débordait donc sur l'encadré « Ce que nous vous demandons » et sur le 3e bénéfice, et la légende dépassait avec lui.
+
+**Corrections**
+- **Structure :** la feuille est maintenant une grille à lignes fixes. Seule la ligne du milieu (bénéfices + téléphone) s'adapte à la hauteur restante, donc rien ne peut passer sur l'encadré du dessous.
+- **Téléphone :** le cadre prend la hauteur de cette ligne et l'image s'y ajuste, sans recadrage. Ses proportions d'origine (800×1278, vérifiées) sont conservées. Sa largeur est plafonnée à 31cqw, pour laisser de la place à l'annotation rouge.
+- **Légende :** elle est placée sous le cadre, dans la même colonne.
+- **Gain de place :** j'ai réduit un peu le titre (8,1 à 6,8cqw), l'introduction et les marges autour de l'encadré et du bouton.
+
+**À vérifier**
+- **Rendu :** ouvrez le fichier avec `hero.jpg` à côté. Le téléphone doit s'arrêter avant l'encadré, avec sa légende en dessous et les trois bénéfices visibles.
+- **Taille de l'image :** d'après mon estimation, le téléphone garde une largeur proche de 30cqw. Si la capture vous paraît trop petite, dites-le-moi : il faudra réduire l'espace pris par le haut de la page ou par le bas.
+- **Impression :** l
+== RESULT success cost 0.6474909999999999 turns 10

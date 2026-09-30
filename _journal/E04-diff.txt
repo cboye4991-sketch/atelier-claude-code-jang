@@ -1,0 +1,22 @@
+ v2-skill/CLAUDE.md | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+diff --git a/v2-skill/CLAUDE.md b/v2-skill/CLAUDE.md
+new file mode 100644
+index 0000000..eedf969
+--- /dev/null
++++ b/v2-skill/CLAUDE.md
+@@ -0,0 +1,49 @@
++# CLAUDE.md — Jàng landing (v2-skill)
++
++## Purpose
++One-page landing for **Jàng**, a WhatsApp corrector for physics-chemistry (Bac S2, Sénégal).
++It explains the first mistake in a student's answer from a reference corrigé, then sends a similar exercise.
++This is `v2-skill` of the `03-landing` experiment (v1 = no skill, v2 = built with frontend-design).
++Do not touch sibling directories.
++
++## File layout
++- `index.html` is the whole project: one `<style>`, the markup, and one IIFE `<script>`.
++- Sections in order: `header.hero`, `#quiz`, `#fonctions`, `#exercices`, `#contact`, `footer`.
++- Script: `EX` array (exercises), `CHAPTERS` (quiz step 2), `STRUGGLES` (tips), quiz state machine, form `rules`.
++- No build, no dependencies, no backend.
++
