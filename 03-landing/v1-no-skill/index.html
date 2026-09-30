@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jàng – Correcteur WhatsApp de physique-chimie</title>
+<meta name="description" content="Jàng explique ta première erreur sur WhatsApp, à partir d'un corrigé de référence, et t'envoie un exercice similaire. Pour le Bac S2 au Sénégal.">
+<style>
+:root{
+  --bg:#fbf7ef; --card:#ffffff; --ink:#1d2a24; --muted:#56635c;
+  --green:#0f6b45; --green-d:#0a4e32; --sun:#f2b632; --line:#e2dccd;
+  --warn:#8a5a00; --warn-bg:#fdf0d2; --ok-bg:#dff2e7; --err:#b3261e;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+img,svg{max-width:100%}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+section{padding:44px 0}
+h1,h2,h3{line-height:1.2;margin:0 0 .5em}
+h2{font-size:1.6rem}
+h3{font-size:1.05rem}
+p{margin:0 0 1em}
+a{color:var(--green-d)}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.lead{color:var(--muted);max-width:60ch}
+.btn{display:inline-block;background:var(--green);color:#fff;border:0;border-radius:999px;padding:12px 22px;font:inherit;font-weight:600;text-decoration:none;cursor:pointer;min-height:44px}
+.btn:hover{background:var(--green-d)}
+.btn.alt{background:transparent;color:var(--green-d);border:2px solid var(--green)}
+.btn.alt:hover{background:var(--ok-bg)}
+
+/* hero */
+header.hero{background:var(--green);color:#fff;padding:56px 0 52px}
+.hero .kicker{display:inline-block;background:var(--sun);color:#1d2a24;font-weight:700;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:6px;margin-bottom:16px}
+.hero h1{font-size:clamp(3rem,14vw,5rem);margin:0 0 .1em;letter-spacing:-.02em}
+.hero .tag{font-size:clamp(1.25rem,5vw,1.7rem);font-weight:600;max-width:24em;margin-bottom:.6em}
+.hero p.sub{max-width:52ch;opacity:.92}
+.hero .btn{background:var(--sun);color:#1d2a24}
+.hero .btn:hover{background:#ffc94d}
+.hero .btn.alt{background:transparent;color:#fff;border-color:#fff;margin-left:6px}
+.hero .btn.alt:hover{background:rgba(255,255,255,.12)}
+.hero .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.hero .btn.alt{margin-left:0}
+
+/* quiz */
+#quiz .box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.progress{display:flex;gap:6px;margin-bottom:16px}
+.progress span{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.progress span.on{background:var(--green)}
+.stepname{font-size:.85rem;color:var(--muted);margin-bottom:4px}
+.choices{display:grid;gap:10px;grid-template-columns:1fr;margin:14px 0}
+.choice{text-align:left;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;color:var(--ink);cursor:pointer;min-height:48px}
+.choice:hover{border-color:var(--green)}
+.choice small{display:block;color:var(--muted)}
+.back{background:none;border:0;color:var(--green-d);text-decoration:underline;font:inherit;cursor:pointer;padding:8px 0;min-height:44px}
+.result .id{font-family:ui-monospace,Consolas,monospace;font-size:1.6rem;font-weight:700;background:var(--ok-bg);color:var(--green-d);display:inline-block;padding:4px 12px;border-radius:8px;margin:4px 0 10px}
+.result blockquote{margin:0 0 12px;padding:10px 14px;border-left:4px solid var(--sun);background:var(--bg)}
+.result .tip{color:var(--muted)}
+.wa{background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:10px 12px;font-size:.92rem;margin:12px 0}
+
+/* features */
+.grid4{display:grid;gap:14px;grid-template-columns:1fr}
+.feat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.feat .n{width:34px;height:34px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font-weight:800;margin-bottom:10px}
+
+/* exercises */
+.exgrid{display:grid;gap:14px;grid-template-columns:1fr}
+.ex{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:6px;transition:box-shadow .2s,border-color .2s}
+.ex.hl{border-color:var(--green);box-shadow:0 0 0 3px var(--ok-bg),0 0 0 5px var(--green)}
+.ex .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.ex .id{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.ex .meta{color:var(--muted);font-size:.9rem}
+.ex p{margin:0;flex:1}
+.badge{font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:999px;align-self:flex-start}
+.badge.ok{background:var(--ok-bg);color:var(--green-d)}
+.badge.wip{background:var(--warn-bg);color:var(--warn)}
+
+/* form */
+form{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:14px}
+label{font-weight:600;display:block;margin-bottom:4px}
+input,textarea{width:100%;font:inherit;padding:11px 12px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:110px;resize:vertical}
+input[aria-invalid="true"],textarea[aria-invalid="true"]{border-color:var(--err)}
+.err{color:var(--err);font-size:.88rem;min-height:1.2em;margin:4px 0 0}
+.hint{color:var(--muted);font-size:.85rem;font-weight:400}
+#formok{background:var(--ok-bg);border-radius:10px;padding:12px 14px;display:none}
+#formok.show{display:block}
+
+footer{background:var(--ink);color:#e9e4d6;padding:32px 0;font-size:.92rem}
+footer p{max-width:70ch}
+footer strong{color:#fff}
+
+@media(min-width:600px){
+  .choices.two{grid-template-columns:1fr 1fr}
+  .grid4,.exgrid{grid-template-columns:1fr 1fr}
+}
+@media(min-width:900px){
+  .exgrid{grid-template-columns:repeat(3,1fr)}
+  .grid4{grid-template-columns:repeat(4,1fr)}
+  section{padding:60px 0}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">Bac S2 · Physique-chimie</span>
+    <h1>Jàng</h1>
+    <p class="tag">Tu révises seul ? Jàng te montre où tu t'es trompé.</p>
+    <p class="sub">Sur WhatsApp, envoie l'identifiant d'un exercice et ta réponse. Jàng t'explique ta première erreur en la comparant à un corrigé de référence, puis t'envoie un exercice similaire. Le soir même, sans gaspiller ton forfait.</p>
+    <div class="cta">
+      <a class="btn" href="#quiz">Trouver mon exercice</a>
+      <a class="btn alt" href="#exercices">Voir les exercices</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="quiz" aria-labelledby="quiz-t">
+  <div class="wrap">
+    <h2 id="quiz-t">Quel exercice pour commencer ?</h2>
+    <p class="lead">Réponds à 3 questions. Jàng te propose l'exercice à envoyer sur WhatsApp.</p>
+    <div class="box" id="quizbox" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="fonctions" aria-labelledby="f-t" style="background:#f3ecdb">
+  <div class="wrap">
+    <h2 id="f-t">Ce que fait Jàng</h2>
+    <div class="grid4">
+      <article class="feat"><div class="n" aria-hidden="true">1</div><h3>Ta première erreur, expliquée</h3><p>Jàng repère où ton raisonnement dérape et t'explique pourquoi, sans tout te réécrire.</p></article>
+      <article class="feat"><div class="n" aria-hidden="true">2</div><h3>Un corrigé de référence</h3><p>Ta réponse est comparée à une solution de référence, pas à une supposition.</p></article>
+      <article class="feat"><div class="n" aria-hidden="true">3</div><h3>Un exercice similaire</h3><p>Une fois l'erreur comprise, tu refais le même type d'exercice pour vérifier que c'est acquis.</p></article>
+      <article class="feat"><div class="n" aria-hidden="true">4</div><h3>Léger en données</h3><p>Du texte sur WhatsApp, pas d'application à installer. Pensé pour un forfait quotidien, avec un objectif de moins de 100 Ko par échange.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="exercices" aria-labelledby="e-t">
+  <div class="wrap">
+    <h2 id="e-t">Les exercices</h2>
+    <p class="lead">Envoie l'identifiant sur WhatsApp pour lancer la correction.</p>
+    <div class="exgrid" id="exgrid"></div>
+  </div>
+</section>
+
+<section id="contact" aria-labelledby="c-t" style="background:#f3ecdb">
+  <div class="wrap">
+    <h2 id="c-t">Professeur volontaire</h2>
+    <p class="lead">Tu enseignes la physique-chimie ? Aide-nous à relire les corrigés de référence.</p>
+    <form id="vform" novalidate>
+      <div>
+        <label for="nom">Nom</label>
+        <input id="nom" name="nom" autocomplete="name" aria-describedby="e-nom">
+        <p class="err" id="e-nom"></p>
+      </div>
+      <div>
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" aria-describedby="e-email">
+        <p class="err" id="e-email"></p>
+      </div>
+      <div>
+        <label for="tel">Téléphone <span class="hint">(ex. 77 123 45 67)</span></label>
+        <input id="tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="e-tel">
+        <p class="err" id="e-tel"></p>
+      </div>
+      <div>
+        <label for="msg">Message <span class="hint">(20 caractères minimum)</span></label>
+        <textarea id="msg" name="msg" aria-describedby="e-msg"></textarea>
+        <p class="err" id="e-msg"></p>
+      </div>
+      <button class="btn" type="submit">Proposer mon aide</button>
+      <div id="formok" role="status"></div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Jàng</strong> (« apprendre » en wolof) est un projet étudiant de Cheikh BOYE et Adama DIOP, GET 409 Atelier IA, Swiss UMEF University, campus de Dakar.</p>
+    <p>Les corrigés de référence sont en cours de validation par des enseignants. En attendant, vérifie toujours avec ton cours et ton professeur.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var EX=[
+    {id:"JNG-PC-01",s:"Chimie",c:"Solutions et pH",t:"2,0 g de NaOH dans 500 mL : calcule C puis le pH",ok:true},
+    {id:"JNG-PC-03",s:"Chimie",c:"Acides faibles",t:"pH d'une solution d'acide éthanoïque à 1,0×10⁻² mol/L (pKa = 4,8)",ok:true},
+    {id:"JNG-MA-01",s:"Maths",c:"Suites numériques",t:"Étudier la convergence d'une suite récurrente",ok:false},
+    {id:"JNG-PC-07",s:"Physique",c:"Lois de Newton",t:"Solide sur un plan incliné à 30° : accélération et vitesse après 2,0 m",ok:true},
+    {id:"JNG-PC-10",s:"Physique",c:"Dipôle RC",t:"R = 10 kΩ, C = 100 µF : constante de temps et tension à t = τ",ok:true},
+    {id:"JNG-PC-12",s:"Physique",c:"Effet photoélectrique",t:"Cellule au césium éclairée à 500 nm : énergie cinétique maximale",ok:true}
+  ];
+  var byId={};EX.forEach(function(e){byId[e.id]=e;});
+
+  function el(tag,attrs,text){
+    var n=document.createElement(tag);
+    if(attrs)for(var k in attrs){if(k==="class")n.className=attrs[k];else n.setAttribute(k,attrs[k]);}
+    if(text!=null)n.textContent=text;
+    return n;
+  }
+
+  /* ---------- exercise grid ---------- */
+  var grid=document.getElementById("exgrid");
+  EX.forEach(function(e){
+    var card=el("article",{"class":"ex",id:e.id});
+    var top=el("div",{"class":"top"});
+    top.appendChild(el("span",{"class":"id"},e.id));
+    top.appendChild(el("span",{"class":"badge "+(e.ok?"ok":"wip")},e.ok?"Corrigé disponible":"En préparation"));
+    card.appendChild(top);
+    card.appendChild(el("div",{"class":"meta"},e.s+" · "+e.c));
+    card.appendChild(el("p",null,e.t));
+    grid.appendChild(card);
+  });
+  function highlight(id){
+    EX.forEach(function(e){document.getElementById(e.id).classList.toggle("hl",e.id===id);});
+  }
+
+  /* ---------- quiz ---------- */
+  var CHAPTERS={
+    "Chimie":["JNG-PC-01","JNG-PC-03"],
+    "Physique":["JNG-PC-07","JNG-PC-10","JNG-PC-12"]
+  };
+  var STRUGGLES=[
+    {k:"calcul",label:"Le calcul",sub:"Je me trompe dans les opérations ou les puissances de 10",
+     tip:"Refais l'exercice en écrivant chaque étape numérique sur une ligne. Jàng cherchera la première ligne où le résultat s'écarte du corrigé."},
+    {k:"methode",label:"La méthode",sub:"Je ne sais pas par où commencer ni quelle formule utiliser",
+     tip:"Avant de calculer, écris en une phrase quelle loi ou quelle relation tu utilises et pourquoi. Jàng vérifiera d'abord ce choix."},
+    {k:"unites",label:"Les unités",sub:"Je mélange mL et L, g et kg, nm et m…",
+     tip:"Convertis chaque donnée en unités du système international avant tout calcul, et note l'unité à chaque ligne. Jàng contrôlera les conversions."}
+  ];
+  var state,box=document.getElementById("quizbox");
+
+  function reset(){state={step:1,subject:null,chapter:null,struggle:null};render();}
+
+  function progress(n){
+    var p=el("div",{"class":"progress",role:"img","aria-label":"Étape "+n+" sur 3"});
+    for(var i=1;i<=3;i++)p.appendChild(el("span",i<=n?{"class":"on"}:null));
+    return p;
+  }
+  function choice(label,sub,fn){
+    var b=el("button",{"class":"choice",type:"button"});
+    b.appendChild(document.createTextNode(label));
+    if(sub)b.appendChild(el("small",null,sub));
+    b.addEventListener("click",fn);
+    return b;
+  }
+  function backBtn(fn){
+    var b=el("button",{"class":"back",type:"button"},"← Retour");
+    b.addEventListener("click",fn);return b;
+  }
+
+  function render(){
+    box.textContent="";
+    var focusTarget;
+    if(state.step===1){
+      box.appendChild(progress(1));
+      box.appendChild(el("div",{"class":"stepname"},"Étape 1 sur 3"));
+      focusTarget=el("h3",{tabindex:"-1"},"Quelle matière veux-tu réviser ?");
+      box.appendChild(focusTarget);
+      var c=el("div",{"class":"choices two"});
+      Object.keys(CHAPTERS).forEach(function(s){
+        c.appendChild(choice(s,null,function(){state.subject=s;state.step=2;render();}));
+      });
+      box.appendChild(c);
+    }else if(state.step===2){
+      box.appendChild(progress(2));
+      box.appendChild(el("div",{"class":"stepname"},"Étape 2 sur 3 · "+state.subject));
+      focusTarget=el("h3",{tabindex:"-1"},"Quel chapitre ?");
+      box.appendChild(focusTarget);
+      var c2=el("div",{"class":"choices"});
+      CHAPTERS[state.subject].forEach(function(id){
+        c2.appendChild(choice(byId[id].c,null,function(){state.chapter=id;state.step=3;render();}));
+      });
+      box.appendChild(c2);
+      box.appendChild(backBtn(function(){state.step=1;render();}));
+    }else if(state.step===3){
+      box.appendChild(progress(3));
+      box.appendChild(el("div",{"class":"stepname"},"Étape 3 sur 3 · "+byId[state.chapter].c));
+      focusTarget=el("h3",{tabindex:"-1"},"Qu'est-ce qui te pose problème ?");
+      box.appendChild(focusTarget);
+      var c3=el("div",{"class":"choices"});
+      STRUGGLES.forEach(function(s){
+        c3.appendChild(choice(s.label,s.sub,function(){state.struggle=s;state.step=4;render();}));
+      });
+      box.appendChild(c3);
+      box.appendChild(backBtn(function(){state.step=2;render();}));
+    }else{
+      var e=byId[state.chapter],r=el("div",{"class":"result"});
+      r.appendChild(el("div",{"class":"stepname"},"Ton exercice recommandé"));
+      focusTarget=el("h3",{tabindex:"-1"},e.s+" · "+e.c);
+      r.appendChild(focusTarget);
+      r.appendChild(el("div",{"class":"id"},e.id));
+      r.appendChild(el("blockquote",null,e.t));
+      r.appendChild(el("p",{"class":"tip"},"Pour « "+state.struggle.label.toLowerCase()+" » : "+state.struggle.tip));
+      r.appendChild(el("div",{"class":"wa"},"Sur WhatsApp, envoie : « "+e.id+" » suivi de ta réponse."));
+      var row=el("div",{style:"display:flex;flex-wrap:wrap;gap:10px"});
+      var see=el("a",{"class":"btn",href:"#"+e.id},"Voir dans la liste");
+      see.addEventListener("click",function(){highlight(e.id);});
+      row.appendChild(see);
+      var again=el("button",{"class":"btn alt",type:"button"},"Recommencer");
+      again.addEventListener("click",function(){highlight(null);reset();});
+      row.appendChild(again);
+      r.appendChild(row);
+      box.appendChild(r);
+      highlight(e.id);
+    }
+    if(state.step>1||box.dataset.used){focusTarget.focus({preventScroll:true});}
+    box.dataset.used="1";
+  }
+  reset();
+
+  /* ---------- volunteer form ---------- */
+  var form=document.getElementById("vform"),ok=document.getElementById("formok");
+  var rules={
+    nom:function(v){return v.length>=2?"":"Indique ton nom (2 caractères minimum).";},
+    email:function(v){
+      if(!v)return "Indique ton adresse e-mail.";
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?"":"Cette adresse e-mail n'est pas valide.";},
+    tel:function(v){
+      if(!v)return "Indique ton numéro de téléphone.";
+      var d=v.replace(/[\s.\-()]/g,"");
+      return /^(\+221|00221)?[37]\d{8}$/.test(d)?"":"Numéro sénégalais attendu : 9 chiffres, ex. 77 123 45 67.";},
+    msg:function(v){return v.length>=20?"":"Écris au moins 20 caractères ("+v.length+"/20).";}
+  };
+  function check(name){
+    var f=form.elements[name],m=rules[name](f.value.trim());
+    document.getElementById("e-"+name).textContent=m;
+    if(m)f.setAttribute("aria-invalid","true");else f.removeAttribute("aria-invalid");
+    return !m;
+  }
+  Object.keys(rules).forEach(function(n){
+    form.elements[n].addEventListener("blur",function(){check(n);});
+    form.elements[n].addEventListener("input",function(){if(form.elements[n].getAttribute("aria-invalid"))check(n);});
+  });
+  form.addEventListener("submit",function(ev){
+    ev.preventDefault();
+    ok.className="";ok.textContent="";
+    var first=null;
+    Object.keys(rules).forEach(function(n){if(!check(n)&&!first)first=form.elements[n];});
+    if(first){first.focus();return;}
+    ok.textContent="Merci "+form.elements.nom.value.trim()+" ! Le formulaire est valide. Pour l'instant il n'est pas relié à un serveur : rien n'a été envoyé.";
+    ok.className="show";
+  });
+})();
+</script>
+</body>
+</html>
