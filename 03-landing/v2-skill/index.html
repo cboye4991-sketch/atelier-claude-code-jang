@@ -20,6 +20,7 @@
   --hi:#fff09a;             /* surligneur */
   --cover:#1b2a6b;          /* couverture du cahier */
   --wa-dark:#075e54; --wa-bg:#efeae2; --wa-out:#d9fdd3;
+  --chat-bg:#ECE5DD; --chat-out:#DCF8C6;   /* chat « Corrige mon exercice » */
   --display:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --hand:"Kalam","Segoe Print","Bradley Hand",cursive;
   --u:24px;                 /* unité de la grille : 1 ligne Seyès */
@@ -161,6 +162,30 @@ h2{
 .ex.hl{outline:0;box-shadow:none}
 .ex.hl::after{content:"";position:absolute;inset:-7px -8px;border:2.5px solid var(--red);border-radius:255px 18px 225px 22px/22px 225px 18px 255px;pointer-events:none}
 
+.ex .btn{align-self:flex-start;min-height:44px;padding:8px 16px;font-size:.95rem;margin-top:8px}
+
+/* ---------- corrige mon exercice : conversation WhatsApp ---------- */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.kchat{max-width:640px;margin-top:8px;border-radius:10px;overflow:hidden;background:var(--chat-bg);box-shadow:0 2px 0 rgba(27,42,138,.25),0 10px 24px -12px rgba(27,42,138,.5);scroll-margin-top:24px}
+.kfil{display:grid;gap:8px;align-content:start;padding:12px;min-height:192px;max-height:min(60vh,456px);overflow-y:auto}
+.kb{max-width:88%;padding:8px 12px 9px;border-radius:8px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.13);
+  font:400 .9375rem/1.45 var(--display);color:var(--text);white-space:pre-wrap;overflow-wrap:anywhere}
+.kb.moi{justify-self:end;background:var(--chat-out);font:400 1.0625rem/1.4 var(--hand);color:var(--ink)}
+.kb.err{color:var(--red);font-weight:600}
+.ecrit{width:fit-content;margin:0 12px 8px;display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-radius:8px;box-shadow:0 1px 0 rgba(0,0,0,.13);font:400 .9rem/1.3 var(--display);color:var(--muted)}
+.ecrit[hidden]{display:none}
+.ecrit i{display:flex;gap:4px}
+.ecrit i span{width:6px;height:6px;border-radius:50%;background:#8696a0;animation:blink 1s infinite}
+.ecrit i span:nth-child(2){animation-delay:.15s}
+.ecrit i span:nth-child(3){animation-delay:.3s}
+.kform{max-width:none;padding:8px 12px 12px;gap:8px;border-top:1px solid rgba(27,42,138,.12)}
+.kform textarea{min-height:72px;max-height:192px;background:#fff;border:1px solid #c9cff0;border-radius:8px;padding:10px 12px}
+.kform textarea:disabled{opacity:.6}
+.kform .err{margin:0;min-height:0}
+.kform .btn{justify-self:end;margin-top:0;background:var(--wa-dark);border-color:var(--wa-dark)}
+.kform .btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+.kavis{margin:0;background:var(--hi);padding:10px 12px;border-radius:4px;font-weight:600}
+
 /* ---------- formulaire : lignes de cahier ---------- */
 form{max-width:640px;display:grid;gap:12px}
 label{display:block;font-weight:600;margin-bottom:0}
@@ -282,6 +307,25 @@ footer{background:var(--cover);padding:40px 0 44px;color:#e6e9ff;position:relati
   </div>
 </section>
 
+<section class="sec" id="corriger" aria-labelledby="k-t">
+  <div class="wrap">
+    <h2 id="k-t">Corrige mon exercice</h2>
+    <p class="lead">Écris l'identifiant de l'exercice puis ta réponse. Jàng te montre ta première erreur.</p>
+    <div class="kchat">
+      <div class="chat-h"><i aria-hidden="true">J</i>Jàng</div>
+      <div class="kfil" id="kfil" role="log" aria-live="polite" aria-label="Conversation avec Jàng"></div>
+      <div class="ecrit" id="kecrit" role="status" hidden><i aria-hidden="true"><span></span><span></span><span></span></i>Jàng écrit…</div>
+      <form class="kform" id="kform" novalidate>
+        <label class="vh" for="kmsg">Ton exercice et ta réponse</label>
+        <textarea id="kmsg" name="kmsg" maxlength="1000" placeholder="JNG-PC-01 : ta réponse…" aria-describedby="kerr"></textarea>
+        <p class="err" id="kerr" role="alert"></p>
+        <button class="btn" id="kbtn" type="submit">Envoyer à Jàng</button>
+      </form>
+    </div>
+    <p class="legende">Jàng peut se tromper : en cas de doute, demande à un professeur.</p>
+  </div>
+</section>
+
 <section class="sec" id="contact" aria-labelledby="c-t">
   <div class="wrap">
     <h2 id="c-t">Professeur volontaire</h2>
@@ -324,6 +368,8 @@ footer{background:var(--cover);padding:40px 0 44px;color:#e6e9ff;position:relati
 </footer>
 
 <script>
+/* URL complète du relais Cloudflare (avec /corriger). Vide = correction en ligne désactivée. */
+const RELAIS_URL = "";
 (function(){
   var EX=[
     {id:"JNG-PC-01",s:"Chimie",c:"Solutions et pH",t:"2,0 g de NaOH dans 500 mL : calcule C puis le pH",ok:true},
@@ -360,6 +406,11 @@ footer{background:var(--cover);padding:40px 0 44px;color:#e6e9ff;position:relati
     b.appendChild(icon(e.ok?"M3 13l6 6L21 5":"M4 20l1.5-5L16 4.5l3.5 3.5L9 18.5z"));
     b.appendChild(document.createTextNode(e.ok?"Corrigé disponible":"En préparation"));
     card.appendChild(b);
+    if(e.ok){
+      var fix=el("button",{"class":"btn alt",type:"button"},"Corriger cet exercice");
+      fix.addEventListener("click",function(){startCorrection(e.id);});
+      card.appendChild(fix);
+    }
     grid.appendChild(card);
   });
   function highlight(id){
@@ -459,6 +510,84 @@ footer{background:var(--cover);padding:40px 0 44px;color:#e6e9ff;position:relati
     box.dataset.used="1";
   }
   reset();
+
+  /* ---------- corrige mon exercice (relais Dify) ---------- */
+  var TIMEOUT_MS=65000,MIN_Q=3,MAX_Q=1000;
+  var MSG_NET="Jàng est indisponible pour le moment — réessaie dans une minute";
+  var MSG_SLOW="La réponse prend trop de temps — réessaie";
+  var MSG_REFUS="Je ne peux pas corriger ce message. Envoie l'ID d'un exercice de la liste suivi de ta réponse.";
+  var fil=document.getElementById("kfil"),kform=document.getElementById("kform"),
+      kmsg=document.getElementById("kmsg"),kbtn=document.getElementById("kbtn"),
+      kerr=document.getElementById("kerr"),kwait=document.getElementById("kecrit"),
+      busy=false;
+
+  function say(text,cls){
+    fil.appendChild(el("div",{"class":"kb "+cls},text));   /* text only, never parsed as markup */
+    fil.scrollTop=fil.scrollHeight;
+  }
+  function wait(on){kwait.hidden=!on;}
+  function setBusy(on){
+    busy=on;wait(on);
+    kbtn.disabled=on||!RELAIS_URL;
+    if(on)fil.scrollTop=fil.scrollHeight;
+  }
+
+  say("Salut ! Envoie l'ID d'un exercice suivi de ta réponse. Exemple : JNG-PC-01 : C = 0,05/500 = 0,0001 mol/L","jang");
+  if(!RELAIS_URL){
+    kbtn.disabled=true;
+    var avis=el("p",{"class":"kavis",role:"status"},"Correction en ligne bientôt disponible");
+    kform.insertBefore(avis,kmsg);
+  }
+
+  function startCorrection(id){
+    kmsg.value=id+" : ";
+    kerr.textContent="";kmsg.removeAttribute("aria-invalid");
+    document.getElementById("corriger").scrollIntoView();
+    kmsg.focus({preventScroll:true});
+    kmsg.setSelectionRange(kmsg.value.length,kmsg.value.length);
+  }
+
+  function ask(query){
+    var ctl=typeof AbortController==="function"?new AbortController():null;
+    var timedOut=false,timer=setTimeout(function(){timedOut=true;if(ctl)ctl.abort();},TIMEOUT_MS);
+    var over=new Promise(function(_,rej){
+      setTimeout(function(){rej({timeout:true});},TIMEOUT_MS+500);
+    });
+    var call=fetch(RELAIS_URL,{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({query:query}),signal:ctl?ctl.signal:undefined
+    }).then(function(r){
+      return r.json().then(function(j){return j;},function(){return null;});
+    });
+    return Promise.race([call,over]).then(function(j){clearTimeout(timer);return j;},function(err){
+      clearTimeout(timer);
+      throw (timedOut||(err&&err.timeout))?{timeout:true}:err;
+    });
+  }
+
+  kform.addEventListener("submit",function(ev){
+    ev.preventDefault();
+    if(busy||!RELAIS_URL)return;
+    var q=kmsg.value.trim();
+    if(q.length<MIN_Q||q.length>MAX_Q){
+      kerr.textContent=q.length<MIN_Q?"Écris au moins "+MIN_Q+" caractères.":"Message trop long : "+MAX_Q+" caractères maximum.";
+      kmsg.setAttribute("aria-invalid","true");kmsg.focus();return;
+    }
+    kerr.textContent="";kmsg.removeAttribute("aria-invalid");
+    say(q,"moi");kmsg.value="";
+    setBusy(true);
+    ask(q).then(function(j){
+      if(j&&j.type==="correction"&&typeof j.text==="string"&&j.text){say(j.text,"jang");}
+      else if(j&&j.type==="refus"){say(MSG_REFUS,"jang");}   /* never show Dify's own wording */
+      else if(j&&j.type==="erreur"&&typeof j.text==="string"&&j.text){say(j.text,"jang err");}
+      else say(MSG_NET,"jang err");
+    },function(err){
+      say(err&&err.timeout?MSG_SLOW:MSG_NET,"jang err");
+    }).then(function(){setBusy(false);});
+  });
+  kmsg.addEventListener("keydown",function(ev){
+    if(ev.key==="Enter"&&(ev.ctrlKey||ev.metaKey)){ev.preventDefault();kform.requestSubmit?kform.requestSubmit():kform.dispatchEvent(new Event("submit",{cancelable:true}));}
+  });
 
   /* ---------- volunteer form ---------- */
   var form=document.getElementById("vform"),ok=document.getElementById("formok");

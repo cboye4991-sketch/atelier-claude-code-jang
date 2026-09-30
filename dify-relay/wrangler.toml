@@ -1,0 +1,10 @@
+name = "jang-relay"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+# Plain (non-secret) settings. The API key is NOT here:
+#   npx wrangler secret put DIFY_API_KEY
+[vars]
+DIFY_API_URL = "https://api.dify.ai/v1"
+# Origins = scheme + host (+ port), no path, no trailing slash.
+ALLOWED_ORIGINS = "https://cboye4991-sketch.github.io,http://localhost:8000,http://127.0.0.1:8000"
