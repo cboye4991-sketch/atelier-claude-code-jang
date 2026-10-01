@@ -1,0 +1,59 @@
+# Secrets (never commit)
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+functions/.secret.local
+supabase/.env
+*serviceAccount*.json
+*service-account*.json
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tgz
+.npm/
+.eslintcache
+
+# Vite / build output
+dist/
+dist-ssr/
+functions/lib/
+*.local
+.vite/
+*.tsbuildinfo
+coverage/
+
+# Firebase
+.firebase/
+.firebaserc.local
+firebase-debug.log*
+firebase-debug.*.log*
+firestore-debug.log
+ui-debug.log
+pubsub-debug.log
+database-debug.log
+
+# Supabase
+supabase/.branches/
+supabase/.temp/
+
+# Cloudflare
+.wrangler/
+.mf/
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Claude Code local settings (project settings.json stays tracked)
+.claude/settings.local.json

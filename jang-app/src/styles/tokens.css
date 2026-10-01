@@ -1,0 +1,22 @@
+/* Design tokens from /jang-brand ("le cahier corrigé"). Do not invent other colours or fonts.
+   Correction red (#D2382A) is reserved for correction marks and is intentionally unused in phase 1. */
+:root {
+  --green: #0e7565;
+  --ink: #10231e;
+  --paper: #f6f9f8;
+  --grid: #dce8e4;
+  --ink-soft: #52665f;
+  --correction-red: #d2382a;
+  --chimie: #7c4ddb;
+  --physique: #0b84c6;
+  --card: #ffffff;
+  --tint: #e6f0ed;
+
+  --font-heading: 'Schibsted Grotesk', system-ui, sans-serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --gutter: 16px;
+  --radius: 8px;
+  --tap: 44px;
+}

@@ -1,0 +1,22 @@
+⏺ Bash(git status --short && git log --oneline -3 && ls src src/* scripts docs && cat package.json)
+⏺ Bash(cat src/pages/NotebookPage.tsx src/components/ResetNotebook.tsx src/components/NotebookRow.tsx src/lib/repository.ts src/lib/use-notebook.ts src/lib/exercise-utils.ts && head -30 src/data/exercises.ts && cat docs/decisions.md)
+⏺ Bash(cat src/App.test.tsx | head -80 && grep -n "btn\|\.confirm\|\.panel\|\.hint\|\.row " src/styles/global.css | head -40 && cat vite.config.* 2>/dev/null | head -30)
+⏺ Bash(sed -n 300,360p src/styles/global.css && sed -n 555,590p src/styles/global.css)
+⏺ Write(/home/claude/labhome/.claude/plans/ajoute-dans-l-onglet-luminous-swing.md)
+⏺ J'ai écrit le plan pour le bouton « Exporter mon carnet ». Je n'ai rien modifié dans le code, j'attends ton feu vert.
+
+**Avant de commencer :** le changement est petit, mais crée une branche : `git switch -c feat/export-carnet`.
+
+### Le plan, étape par étape
+
+1. **Logique d'export** dans un nouveau fichier `src/lib/notebook-export.ts`. Il prépare un fichier avec la date d'export (`exportedAt`) et la liste des exercices (`exercises`).
+   - **Contenu :** pour chaque exercice, seulement 4 champs : `id`, `chapter`, `status` et `note`.
+   - **Les 14 exercices sont toujours présents**, dans l'ordre du catalogue. Ceux que l'élève n'a pas touchés valent « à faire » (`todo`) avec une note vide.
+   - **Aucun corrigé possible :** le fichier est construit champ par champ, à partir du catalogue public et du carnet. L'énoncé, les données et les corrigés n'y entrent jamais.
+   - **Nom du fichier :** `jang-carnet-AAAA-MM-JJ.json`, avec la date locale.
+   - **Téléchargement :** fait entièrement sur le téléphone, sans réseau. L'export lit le carnet déjà chargé, sans passer par `localStorage`, donc il marche aussi quand le stockage est bloqué.
+2. **Bouton** dans `src/components/ExportNotebook.tsx`, avec le même style que « Remettre mon carnet à zéro ».
+   - Il est grisé quand le carnet est vide.
+   - Après le clic, un message s'affiche : « Fichier jang-carnet-… téléchargé. »
+   - Les deux boutons sont sur une ligne qui passe à la ligne si besoin, pour tenir sur un écran de 360 px. J'ajoute une 
+== RESULT success cost 0.3677146 turns 6

@@ -1,0 +1,1 @@
+Ajoute dans l'onglet « Mon carnet » un bouton « Exporter mon carnet » qui télécharge un fichier JSON (jang-carnet-AAAA-MM-JJ.json) avec, pour chaque exercice : ID, chapitre, statut et note, plus la date d'export. Aucun corrigé dans le fichier. Garde le style du cahier, ajoute un test, et vérifie npm run build et npm test. Prépare d'abord le plan.

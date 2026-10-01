@@ -1,0 +1,17 @@
+Context: Jàng web repo (see CLAUDE.md), only CLAUDE.md so far. The Dify key will live server-side only (a relay or serverless function), never in this repo.
+Task: Create three files:
+1. `.gitignore` for Node, Vite, Firebase/Supabase/Cloudflare and OS files. It must ignore `.env`, `.env.*` (except `.env.example`), `functions/.secret.local`, `.dev.vars`, `supabase/.env` and any `*serviceAccount*.json`.
+2. `.env.example` with empty placeholders only (e.g. VITE_RELAIS_URL= for the public relay URL; no secret belongs in a VITE_ variable — say so in a comment).
+3. `.claude/settings.json` with exactly this content:
+{
+  "permissions": {
+    "deny": [
+      "Read(./.env)", "Read(./.env.*)", "Edit(./.env)", "Edit(./.env.*)",
+      "Read(./functions/.secret.local)", "Edit(./functions/.secret.local)",
+      "Read(./.dev.vars)", "Edit(./.dev.vars)"
+    ]
+  }
+}
+Constraints: Do not create a real `.env`. Do not build anything else yet.
+Definition of done: the three files exist; `git check-ignore -v .env` prints a matching rule.
+Files to touch: `.gitignore`, `.env.example`, `.claude/settings.json`.

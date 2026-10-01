@@ -4,16 +4,18 @@
 - Web MVP of Jàng: a corrector for Senegalese Bac physics-chemistry exercises (Terminale S2).
 - Users: students in regional high schools who revise alone, without a teacher, on entry-level
   Android phones with a small daily data bundle.
-- Three pages:
-  - **Accueil**: presentation of Jàng.
-  - **Exercices**: catalogue of exercises (IDs `JNG-PC-xx`), filters by subject, and a WhatsApp-style
-    "Corrige mon exercice" chat.
-  - **Contact**: the volunteer teachers.
+- Target pages:
+  - **Accueil**: presentation of Jàng. Not built yet.
+  - **Exercices**: catalogue of exercises (IDs `JNG-PC-xx`), search, filter by subject. Built in phase 1.
+    The WhatsApp-style "Corrige mon exercice" chat is phase 2: the button is disabled for now.
+  - **Mon carnet**: the student's private notebook (status and note per exercise). Built in phase 1.
+  - **Contact**: the volunteer teachers. Not built yet.
+- Phase 1 is a single page with two tabs held in state (no router).
 - The correction is produced by an existing Dify workflow, never by this repo.
 - Phase 2 will add a real WhatsApp channel. Do not build it until asked.
 
 ## Stack & versions
-- Vite + React + TypeScript (strict).
+- Vite 8 + React 19 + TypeScript 7 (strict), Vitest 5 (jsdom for component tests). No UI library.
 - Firebase Hosting + Cloud Functions 2nd gen; the Dify key lives in a Functions secret.
 - Firestore later, for anonymous progress only.
 - Node 22 LTS.
@@ -24,20 +26,25 @@
 ## Commands
 Run from the repo root unless noted. If a script does not exist yet, create it and document it here.
 - `npm run dev`: Vite dev server.
-- `npm run build`: type-check and production build into `dist/`.
-- `npm test`: unit tests (Vitest).
+- `npm run build`: type-check, production build into `dist/`, then `check:answers`.
+- `npm test`: unit and component tests (Vitest).
+- `npm run gen:exercises`: regenerate `src/data/exercises.ts` from `../jang-source/jang_exercices_pc_ts2.csv`
+  (public columns only). Run it after the knowledge base changes.
+- `npm run check:answers`: fails if any reference answer text from the CSV appears in `src/` or `dist/`.
 - `npm --prefix functions run build`: compile the Cloud Functions.
 - `firebase emulators:start --only functions,hosting`: local Functions and Hosting.
 - `firebase deploy --only hosting,functions`: deploy. Only when the user asks.
 
-## Folder structure (target)
+## Folder structure (target, `*` = exists in phase 1)
 ```
 src/
-  pages/        Accueil, Exercices, Contact
-  components/   UI pieces (chat, exercise card, filters)
-  lib/          API client for the correction endpoint, formatting helpers
-  data/         exercises catalogue, mirrors the knowledge base
-  styles/       tokens and global CSS from /jang-brand
+  pages/        * ExercisesPage, NotebookPage (later: Accueil, Contact)
+  components/   * UI pieces (exercise card, filters, status picker, progress)
+  lib/          * repository.ts (notebook storage), use-notebook.ts, exercise-utils.ts, notebook-export.ts
+                (later: API client for the correction endpoint)
+  data/         * exercises.ts, GENERATED from the CSV, never edited by hand
+  styles/       * tokens and global CSS from /jang-brand
+scripts/        * generate-exercises.mjs, check-no-answers.mjs, csv.mjs
 functions/
   src/          HTTP function that proxies the Dify workflow
 docs/
@@ -52,6 +59,9 @@ firebase.json   hosting rewrite /api/** to the function
 - Code, comments, commit messages and docs are in English.
 - UI copy is in French, informal: always tutoiement for students ("Envoie ton exercice",
   never "Envoyez votre exercice"). Short sentences, simple words.
+- The notebook is read and written only through `NotebookRepository` (`src/lib/repository.ts`).
+  Components never touch `localStorage`. It must keep working when storage is unavailable.
+- Correction red `#D2382A` is for correction marks only. Subject colours are markers, text stays ink.
 - Keep the UI usable on a 360 px wide screen and with a slow, unstable connection.
 - Every request to the correction endpoint has a visible waiting state, a timeout and a retry.
   Gemini free tier can take 4 to 40 s.
@@ -72,7 +82,9 @@ firebase.json   hosting rewrite /api/** to the function
 ## Data budget rules
 - First load of a page: target under 150 KB gzipped (HTML + JS + CSS + fonts).
 - No images and no video. Use text, CSS and, if needed, tiny inline SVG.
-- System fonts by default. At most one subset web font, and only if the brand requires it.
+- Fonts: only the three brand families from Google Fonts (Schibsted Grotesk 800, Atkinson Hyperlegible
+  400/700, IBM Plex Mono 500), `display=swap`, with system fallbacks. Accepted trade-off, see
+  `docs/decisions.md` (2026-10-01). Add no other font or weight.
 - A correction message stays under 100 KB. Truncate or refuse above that.
 - No polling, no background sync, no auto-play. Fetch only on user action.
 - Lazy-load anything not needed for the first screen. Cache the catalogue.
@@ -91,6 +103,8 @@ firebase.json   hosting rewrite /api/** to the function
 - Never call Dify from the client. Never expose `DIFY_API_KEY` in the bundle, logs or responses.
 - Never invent exercises, reference answers, users or figures. Use real data or a clearly
   marked placeholder.
+- Never copy reference answers into the repo or the bundle: `Corrige_reference`, `Resultat_final`,
+  `Erreur_frequente`, `Exercice_similaire`, `Reponse_similaire`. The catalogue uses public columns only.
 - Never change an exercise ID without updating the knowledge base in the same change.
 - Never touch Firebase rules (Firestore, Storage, Hosting headers for access) without asking.
   Never leave test-mode rules.

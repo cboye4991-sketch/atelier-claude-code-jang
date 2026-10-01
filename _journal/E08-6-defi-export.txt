@@ -1,0 +1,91 @@
+⏺ Je commence par la logique d'export.
+⏺ Write(/home/claude/claude-lab/jang-app/src/lib/notebook-export.ts)
+⏺ Write(/home/claude/claude-lab/jang-app/src/components/ExportNotebook.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/pages/NotebookPage.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/pages/NotebookPage.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/styles/global.css)
+⏺ Maintenant les tests.
+⏺ Write(/home/claude/claude-lab/jang-app/src/lib/notebook-export.test.ts)
+⏺ Bash(sed -n 80,200p src/App.test.tsx)
+⏺ Bash(cat >> src/App.test.tsx <<'EOF'
+
+describe('Export du carnet', () => {
+  it('is disabled while the notebook is empty', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await openNotebook(user);
+    expect((screen.getByRole('button', { name: 'Exporter mon carnet' }) as HTMLButtonElement).disabled).toBe(true);
+  });
+
+  it('downloads jang-carnet-AAAA-MM-JJ.json with the student entries and no answers', async () => {
+    const user = userEvent.setup();
+    const blobs: Blob[] = [];
+    const downloads: string[] = [];
+    const originalCreate = URL.createObjectURL;
+    const originalRevoke = URL.revokeObjectURL;
+    const originalClick = HTMLAnchorElement.prototype.click;
+    URL.createObjectURL = (blob: Blob | MediaSource) => {
+      blobs.push(blob as Blob);
+      return 'blob:jang-test';
+    };
+    URL.revokeObjectURL = () => undefined;
+    HTMLAnchorElement.prototype.click = function click(this: HTMLAnchorElement) {
+      downloads.push(this.download);
+    };
+    try {
+      render(<App />);
+      await openNotebook(user);
+      const row = screen.getByText('JNG-PC-03').closest('li') as HTMLElement;
+      await user.click(within(row).getByLabelText('Réussi'));
+
+      await user.click(screen.getByRole('button', { name: 'Exporter mon carnet' }));
+
+      expect(downloads).toHaveLength(1);
+      expect(downloads[0]).toMatch(/^jang-carnet-\d{4}-\d{2}-\d{2}\.json$/);
+      expect(screen.getByRole('status').textContent).toBe(`Fichier ${downloads[0]} téléchargé.`);
+
+      const exported = JSON.parse(await blobs[0].text()) as {
+        exportedAt: string;
+        exercises: { id: string; status: string }[];
+      };
+      expect(exported.exercises).toHaveLength(14);
+      expect(exported.exercises.find((entry) => entry.id === 'JNG-PC-03')?.status).toBe('solved');
+      expect(Number.isNaN(Date.parse(exported.exportedAt))).toBe(false);
+    } finally {
+      URL.createObjectURL = originalCreate;
+      URL.revokeObjectURL = originalRevoke;
+      HTMLAnchorElement.prototype.click = originalClick;
+    }
+  });
+});
+EOF
+npm test 2>&1 | tail -30; npm run build 2>&1 | tail -25)
+⏺ La commande a été refusée. J'ajoute donc le test avec l'outil d'édition.
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.test.tsx)
+⏺ Bash(npm test 2>&1 | tail -30; npm run build 2>&1 | tail -25)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.test.tsx)
+⏺ Je passe aux docs, puis je relance les vérifications.
+⏺ Edit(/home/claude/claude-lab/jang-app/CLAUDE.md)
+⏺ Bash(printf '%s\n' '' '## 2026-10-01 — Notebook export' '' '**What**' '- « Mon carnet » has an « Exporter mon carnet » button that downloads `jang-carnet-AAAA-MM-JJ.json` (local date).' '- The file holds `exportedAt` (ISO) and, for all 14 exercises in catalogue order: `id`, `chapter`, `status`, `note`.' '- Logic lives in `src/lib/notebook-export.ts`; the button is disabled while the notebook is empty, like the reset.' '' '**Why**' '- The notebook only lives in one browser: a file gives the student a copy to keep or show a teacher.' '- Entries are built field by field from public data (ID, chapter) and the notebook, so no statement, validation' '  or reference answer can reach the file. A test checks the keys and that no statement appears in the JSON.' '- `status` is the stable code (`todo`, `tried`, `solved`, `review`), not the French label, so the format survives UI rewording.' '- The download is local (Blob + temporary link): no request, no extra dependency, no data cost.' >> docs/decisions.md
+npm test 2>&1 | grep -E "Tests|Test Files|FAIL"; npm run build 2>&1 | tail -15)
+⏺ Le garde-fou `check:answers` refuse les noms de colonnes de corrigés dans `src/`, même dans un test. Je les retire de la liste. Le test sur les clés exactes couvre déjà ce cas.
+⏺ Edit(/home/claude/claude-lab/jang-app/src/lib/notebook-export.test.ts)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/lib/notebook-export.test.ts)
+⏺ Bash(npm test 2>&1 | grep -E "Tests|Test Files|FAIL"; npm run build 2>&1 | tail -8; git status --short)
+⏺ Le bouton « Exporter mon carnet » est en place dans l'onglet « Mon carnet ». `npm test` passe (35 tests, dont les nouveaux) et `npm run build` aussi, avec `check:answers` OK (142 fragments vérifiés). Je n'ai rien commité et je n'ai pas créé de branche. Je n'ai pas non plus testé le rendu dans un vrai navigateur : l'affichage à 360 px et le téléchargement réel restent à vérifier à la main.
+
+**Le fichier téléchargé**
+- Il s'appelle `jang-carnet-AAAA-MM-JJ.json`, avec la date locale.
+- Il contient `exportedAt` (la date d'export) et les 14 exercices dans l'ordre du catalogue.
+- Chaque exercice a 4 champs : `id`, `chapter`, `status` et `note`.
+- Les exercices que l'élève n'a pas touchés valent `todo`, avec une note vide.
+- Le fichier n'a ni énoncé ni corrigé : il est construit champ par champ à partir de l'ID, du chapitre et du carnet.
+- Le téléchargement se fait sur le téléphone, sans réseau et sans nouvelle dépendance. Le JS compressé est à 74,7 KB.
+
+**Ce qui a changé**
+- Nouveaux fichiers : `src/lib/notebook-export.ts`, `src/components/ExportNotebook.tsx` et `src/lib/notebook-export.test.ts`.
+- Le bouton a le même style que « Remettre mon carnet à zéro » et se trouve juste avant. Il est grisé quand le carnet est vide. Après le clic, un message indique « Fichier … téléchargé. ».
+- J'ai aussi modifié `NotebookPage.tsx`, `global.css` (une règle `.notebook-actions`, sans nouvelle couleur), `App.test.tsx`, `docs/decisions.md` et la liste des dossiers de `CLAUDE.md`.
+
+**Le garde-fou 
+== RESULT success cost 0.7327604 turns 17

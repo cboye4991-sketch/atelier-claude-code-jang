@@ -12,7 +12,9 @@ Travail réalisé le 29–30/09/2026 avec le vrai Claude Code (2.1.285), en mode
 | `04-memoire-utilisateur/` | E04 | `CLAUDE.md` = ta mémoire utilisateur |
 | `05-brand/` (git) | E05 | skill `jang-brand`, `email-suivi-professeur.html`, `post-linkedin.md`, `flyer-appel-professeurs.html`, `hero.jpg` (capture réelle du MVP) |
 | `06-plugins/` (git) | E06 | `sources/`, `competitive-analysis.md`, `marketing-plan.html` |
-| `jang-app/` (git, branche `phase-1`) | E07 | `CLAUDE.md` du projet fil rouge (96 lignes) |
+| `jang-app/` | E07, E08 | `CLAUDE.md` du projet fil rouge, protections des clés (`.gitignore`, `.env.example`, règles `deny`), app React/TypeScript phase 1 : catalogue des 14 exercices, carnet de progression, export JSON |
+| `app/` | E08 | version compilée de l'app, publiée sur GitHub Pages |
+| `dify-relay/` | E09 (en avance) | relais Cloudflare entre la landing et Dify |
 | `_prompts/` | tous | les prompts exacts envoyés à Claude Code |
 | `_journal/` | tous | transcriptions de chaque session Claude Code, tests, sorties git |
 | `_captures/` | tous | captures d'écran des résultats |

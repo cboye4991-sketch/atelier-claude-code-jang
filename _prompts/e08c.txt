@@ -1,0 +1,1 @@
+Plan approuvé, avec une seule modification : reste sur la branche actuelle phase-1 (ne crée pas feat/phase-1) et ne fais aucun commit, je le ferai. Construis maintenant la phase 1 selon le plan, puis vérifie npm run build, le script check-no-answers et la persistance.

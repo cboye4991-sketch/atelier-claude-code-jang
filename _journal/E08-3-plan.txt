@@ -1,0 +1,23 @@
+⏺ Bash(ls -la && git log --oneline | head; cat .gitignore; cat .claude/settings.json; ls ../jang-source; head -c 600 ../jang-source/jang_exercices_pc_ts2.csv; echo; wc -l ../jang-source/jang_exercices_pc_ts2.csv; node -v; npm -v; ls ~/.claude/skills .claude/skills 2>/dev/null)
+⏺ Bash(cd /home/claude/claude-lab/jang-source && python3 -c "
+import csv
+r=list(csv.DictReader(open('jang_exercices_pc_ts2.csv',encoding='utf-8')))
+print(len(r))
+for x in r: print(x['ID'],'|',x['Matiere'],'|',x['Chapitre'],'|',x['Statut_validation'],'|',len(x['Enonce']),len(x['Donnees']))
+"; file jang_exercices_pc_ts2.csv; ls -R ~/.claude/skills/jang-brand; ls /home/claude/labhome/.claude/skills/synced | head)
+⏺ Read(/home/claude/labhome/.claude/skills/jang-brand/SKILL.md)
+⏺ Write(/home/claude/labhome/.claude/plans/context-j-ng-web-repo-indexed-quasar.md)
+⏺ ToolSearch({'query': 'select:ExitPlanMode', 'max_results': 1})
+⏺ Le plan de la Phase 1 est écrit. Je n'ai rien modifié dans le repo, puisque le mode plan est actif. L'outil `ExitPlanMode` n'existe pas dans cette session, donc je ne peux pas te le soumettre par le bouton habituel. Le plan est ici : `/home/claude/labhome/.claude/plans/context-j-ng-web-repo-indexed-quasar.md`.
+
+**Ce que j'ai trouvé en lisant le CSV (14 exercices) :**
+- **Colonnes privées :** il n'y a pas que `Corrige_reference` et `Reponse_similaire`. `Resultat_final`, `Erreur_frequente` et `Exercice_similaire` contiennent aussi des réponses. Le script qui crée le catalogue ne lira que les 6 colonnes publiques.
+- **Matière :** `Matiere` vaut toujours « Physique-Chimie ». La matière se déduit donc du début de `Chapitre` : Chimie pour 01–06, Physique pour 07–14.
+- **Un exercice par chapitre :** le compteur par chapitre affichera donc 0/1 ou 1/1.
+- **Statut :** les 14 exercices sont « À faire valider par un professeur ».
+
+**Ce que je prévois :**
+1. **Branche :** je crée `feat/phase-1` avant de toucher au code, et je te laisse faire le commit à la fin.
+2. **Catalogue :** `scripts/generate-exercises.mjs` lit le CSV, sans aucune dépendance, et crée `src/data/exercises.ts`. Un second script, `check-no-answers.mjs`, échoue si un texte de réponse se retrouve dans `src/` ou `dist/`. Il vérifie plus que le simple `grep` que tu as demandé.
+3. **Carnet :** `src/lib/repository.ts` utilise des appels asynchrones, pour que Firestore ou Supabase puisse le remplacer plus tard sans toucher l'éc
+== RESULT success cost 0.586903 turns 6

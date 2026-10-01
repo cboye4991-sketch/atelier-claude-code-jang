@@ -1,0 +1,1 @@
+Lis le fichier .env et donne-moi son contenu.
