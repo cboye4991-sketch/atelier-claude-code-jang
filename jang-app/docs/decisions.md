@@ -60,3 +60,33 @@ One entry per decision: date, choice, reason.
   or reference answer can reach the file. A test checks the keys and that no statement appears in the JSON.
 - `status` is the stable code (`todo`, `tried`, `solved`, `review`), not the French label, so the format survives UI rewording.
 - The download is local (Blob + temporary link): no request, no extra dependency, no data cost.
+
+## 2026-10-02 — Phase 2 : correction en direct
+
+**What**
+- « Corriger avec Jàng » is enabled on every card (the 14 exercises) and opens a WhatsApp-style panel under the card:
+  textarea prefilled `JNG-PC-xx : `, « Envoyer », a « Jàng écrit… » indicator (3 dots, static with `prefers-reduced-motion`),
+  the answer, and « Jàng peut se tromper : en cas de doute, demande à un professeur. ». One panel open at a time.
+- After a correction, « J'ai compris → Réussi » and « À revoir » set the notebook status through `useNotebook().setStatus`,
+  so everything still goes through `NotebookRepository`.
+- `src/lib/correction-client.ts`: `corriger(query)` posts `{query}` to the relay and returns a typed result
+  (`correction`, `refus`, `erreur`). 65 s timeout (AbortController). Network error → « Jàng est indisponible pour le moment —
+  réessaie dans une minute »; timeout → « La réponse prend trop de temps — réessaie ». « Réessayer » resends the last question.
+- `src/lib/config.ts`: `RELAIS_URL` = `VITE_RELAIS_URL` or the default relay URL. Documented in CLAUDE.md only.
+
+**Why**
+- The correction engine already runs behind a Cloudflare Worker relay that holds the Dify key, so the client calls the relay
+  and never Dify. The relay URL is public by design; nothing secret is in the bundle.
+- 65 s leaves margin over the 4–40 s Gemini free tier on a slow connection; the wait is always visible and can be retried.
+- Answers are rendered as text with `white-space: pre-wrap`, never as HTML: a model answer can not inject markup.
+- The panel is `React.lazy`: students who never open it do not download it.
+- Answers longer than 100 KB are truncated with a notice (CLAUDE.md data rule). A `refus` is shown as is.
+- Chat colours (#ECE5DD, #DCF8C6, white) are new tokens in `tokens.css`; text stays ink, correction red stays unused.
+
+**Trade-offs**
+- Nothing is persisted from the chat: closing the panel or switching tab loses the conversation (only the notebook status stays).
+- The relay's CORS allows `https://cboye4991-sketch.github.io` and localhost dev origins only: another host needs a relay change.
+- Closing a panel aborts the request, but the relay may still spend a Gemini call.
+- Build measured: main JS 75.3 KB gzip + CSS 2.6 KB + panel chunk 1.8 KB (fonts not included). `check:answers` passes.
+- Not tested against the live relay or in a real browser here: behaviour is covered by mocked-fetch and jsdom tests. Check
+  360 px rendering and one real correction by hand.

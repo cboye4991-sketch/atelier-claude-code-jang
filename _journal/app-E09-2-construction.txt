@@ -1,0 +1,439 @@
+⏺ Je commence par la config, le type d'environnement et le client.
+⏺ Bash(mkdir -p src/lib && cat > src/vite-env.d.ts <<'EOF'
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  /** Optional override of the correction relay URL (public, not a secret). */
+  readonly VITE_RELAIS_URL?: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+EOF
+cat > src/lib/config.ts <<'EOF'
+const DEFAULT_RELAIS_URL = 'https://jang-relay.jang-bac.workers.dev/corriger';
+
+/** Public relay that holds the Dify key. The URL is not a secret. */
+export const RELAIS_URL: string = import.meta.env.VITE_RELAIS_URL?.trim() || DEFAULT_RELAIS_URL;
+
+/** Gemini free tier can take 4 to 40 s; leave margin for a slow connection. */
+export const CORRECTION_TIMEOUT_MS = 65_000;
+export const QUERY_MIN_LENGTH = 3;
+export const QUERY_MAX_LENGTH = 1000;
+/** A correction message stays under 100 KB (characters used as a close, safe proxy). */
+export const ANSWER_MAX_LENGTH = 100_000;
+EOF
+cat > src/lib/correction-client.ts <<'EOF'
+import {
+  ANSWER_MAX_LENGTH,
+  CORRECTION_TIMEOUT_MS,
+  QUERY_MAX_LENGTH,
+  QUERY_MIN_LENGTH,
+  RELAIS_URL,
+} from './config';
+
+export type CorrectionResult =
+  | { kind: 'correction'; text: string }
+  /** The request is out of scope: show the text as is. */
+  | { kind: 'refus'; text: string }
+  | { kind: 'erreur'; text: string };
+
+export const MESSAGE_UNAVAILABLE = 'Jàng est indisponible pour le moment — réessaie dans une minute';
+export const MESSAGE_TIMEOUT = 'La réponse prend trop de temps — réessaie';
+export const MESSAGE_QUERY_LENGTH = `Écris entre ${QUERY_MIN_LENGTH} et ${QUERY_MAX_LENGTH} caractères.`;
+export const MESSAGE_TRUNCATED = '\n\n[Message coupé : il était trop long.]';
+
+export interface CorrigerOptions {
+  /** Aborting (panel closed) stops the request without an error message. */
+  signal?: AbortSignal;
+  fetchImpl?: typeof fetch;
+  timeoutMs?: number;
+}
+
+const unavailable = (): CorrectionResult => ({ kind: 'erreur', text: MESSAGE_UNAVAILABLE });
+
+function limit(text: string): string {
+  return text.length > ANSWER_MAX_LENGTH ? text.slice(0, ANSWER_MAX_LENGTH) + MESSAGE_TRUNCATED : text;
+}
+
+function parseBody(body: unknown): CorrectionResult | null {
+  if (typeof body !== 'object' || body === null) return null;
+  const { type, text } = body as Record<string, unknown>;
+  if (typeof text !== 'string' || text.trim() === '') return null;
+  if (type === 'correction' || type === 'refus' || type === 'erreur') {
+    return { kind: type, text: limit(text) };
+  }
+  return null;
+}
+
+/** Sends the student's work to the relay. Never throws: every failure becomes an `erreur` result. */
+export async function corriger(query: string, options: CorrigerOptions = {}): Promise<CorrectionResult> {
+  const { signal, fetchImpl = fetch, timeoutMs = CORRECTION_TIMEOUT_MS } = options;
+  const trimmed = query.trim();
+  if (trimmed.length < QUERY_MIN_LENGTH || trimmed.length > QUERY_MAX_LENGTH) {
+    return { kind: 'erreur', text: MESSAGE_QUERY_LENGTH };
+  }
+
+  const controller = new AbortController();
+  let timedOut = false;
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeoutMs);
+  const onCallerAbort = () => controller.abort();
+  if (signal?.aborted) controller.abort();
+  else signal?.addEventListener('abort', onCallerAbort, { once: true });
+
+  try {
+    const response = await fetchImpl(RELAIS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: trimmed }),
+      signal: controller.signal,
+    });
+    const body: unknown = await response.json().catch(() => null);
+    return parseBody(body) ?? unavailable();
+  } catch {
+    return timedOut ? { kind: 'erreur', text: MESSAGE_TIMEOUT } : unavailable();
+  } finally {
+    clearTimeout(timer);
+    signal?.removeEventListener('abort', onCallerAbort);
+  }
+}
+EOF
+cat > src/lib/correction-client.test.ts <<'EOF'
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { corriger, MESSAGE_QUERY_LENGTH, MESSAGE_TIMEOUT, MESSAGE_UNAVAILABLE } from './correction-client';
+import { ANSWER_MAX_LENGTH, RELAIS_URL } from './config';
+
+afterEach(() => vi.useRealTimers());
+
+function reply(status: number, body: unknown): typeof fetch {
+  return vi.fn(() =>
+    Promise.resolve(new Response(typeof body === 'string' ? body : JSON.stringify(body), { status })),
+  ) as unknown as typeof fetch;
+}
+
+describe('corriger', () => {
+  it('posts {query} to the relay and returns a correction', async () => {
+    const fetchImpl = reply(200, { type: 'correction', text: 'Ligne 1\nLigne 2' });
+    const result = await corriger('  JNG-PC-01 : C = 0,1 mol/L  ', { fetchImpl });
+    expect(result).toEqual({ kind: 'correction', text: 'Ligne 1\nLigne 2' });
+    const [url, init] = vi.mocked(fetchImpl).mock.calls[0] ?? [];
+    expect(url).toBe(RELAIS_URL);
+    expect(init?.method).toBe('POST');
+    expect(JSON.parse(String(init?.body))).toEqual({ query: 'JNG-PC-01 : C = 0,1 mol/L' });
+  });
+
+  it('maps a 422 refus', async () => {
+    const result = await corriger('bonjour toi', { fetchImpl: reply(422, { type: 'refus', text: 'Hors sujet.' }) });
+    expect(result).toEqual({ kind: 'refus', text: 'Hors sujet.' });
+  });
+
+  it('keeps the relay message on a 5xx erreur', async () => {
+    const result = await corriger('abc', { fetchImpl: reply(502, { type: 'erreur', text: 'Panne du moteur.' }) });
+    expect(result).toEqual({ kind: 'erreur', text: 'Panne du moteur.' });
+  });
+
+  it('maps a network error to the unavailable message', async () => {
+    const fetchImpl = vi.fn(() => Promise.reject(new TypeError('Failed to fetch'))) as unknown as typeof fetch;
+    expect(await corriger('abc', { fetchImpl })).toEqual({ kind: 'erreur', text: MESSAGE_UNAVAILABLE });
+  });
+
+  it('maps malformed or unknown payloads to the unavailable message', async () => {
+    for (const body of ['<html>502</html>', { type: 'autre', text: 'x' }, { type: 'correction' }]) {
+      expect(await corriger('abc', { fetchImpl: reply(200, body) })).toEqual({
+        kind: 'erreur',
+        text: MESSAGE_UNAVAILABLE,
+      });
+    }
+  });
+
+  it('times out after 65 s by default', async () => {
+    vi.useFakeTimers();
+    const fetchImpl = vi.fn(
+      (_url: unknown, init?: RequestInit) =>
+        new Promise((_resolve, reject) => {
+          init?.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')));
+        }),
+    ) as unknown as typeof fetch;
+    const pending = corriger('abc', { fetchImpl });
+    await vi.advanceTimersByTimeAsync(64_999);
+    let settled = false;
+    void pending.then(() => (settled = true));
+    await Promise.resolve();
+    expect(settled).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(await pending).toEqual({ kind: 'erreur', text: MESSAGE_TIMEOUT });
+  });
+
+  it('rejects out-of-range queries without a request', async () => {
+    const fetchImpl = reply(200, { type: 'correction', text: 'x' });
+    for (const query of ['  ab ', 'x'.repeat(1001)]) {
+      expect(await corriger(query, { fetchImpl })).toEqual({ kind: 'erreur', text: MESSAGE_QUERY_LENGTH });
+    }
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('truncates answers above the size limit', async () => {
+    const result = await corriger('abc', {
+      fetchImpl: reply(200, { type: 'correction', text: 'a'.repeat(ANSWER_MAX_LENGTH + 10) }),
+    });
+    expect(result.text.length).toBeLessThan(ANSWER_MAX_LENGTH + 100);
+    expect(result.text).toContain('Message coupé');
+  });
+});
+EOF
+sed -n 295,345p src/styles/global.css; sed -n 596,611p src/styles/global.css)
+⏺ Le shell a refusé cette commande ; j'écris les fichiers avec l'outil Write.
+⏺ Write(/home/claude/claude-lab/jang-app/src/vite-env.d.ts)
+⏺ Write(/home/claude/claude-lab/jang-app/src/lib/config.ts)
+⏺ Write(/home/claude/claude-lab/jang-app/src/lib/correction-client.ts)
+⏺ Write(/home/claude/claude-lab/jang-app/src/lib/correction-client.test.ts)
+⏺ Bash(sed -n 300,345p src/styles/global.css; sed -n 596,611p src/styles/global.css; cat CLAUDE.md | grep -n "" | sed -n 1,30p)
+⏺ Maintenant le panneau, puis le branchement.
+⏺ Write(/home/claude/claude-lab/jang-app/src/components/CorrectionPanel.tsx)
+⏺ Write(/home/claude/claude-lab/jang-app/src/components/ExerciseCard.tsx)
+⏺ Bash(python3 - <<'EOF'
+import re
+p='src/pages/ExercisesPage.tsx'
+s=open(p).read()
+s=s.replace("import type { Notebook } from '../lib/repository';","import type { ExerciseStatus, Notebook } from '../lib/repository';")
+s=s.replace("  notebook: Notebook;\n}","  notebook: Notebook;\n  onSetStatus: (id: string, status: ExerciseStatus) => void;\n}")
+s=s.replace("{ notebook }: ExercisesPageProps","{ notebook, onSetStatus }: ExercisesPageProps")
+s=s.replace("  const [subject, setSubject] = useState<SubjectFilter>('all');\n","  const [subject, setSubject] = useState<SubjectFilter>('all');\n  // One correction panel open at a time.\n  const [openId, setOpenId] = useState<string | null>(null);\n")
+s=s.replace("""            <ExerciseCard key={exercise.id} exercise={exercise} status={getStatus(notebook, exercise.id)} />""","""            <ExerciseCard
+              key={exercise.id}
+              exercise={exercise}
+              status={getStatus(notebook, exercise.id)}
+              open={openId === exercise.id}
+              onToggle={() => setOpenId((current) => (current === exercise.id ? null : exercise.id))}
+              onSetStatus={(next) => onSetStatus(exercise.id, next)}
+            />""")
+open(p,'w').write(s)
+p='src/App.tsx'
+s=open(p).read()
+s=s.replace("<ExercisesPage notebook={notebookApi.notebook} />","<ExercisesPage notebook={notebookApi.notebook} onSetStatus={notebookApi.setStatus} />")
+open(p,'w').write(s)
+p='src/styles/tokens.css'
+s=open(p).read()
+s=s.replace("  --tint: #e6f0ed;\n","  --tint: #e6f0ed;\n  /* Chat panel (WhatsApp look). Text stays ink. */\n  --chat-bg: #ece5dd;\n  --bubble-eleve: #dcf8c6;\n  --bubble-jang: #ffffff;\n")
+open(p,'w').write(s)
+p='src/styles/global.css'
+s=open(p).read()
+css="""
+/* Correction chat */
+.chat {
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--chat-bg);
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-intro {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.bubble {
+  max-width: 92%;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.bubble-eleve {
+  align-self: flex-end;
+  background: var(--bubble-eleve);
+  white-space: pre-wrap;
+}
+
+.bubble-jang {
+  align-self: flex-start;
+  background: var(--bubble-jang);
+}
+
+.bubble-text {
+  white-space: pre-wrap;
+}
+
+.disclaimer {
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.typing-hint {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 4px;
+}
+
+.dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+  animation: dot-pulse 1.2s infinite ease-in-out;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dot-pulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.chat-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chat-status .btn[aria-pressed='true'] {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.chat-form {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chat-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.chat-input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid var(--ink-soft);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  resize: vertical;
+}
+"""
+s=s.replace("\n@media (min-width: 560px) {",css+"\n@media (min-width: 560px) {",1)
+s=s.replace("""    transition: none !important;
+  }
+}""","""    transition: none !important;
+  }
+
+  .dots span {
+    animation: none;
+    opacity: 0.7;
+  }
+}""")
+open(p,'w').write(s)
+EOF
+git diff --stat; sed -n 20,30p src/App.test.tsx; grep -n "Corriger\|Bientôt" src/App.test.tsx)
+⏺ Le shell exige une approbation pour python ; je passe par l'outil Edit.
+⏺ Edit(/home/claude/claude-lab/jang-app/src/pages/ExercisesPage.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/pages/ExercisesPage.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/styles/tokens.css)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/styles/global.css)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/styles/global.css)
+⏺ Bash(sed -n 40,75p src/App.test.tsx)
+⏺ Mise à jour du test phase 1 et ajout des tests UI.
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.test.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.test.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.test.tsx)
+⏺ Bash(npm test 2>&1 | tail -40)
+⏺ Bash(npm run build 2>&1 | tail -25; for f in dist/assets/*.js dist/assets/*.css; do printf "%s %s gz\n" "$f" "$(gzip -c "$f" | wc -c)"; done)
+⏺ Bash(npm run build 2>&1 | tail -25)
+⏺ Build et `check:answers` passent. Reste la documentation.
+⏺ Bash(grep -n "" CLAUDE.md | sed -n 26,60p; grep -n "Corrige mon\|phase 2\|Phase 2\|Functions\|functions" CLAUDE.md)
+⏺ Edit(/home/claude/claude-lab/jang-app/CLAUDE.md)
+⏺ Edit(/home/claude/claude-lab/jang-app/CLAUDE.md)
+⏺ Edit(/home/claude/claude-lab/jang-app/CLAUDE.md)
+⏺ Edit(/home/claude/claude-lab/jang-app/CLAUDE.md)
+⏺ Bash(cat >> docs/decisions.md <<'EOF'
+
+## 2026-10-02 — Phase 2 : correction en direct
+
+**What**
+- « Corriger avec Jàng » is enabled on every card (the 14 exercises) and opens a WhatsApp-style panel under the card:
+  textarea prefilled `JNG-PC-xx : `, « Envoyer », a « Jàng écrit… » indicator (3 dots, static with `prefers-reduced-motion`),
+  the answer, and « Jàng peut se tromper : en cas de doute, demande à un professeur. ». One panel open at a time.
+- After a correction, « J'ai compris → Réussi » and « À revoir » set the notebook status through `useNotebook().setStatus`,
+  so everything still goes through `NotebookRepository`.
+- `src/lib/correction-client.ts`: `corriger(query)` posts `{query}` to the relay and returns a typed result
+  (`correction`, `refus`, `erreur`). 65 s timeout (AbortController). Network error → « Jàng est indisponible pour le moment —
+  réessaie dans une minute »; timeout → « La réponse prend trop de temps — réessaie ». « Réessayer » resends the last question.
+- `src/lib/config.ts`: `RELAIS_URL` = `VITE_RELAIS_URL` or the default relay URL. Documented in CLAUDE.md only.
+
+**Why**
+- The correction engine already runs behind a Cloudflare Worker relay that holds the Dify key, so the client calls the relay
+  and never Dify. The relay URL is public by design; nothing secret is in the bundle.
+- 65 s leaves margin over the 4–40 s Gemini free tier on a slow connection; the wait is always visible and can be retried.
+- Answers are rendered as text with `white-space: pre-wrap`, never as HTML: a model answer can not inject markup.
+- The panel is `React.lazy`: students who never open it do not download it.
+- Answers longer than 100 KB are truncated with a notice (CLAUDE.md data rule). A `refus` is shown as is.
+- Chat colours (#ECE5DD, #DCF8C6, white) are new tokens in `tokens.css`; text stays ink, correction red stays unused.
+
+**Trade-offs**
+- Nothing is persisted from the chat: closing the panel or switching tab loses the conversation (only the notebook status stays).
+- The relay's CORS allows `https://cboye4991-sketch.github.io` and localhost dev origins only: another host needs a relay change.
+- Closing a panel aborts the request, but the relay may still spend a Gemini call.
+- Build measured: main JS 75.3 KB gzip + CSS 2.6 KB + panel chunk 1.8 KB (fonts not included). `check:answers` passes.
+- Not tested against the live relay or in a real browser here: behaviour is covered by mocked-fetch and jsdom tests. Check
+  360 px rendering and one real correction by hand.
+EOF
+wc -l CLAUDE.md; npm run build 2>&1 | tail -4; npm test 2>&1 | grep -E "Tests|Files"; git status --short)
+⏺ La phase 2 est construite sur la branche actuelle, sans commit. `npm test` passe (47 tests, 6 fichiers), `npm run build` passe (tsc strict inclus) et `check:answers` aussi (142 fragments vérifiés, aucune fuite).
+
+**Taille du build (gzip)**
+- JS principal : 75,3 KB.
+- CSS : 2,6 KB.
+- Panneau de correction : 1,8 KB, dans un fichier séparé chargé au clic.
+- Les polices ne sont pas comptées, comme en phase 1.
+
+**Limites**
+- Je n'ai pas testé contre le vrai relais ni dans un navigateur : le comportement est couvert par des tests avec `fetch` simulé et jsdom.
+- Un seul `fetch` simulé retourne `Failed to fetch` pour le cas réseau ; le vrai CORS (origine GitHub Pages ou localhost) reste à vérifier à la main.
+
+**Ce que tu dois observer**
+1. Lance `npm run dev` et passe à 360 px.
+2. Clique « Corriger avec Jàng » sur JNG-PC-01 : le champ contient `JNG-PC-01 : `.
+3. Ouvre une autre carte : le premier panneau se ferme.
+4. Envoie ta réponse : « Jàng écrit… » apparaît avec les 3 points, puis la réponse avec ses retours à la ligne et l'avertissement « Jàng peut se tromper… ».
+5. Clique « J'ai compris → Réussi » : la pastille de la carte et « Mon carnet » passent à « Réussi ».
+6. Coupe le réseau dans les devtools : le message « Jàng est indisponible… » s'affiche avec un bouton « Réessayer ».
+
+**Comportements à connaître**
+- Le panneau affiche aussi un texte d'accueil (« Écris ta réponse ci-dessous… ») et un champ intitulé « Ta réponse » : ce sont des ajouts de ma part, hors liste demandée.
+- 
+== RESULT success cost 1.1295828 turns 29

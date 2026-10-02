@@ -11,6 +11,10 @@
   --physique: #0b84c6;
   --card: #ffffff;
   --tint: #e6f0ed;
+  /* Chat panel (WhatsApp look). Text stays ink. */
+  --chat-bg: #ece5dd;
+  --bubble-eleve: #dcf8c6;
+  --bubble-jang: #ffffff;
 
   --font-heading: 'Schibsted Grotesk', system-ui, sans-serif;
   --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;

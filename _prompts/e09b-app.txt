@@ -1,0 +1,1 @@
+Plan approuvé. Construis-le maintenant sur la branche actuelle, sans commit, puis vérifie npm run build, npm test et check:answers.

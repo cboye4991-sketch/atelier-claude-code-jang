@@ -42,7 +42,7 @@ export function App() {
       <main>
         <div className="container" role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
           {tab === 'exercises' ? (
-            <ExercisesPage notebook={notebookApi.notebook} />
+            <ExercisesPage notebook={notebookApi.notebook} onSetStatus={notebookApi.setStatus} />
           ) : (
             <NotebookPage api={notebookApi} />
           )}

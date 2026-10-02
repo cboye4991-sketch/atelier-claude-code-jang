@@ -1,0 +1,15 @@
+⏺ Bash(git status --short && git log --oneline -5 && ls && find src scripts docs -type f | sort && cat package.json && wc -l CLAUDE.md)
+⏺ Bash(cat docs/decisions.md src/components/ExerciseCard.tsx src/pages/ExercisesPage.tsx src/lib/use-notebook.ts src/lib/repository.ts src/App.tsx src/styles/tokens.css vite.config.ts; ls -a; cat .claude/settings*.json 2>/dev/null)
+⏺ Bash(head -40 src/App.test.tsx && head -30 src/data/exercises.ts && grep -n "validation" src/data/exercises.ts | head -20 && cat tsconfig.app.json && cat src/lib/exercise-utils.ts && grep -n "card\|btn\|hint\|reduced-motion\|@media" src/styles/global.css | head -60 && wc -l src/styles/global.css && cat scripts/check-no-answers.mjs | head -60)
+⏺ Write(/home/claude/labhome/.claude/plans/context-j-ng-web-app-whimsical-barto.md)
+⏺ Le plan de la phase 2 est prêt, mais je n'ai encore rien implémenté : le mode plan est actif et ne permet de modifier que le fichier du plan, `/home/claude/labhome/.claude/plans/context-j-ng-web-app-whimsical-barto.md`. Dans les outils de cette session, je ne trouve pas `ExitPlanMode`, qui sert normalement à te soumettre le plan pour validation. Pour lancer le travail, quitte le mode plan (Shift+Tab) ou réponds « go ». Le working tree est propre ; avant de commencer, je te conseille de créer une branche : `git switch -c phase-2-correction`.
+
+**Ce qui a orienté le plan**
+- Les 14 exercices n'ont aucun indicateur de disponibilité : le bouton sera donc actif sur toutes les cartes.
+- `npm run check:answers` échoue aussi si les noms des colonnes privées apparaissent dans `src/`. Je ne les écrirai donc nulle part, même pas en commentaire.
+- `useNotebook().setStatus` passe déjà par le repository, je le réutilise pour les deux boutons de statut.
+
+**Étapes**
+1. **`src/lib/config.ts`** : `RELAIS_URL` prend `VITE_RELAIS_URL` ou, à défaut, l'URL du relais. J'y mets aussi les constantes : délai de 65 s, question de 3 à 1000 caractères, réponse limitée à 100 KB et tronquée au-delà. Un fichier `src/vite-env.d.ts` donne un type précis à la variable, pour éviter `any`.
+2. **`correction-client.ts`** : `corriger(query, { signal?, fetchImpl?, timeoutMs? })` renvoie un résultat typé (`correction`, `refus` ou `erreur`). Il traduit en français les cas réseau, délai dépassé et réponse illisible, et 
+== RESULT success cost 0.49020820000000004 turns 5

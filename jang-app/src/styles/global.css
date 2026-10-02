@@ -597,6 +597,128 @@ legend {
   border: 0;
 }
 
+/* Correction chat */
+.chat {
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--chat-bg);
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-intro {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.bubble {
+  max-width: 92%;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.bubble-eleve {
+  align-self: flex-end;
+  background: var(--bubble-eleve);
+  white-space: pre-wrap;
+}
+
+.bubble-jang {
+  align-self: flex-start;
+  background: var(--bubble-jang);
+}
+
+.bubble-text {
+  white-space: pre-wrap;
+}
+
+.disclaimer {
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.typing-hint {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 4px;
+}
+
+.dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+  animation: dot-pulse 1.2s infinite ease-in-out;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dot-pulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.chat-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chat-status .btn[aria-pressed='true'] {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.chat-form {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chat-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.chat-input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid var(--ink-soft);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  resize: vertical;
+}
+
 @media (min-width: 560px) {
   .status-picker {
     grid-template-columns: repeat(4, 1fr);
@@ -607,5 +729,10 @@ legend {
   * {
     scroll-behavior: auto !important;
     transition: none !important;
+  }
+
+  .dots span {
+    animation: none;
+    opacity: 0.7;
   }
 }

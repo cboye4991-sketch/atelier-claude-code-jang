@@ -7,16 +7,21 @@
 - Target pages:
   - **Accueil**: presentation of Jàng. Not built yet.
   - **Exercices**: catalogue of exercises (IDs `JNG-PC-xx`), search, filter by subject. Built in phase 1.
-    The WhatsApp-style "Corrige mon exercice" chat is phase 2: the button is disabled for now.
+    Phase 2 (built): the "Corriger avec Jàng" button opens a WhatsApp-style chat panel under the card.
   - **Mon carnet**: the student's private notebook (status and note per exercise). Built in phase 1.
   - **Contact**: the volunteer teachers. Not built yet.
 - Phase 1 is a single page with two tabs held in state (no router).
 - The correction is produced by an existing Dify workflow, never by this repo.
-- Phase 2 will add a real WhatsApp channel. Do not build it until asked.
+- A real WhatsApp channel is a later phase. Do not build it until asked.
 
 ## Stack & versions
 - Vite 8 + React 19 + TypeScript 7 (strict), Vitest 5 (jsdom for component tests). No UI library.
-- Firebase Hosting + Cloud Functions 2nd gen; the Dify key lives in a Functions secret.
+- Correction goes through a public Cloudflare Worker relay (source: `dify-relay/` in the atelier repo):
+  `POST {"query"}` to `RELAIS_URL`, answers `{type: correction|refus|erreur, text}`. The relay holds the Dify key.
+- `VITE_RELAIS_URL` (optional, build time, public, not a secret) overrides the relay URL in `src/lib/config.ts`.
+  Do not add it to `.env.example`; it is documented here only.
+- Firebase Hosting + Cloud Functions 2nd gen stay planned for hosting/other server code; the Dify key
+  would live in a Functions secret if the proxy ever moves there.
 - Firestore later, for anonymous progress only.
 - Node 22 LTS.
 - The source of truth for exact versions is `package.json` and `functions/package.json`.
@@ -39,9 +44,9 @@ Run from the repo root unless noted. If a script does not exist yet, create it a
 ```
 src/
   pages/        * ExercisesPage, NotebookPage (later: Accueil, Contact)
-  components/   * UI pieces (exercise card, filters, status picker, progress)
-  lib/          * repository.ts (notebook storage), use-notebook.ts, exercise-utils.ts, notebook-export.ts
-                (later: API client for the correction endpoint)
+  components/   * UI pieces (exercise card, CorrectionPanel (lazy), filters, status picker, progress)
+  lib/          * repository.ts (notebook storage), use-notebook.ts, exercise-utils.ts, notebook-export.ts,
+                  config.ts (relay URL, limits), correction-client.ts (corriger(): 65 s timeout, typed result)
   data/         * exercises.ts, GENERATED from the CSV, never edited by hand
   styles/       * tokens and global CSS from /jang-brand
 scripts/        * generate-exercises.mjs, check-no-answers.mjs, csv.mjs
