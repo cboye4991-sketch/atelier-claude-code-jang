@@ -1,0 +1,90 @@
+⏺ Je commence par regarder les fichiers concernés.
+⏺ Bash(cat dify-relay/src/index.js dify-relay/wrangler.toml dify-relay/README.md .gitignore jang-app/.env.example; ls -a . .claude 2>&1 | head -40)
+⏺ **Étape 1 : limitation de débit (wrangler.toml + index.js)**
+⏺ Bash(cd /home/claude/atelier-claude-code-jang/dify-relay && cat >> wrangler.toml <<'EOF'
+
+# Rate limiting binding: 5 requests per 60 s per client IP (see src/index.js).
+# namespace_id is any integer unique in your Cloudflare account.
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 5, period = 60 }
+EOF
+python3 - <<'EOF'
+p='src/index.js'
+s=open(p,encoding='utf-8').read()
+s=s.replace('''const UNAVAILABLE_TEXT =
+  "Jàng est indisponible pour le moment — réessaie dans une minute";
+''','''const UNAVAILABLE_TEXT =
+  "Jàng est indisponible pour le moment — réessaie dans une minute";
+const RATE_LIMIT_TEXT =
+  "Trop de demandes en ce moment — réessaie dans une minute";
+''',1)
+s=s.replace('''async function handleCorriger(request, env, cors) {
+  if (!env.DIFY_API_KEY) {
+    console.error("DIFY_API_KEY is not configured");
+    return reply(500, erreur("Le service n'est pas configuré."), cors);
+  }
+''','''async function handleCorriger(request, env, cors) {
+  // Binding absent (local tests): skip the check.
+  if (env.RATE_LIMITER) {
+    const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+    const { success } = await env.RATE_LIMITER.limit({ key: ip });
+    if (!success) {
+      return reply(429, erreur(RATE_LIMIT_TEXT), cors);
+    }
+  }
+
+  if (!env.DIFY_API_KEY) {
+    // Generic message: do not reveal the configuration state.
+    console.error("DIFY_API_KEY is not configured");
+    return reply(502, erreur(UNAVAILABLE_TEXT), cors);
+  }
+''',1)
+s=s.replace('''    return reply(
+      429,
+      erreur("Trop de demandes en ce moment — réessaie dans une minute"),
+      cors
+    );''','''    return reply(429, erreur(RATE_LIMIT_TEXT), cors);''',1)
+open(p,'w',encoding='utf-8').write(s)
+EOF
+node --check src/index.js && echo SYNTAX_OK; git diff --stat)
+⏺ Bash(git status --short; tail -8 dify-relay/wrangler.toml)
+⏺ Rien n'a été exécuté. Je passe par les outils d'édition.
+⏺ Bash(cd /home/claude/atelier-claude-code-jang/dify-relay && printf '%s\n' '' '# Rate limiting binding: 5 requests per 60 s per client IP (see src/index.js).' '# namespace_id is any integer unique in your Cloudflare account.' '[[ratelimits]]' 'name = "RATE_LIMITER"' 'namespace_id = "1001"' 'simple = { limit = 5, period = 60 }' >> wrangler.toml && tail -8 wrangler.toml)
+⏺ Edit(/home/claude/atelier-claude-code-jang/dify-relay/src/index.js)
+⏺ Edit(/home/claude/atelier-claude-code-jang/dify-relay/src/index.js)
+⏺ Edit(/home/claude/atelier-claude-code-jang/dify-relay/src/index.js)
+⏺ Write(/home/claude/atelier-claude-code-jang/.claude/settings.json)
+⏺ Bash(cd /home/claude/atelier-claude-code-jang && printf '%s\n' '.dev.vars*' '.wrangler/' 'node_modules/' '*serviceAccount*.json' '*service-account*.json' '*.pem' '*.key' '**/.claude/settings.local.json' >> .gitignore && python3 - <<'EOF'
+p='jang-app/.env.example'
+s=open(p,encoding='utf-8').read().split('\n')
+i=next(k for k,l in enumerate(s) if l.startswith('# Server-side only'))
+s=s[:i]+['# The Dify API key is NOT configured here: it lives only in the relay',
+ '# (dify-relay), as a Cloudflare secret (`npx wrangler secret put DIFY_API_KEY`).','']
+open(p,'w',encoding='utf-8').write('\n'.join(s))
+EOF
+tail -5 jang-app/.env.example; tail -10 .gitignore)
+⏺ Ces deux appels ont été bloqués. Je continue avec les outils d'édition, un fichier à la fois.
+⏺ Edit(/home/claude/atelier-claude-code-jang/.gitignore)
+⏺ Edit(/home/claude/atelier-claude-code-jang/jang-app/.env.example)
+⏺ Edit(/home/claude/atelier-claude-code-jang/dify-relay/README.md)
+⏺ Edit(/home/claude/atelier-claude-code-jang/dify-relay/README.md)
+⏺ Bash(node --check /home/claude/atelier-claude-code-jang/dify-relay/src/index.js && echo SYNTAX_OK)
+⏺ Il reste le `settings.json` (étape 3), bloqué plus haut faute de permission. Je retente une fois.
+⏺ Write(/home/claude/atelier-claude-code-jang/.claude/settings.json)
+⏺ Cinq étapes sur six sont faites. L'étape 3 (`.claude/settings.json`) est bloquée : l'écriture m'a été refusée deux fois faute de permission. Je m'arrête là, comme demandé.
+
+**Fichiers modifiés (rien n'est commité)**
+- `dify-relay/wrangler.toml` : binding `[[ratelimits]]` `RATE_LIMITER`, limite de 5 requêtes par 60 s. J'ai mis `namespace_id = "1001"` ; cet entier est à choisir, il doit être unique dans ton compte Cloudflare.
+- `dify-relay/src/index.js` :
+  - Limitation par IP (`CF-Connecting-IP`) au début de `handleCorriger`. Si `env.RATE_LIMITER` est absent, la vérification est ignorée. Au-delà de la limite, la réponse est 429 avec le texte demandé. Le texte 429 de Dify passe par la même constante.
+  - Secret manquant : HTTP 502 avec le message générique « indisponible », le `console.error` est conservé.
+- `.gitignore` : les 8 lignes ajoutées, les anciennes sont conservées.
+- `jang-app/.env.example` : ligne `DIFY_API_KEY` supprimée, commentaire ajouté (la clé vit seulement dans le relais, secret Cloudflare).
+- `dify-relay/README.md` : nouvelle section « Limitation de débit » (fonctionnement, changer la limite, `npx wrangler deploy`). J'ai aussi remplacé la ligne « 500 Le service n'est pas configuré » du tableau de dépannage par le cas 502, devenu obsolète. Tu ne l'avais pas demandé, dis-moi si tu préfères l'annuler.
+
+**À observer**
+- `node --check dify-relay/src/index.js` passe sans erreur.
+- En local, `npx wrangler dev` n'applique aucune limite, car le binding est absent. Un
+== RESULT success cost 0.23227380000000003 turns 16

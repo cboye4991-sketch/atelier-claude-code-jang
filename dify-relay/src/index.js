@@ -21,6 +21,8 @@ const REFUS_TEXT =
   "Je ne peux pas corriger ce message. Envoie l'ID d'un exercice de la liste suivi de ta réponse.";
 const UNAVAILABLE_TEXT =
   "Jàng est indisponible pour le moment — réessaie dans une minute";
+const RATE_LIMIT_TEXT =
+  "Trop de demandes en ce moment — réessaie dans une minute";
 
 function parseOrigins(value) {
   return (value || DEFAULT_ORIGINS)
@@ -75,9 +77,19 @@ async function callDify(env, query) {
 }
 
 async function handleCorriger(request, env, cors) {
+  // Binding absent (local tests): skip the check.
+  if (env.RATE_LIMITER) {
+    const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+    const { success } = await env.RATE_LIMITER.limit({ key: ip });
+    if (!success) {
+      return reply(429, erreur(RATE_LIMIT_TEXT), cors);
+    }
+  }
+
   if (!env.DIFY_API_KEY) {
+    // Generic message: do not reveal the configuration state.
     console.error("DIFY_API_KEY is not configured");
-    return reply(500, erreur("Le service n'est pas configuré."), cors);
+    return reply(502, erreur(UNAVAILABLE_TEXT), cors);
   }
 
   const declared = Number(request.headers.get("Content-Length") || 0);
@@ -130,11 +142,7 @@ async function handleCorriger(request, env, cors) {
 
   const { status, json } = result;
   if (status === 429) {
-    return reply(
-      429,
-      erreur("Trop de demandes en ce moment — réessaie dans une minute"),
-      cors
-    );
+    return reply(429, erreur(RATE_LIMIT_TEXT), cors);
   }
   if (status < 200 || status >= 300 || !json) {
     console.error("Dify returned HTTP", status);

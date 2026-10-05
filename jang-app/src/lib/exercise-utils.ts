@@ -1,7 +1,9 @@
 import type { Exercise } from '../data/exercises';
+import type { ExerciseStatus } from './repository';
 
 export type Subject = 'Chimie' | 'Physique';
 export type SubjectFilter = Subject | 'all';
+export type StatusFilter = ExerciseStatus | 'all';
 
 const SEPARATOR = '—';
 

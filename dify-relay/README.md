@@ -133,12 +133,22 @@ Puis fais un commit et un push : GitHub Pages met la page à jour.
 - **Changer la clé** (rotation ou fuite) : régénère-la dans Dify, puis relance `npx wrangler secret put DIFY_API_KEY`.
 - **Voir les logs** : `npx wrangler tail`. Le relais n'y écrit jamais la clé ni le texte des élèves.
 
+## Limitation de débit
+
+Le relais limite chaque visiteur (identifié par son adresse IP, `CF-Connecting-IP`) à **5 demandes par 60 secondes**.
+Au-delà, il répond `429` avec `{"type":"erreur","text":"Trop de demandes en ce moment — réessaie dans une minute"}`.
+La limite est définie par le binding `RATE_LIMITER` (section `[[ratelimits]]` de `wrangler.toml`). En local
+(`npx wrangler dev` sans ce binding), la vérification est ignorée.
+
+- **Changer la limite** : modifie `simple = { limit = 5, period = 60 }` dans `wrangler.toml`
+  (`period` ne peut valoir que `10` ou `60` secondes), puis redéploie avec `npx wrangler deploy`.
+
 ## Si ça ne marche pas
 
 | Symptôme | Cause probable |
 |---|---|
 | `403 Origine non autorisée` | L'adresse de la page n'est pas dans `ALLOWED_ORIGINS` (vérifie `https`, le port, pas de `/` final). |
-| `500 Le service n'est pas configuré` | Le secret manque : refais l'étape 4 puis l'étape 5. |
+| `502 Jàng est indisponible` (alors que Dify fonctionne) | Le secret manque peut-être : refais l'étape 4 puis l'étape 5 (`npx wrangler tail` montre `DIFY_API_KEY is not configured`). |
 | `502` | Dify a refusé ou est en panne : vérifie la clé et que le workflow est publié. |
 | `504` | Dify a mis plus de 60 s : réessaie. |
 | Erreur CORS dans la console du navigateur | Même cause que le 403, ou `RELAIS_URL` sans `/corriger`. |

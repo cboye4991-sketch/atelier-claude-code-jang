@@ -1,0 +1,8 @@
+Context: docs/audit-securite-e14.md is the security review of this repo. I commit before changes (done). Apply ONLY these fixes, in small steps, then stop:
+1. Rate limiting in dify-relay: use the Cloudflare Workers rate limiting binding (`[[ratelimits]]` in wrangler.toml, name RATE_LIMITER, simple limit 5 requests per 60 s, keyed by the client IP from CF-Connecting-IP). In src/index.js, if env.RATE_LIMITER exists and the limit is hit, answer 429 {"type":"erreur","text":"Trop de demandes en ce moment — réessaie dans une minute"}; if the binding is absent (local tests), skip the check. Keep every other behaviour identical.
+2. Do not leak configuration state: the "missing secret" case returns the generic unavailable message with HTTP 502 (keep the console.error).
+3. Root `.claude/settings.json` with deny rules for Read/Edit of `./.env`, `./.env.*`, `./**/.env`, `./**/.env.*`, `./**/.dev.vars`, `./**/.secret.local`.
+4. Root `.gitignore`: add `.dev.vars*`, `.wrangler/`, `node_modules/`, `*serviceAccount*.json`, `*service-account*.json`, `*.pem`, `*.key`, `**/.claude/settings.local.json`, keeping existing lines.
+5. jang-app/.env.example: remove the DIFY_API_KEY line and add a comment that the Dify key lives only in the relay (Cloudflare secret).
+6. Update dify-relay/README.md: a short « Limitation de débit » section (what it does, how to change the limit, redeploy with `npx wrangler deploy`).
+Constraints: no new dependency; do not read or create any .env/.dev.vars; run `node --check dify-relay/src/index.js`. Do not commit. List files changed.

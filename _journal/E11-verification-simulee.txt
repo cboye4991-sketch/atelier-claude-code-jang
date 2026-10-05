@@ -1,0 +1,24 @@
+# Vérification du notebook (E11) — exécuté le 2026-10-05 avec un FAUX serveur d'API
+# Les réponses [SIMULATION] ne viennent pas de Claude : elles servent seulement à vérifier que
+# la section 1 envoie chaque question seule et que la section 2 renvoie tout l'historique.
+Clé API chargée depuis l'environnement. Modèle : claude-haiku-4-5
+14 exercices chargés depuis /tmp/claude-0/e11/data/catalogue_public.json
+Q : Quels chapitres de chimie couvre Jàng ?
+R : [SIMULATION] Chimie : 1) Solutions et pH (JNG-PC-01) 2) Acides forts (JNG-PC-02) ...
+[12 tokens de sortie] 
+
+Q : Et le deuxième, c'est quel exercice ?
+R : [SIMULATION] Le deuxième quoi ? Précise ta question.
+[12 tokens de sortie]
+Q : Quels chapitres de chimie couvre Jàng ?
+R : [SIMULATION] Chimie : 1) Solutions et pH (JNG-PC-01) 2) Acides forts (JNG-PC-02) ...
+[12 tokens de sortie] 
+
+Q : Et le deuxième, c'est quel exercice ?
+R : [SIMULATION] Le deuxième est JNG-PC-02 — Acides forts.
+[12 tokens de sortie]
+4 messages dans l'historique de session :
+- user : Quels chapitres de chimie couvre Jàng ?
+- assistant : [SIMULATION] Chimie : 1) Solutions et pH (JNG-PC-01) 2) Acides forts (
+- user : Et le deuxième, c'est quel exercice ?
+- assistant : [SIMULATION] Le deuxième est JNG-PC-02 — Acides forts.

@@ -1,0 +1,252 @@
+⏺ Read(/home/claude/claude-lab/jang-app/.claude/ralph-brief.md)
+⏺ Je commence par l'état du dépôt et du code existant.
+⏺ Bash(git status --short | head; git branch --show-current; ls; ls src src/*; wc -l src/pages/* src/components/* src/styles/* src/App.tsx 2>/dev/null; tail -30 docs/decisions.md)
+⏺ Je suis déjà sur la branche `ralph`, donc c'est bon côté commit/branche. Je lis maintenant le code de l'interface.
+⏺ Bash(cat src/App.tsx src/pages/*.tsx src/components/ExerciseCard.tsx src/components/SearchFilters.tsx src/components/ProgressSummary.tsx src/lib/exercise-utils.ts src/lib/use-notebook.ts src/styles/tokens.css index.html; grep -n "status\|Status" src/lib/repository.ts | head -20)
+⏺ Bash(sed -n 1,16p src/lib/repository.ts; grep -n "app-header\|\.brand\|\.tagline\|\.tabs\|\.tab\b\|\.chips\|\.chip\|\.toolbar\|\.progress-bar\|\.seg-\|\.progress-line\|\.result-count\|\.panel\b\|\.empty\|\.container" src/styles/global.css; cat src/App.test.tsx | head -60)
+⏺ Bash(sed -n 55,200p src/styles/global.css; sed -n 340,400p src/styles/global.css)
+⏺ Bash(grep -n "À revoir\|Réussi\|À faire\|Essayé" src/App.test.tsx src/components/CorrectionPanel.tsx src/components/StatusPicker.tsx)
+⏺ Bash(cat > src/lib/format-date.ts <<'EOF'
+const FORMATTER = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+/** "lundi 5 octobre": today's date for the header, in French. */
+export function formatToday(date: Date = new Date()): string {
+  return FORMATTER.format(date);
+}
+EOF
+cat > src/components/ProgressStrip.tsx <<'EOF'
+import type { NotebookSummary } from '../lib/use-notebook';
+
+interface ProgressStripProps {
+  summary: NotebookSummary;
+}
+
+/** Compact overall progress shown above the catalogue. */
+export function ProgressStrip({ summary }: ProgressStripProps) {
+  const { total, counts } = summary;
+  const percent = (count: number) => `${(count / total) * 100}%`;
+
+  return (
+    <section className="strip" aria-label="Ma progression">
+      <p className="strip-line">
+        <strong>
+          {counts.solved} réussi{counts.solved > 1 ? 's' : ''}
+        </strong>{' '}
+        sur {total}
+        {counts.review > 0 && <span className="strip-extra"> · {counts.review} à revoir</span>}
+      </p>
+      <div
+        className="progress-bar"
+        role="img"
+        aria-label={`${counts.solved} réussis, ${counts.tried} essayés, ${counts.review} à revoir, ${counts.todo} à faire`}
+      >
+        <span className="seg-solved" style={{ width: percent(counts.solved) }} />
+        <span className="seg-tried" style={{ width: percent(counts.tried) }} />
+        <span className="seg-review" style={{ width: percent(counts.review) }} />
+      </div>
+    </section>
+  );
+}
+EOF
+python3 - <<'EOF'
+import re
+p='src/App.tsx'; s=open(p).read()
+s=s.replace("import { useNotebook } from './lib/use-notebook';","import { formatToday } from './lib/format-date';\nimport { useNotebook } from './lib/use-notebook';")
+s=s.replace("""          <h1 className="brand">Jàng</h1>
+          <p className="tagline">""","""          <div className="brand-row">
+            <h1 className="brand">Jàng</h1>
+            <time className="today" dateTime={new Date().toISOString().slice(0, 10)}>
+              {formatToday()}
+            </time>
+          </div>
+          <p className="tagline">""")
+s=s.replace("<ExercisesPage notebook={notebookApi.notebook} onSetStatus","<ExercisesPage\n              notebook={notebookApi.notebook}\n              summary={notebookApi.summary}\n              onSetStatus")
+s=s.replace("onSetStatus={notebookApi.setStatus} />","onSetStatus={notebookApi.setStatus}\n            />")
+open(p,'w').write(s)
+
+p='src/pages/ExercisesPage.tsx'; s=open(p).read()
+s=s.replace("import { SearchFilters }","import { ProgressStrip } from '../components/ProgressStrip';\nimport { SearchFilters }")
+s=s.replace("import { getStatus } from","import { getStatus, type NotebookSummary } from")
+s=s.replace("  notebook: Notebook;\n","  notebook: Notebook;\n  summary: NotebookSummary;\n")
+s=s.replace("{ notebook, onSetStatus }","{ notebook, summary, onSetStatus }")
+s=s.replace("""  const visible = useMemo(() => filterExercises(EXERCISES, query, subject), [query, subject]);""","""  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const visible = useMemo(
+    () =>
+      filterExercises(EXERCISES, query, subject).filter(
+        (exercise) => statusFilter === 'all' || getStatus(notebook, exercise.id) === statusFilter,
+      ),
+    [query, subject, statusFilter, notebook],
+  );""")
+s=s.replace("import { filterExercises, type SubjectFilter }","import { filterExercises, type StatusFilter, type SubjectFilter }")
+s=s.replace("""      <SearchFilters query={query} subject={subject} onQueryChange={setQuery} onSubjectChange={setSubject} />""","""      <ProgressStrip summary={summary} />
+      <SearchFilters
+        query={query}
+        subject={subject}
+        status={statusFilter}
+        onQueryChange={setQuery}
+        onSubjectChange={setSubject}
+        onStatusChange={setStatusFilter}
+      />""")
+s=s.replace("Aucun exercice ne correspond. Essaie un autre mot, ou choisis « Tout ».","Aucun exercice ne correspond. Essaie un autre mot, ou choisis « Tout » et « Tous ».")
+open(p,'w').write(s)
+
+p='src/lib/exercise-utils.ts'; s=open(p).read()
+s=s.replace("export type SubjectFilter = Subject | 'all';","export type SubjectFilter = Subject | 'all';\nexport type StatusFilter = ExerciseStatus | 'all';")
+s=s.replace("import type { Exercise } from '../data/exercises';","import type { Exercise } from '../data/exercises';\nimport type { ExerciseStatus } from './repository';")
+open(p,'w').write(s)
+
+p='src/components/SearchFilters.tsx'; s=open(p).read()
+s=s.replace("import type { SubjectFilter }","import type { StatusFilter, SubjectFilter }")
+s=s.replace("  subject: SubjectFilter;\n","  subject: SubjectFilter;\n  status: StatusFilter;\n")
+s=s.replace("  onSubjectChange: (subject: SubjectFilter) => void;\n","  onSubjectChange: (subject: SubjectFilter) => void;\n  onStatusChange: (status: StatusFilter) => void;\n")
+s=s.replace("export function SearchFilters({ query, subject, onQueryChange, onSubjectChange }","export function SearchFilters({ query, subject, status, onQueryChange, onSubjectChange, onStatusChange }")
+s=s.replace("export function SearchFilters","const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [\n  { value: 'all', label: 'Tous' },\n  { value: 'todo', label: 'À faire' },\n  { value: 'review', label: 'À revoir' },\n  { value: 'solved', label: 'Réussi' },\n];\n\nexport function SearchFilters",1)
+s=s.replace("""        ))}
+      </div>
+    </div>""","""        ))}
+      </div>
+      <div className="chips" role="group" aria-label="Filtrer par statut">
+        {STATUS_OPTIONS.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            className="chip chip-small"
+            aria-pressed={status === option.value}
+            onClick={() => onStatusChange(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+    </div>""")
+open(p,'w').write(s)
+
+p='src/styles/global.css'; s=open(p).read()
+s=s.replace(""".app-header .tagline {""",""".brand-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 12px;
+}
+
+.today {
+  font-size: 0.875rem;
+  text-transform: capitalize;
+}
+
+.strip {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--grid);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.strip-line {
+  font-size: 0.95rem;
+}
+
+.strip-extra {
+  color: var(--ink-soft);
+}
+
+.chip-small {
+  padding: 4px 12px;
+  font-size: 0.9rem;
+}
+
+.app-header .tagline {""",1)
+open(p,'w').write(s)
+EOF
+git diff --stat; grep -n "progress-bar {" -A3 src/styles/global.css | head)
+⏺ Le shell a refusé la commande (rien n'a été exécuté). Je passe par les outils d'écriture et d'édition.
+⏺ Bash(git status --short)
+⏺ Write(/home/claude/claude-lab/jang-app/src/lib/format-date.ts)
+⏺ Write(/home/claude/claude-lab/jang-app/src/components/ProgressStrip.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/lib/exercise-utils.ts)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/pages/ExercisesPage.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/pages/ExercisesPage.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/pages/ExercisesPage.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/components/SearchFilters.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/components/SearchFilters.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/components/SearchFilters.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/styles/global.css)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/pages/ExercisesPage.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.test.tsx)
+⏺ Bash(npm test 2>&1 | tail -25; npm run build 2>&1 | tail -25)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.test.tsx)
+⏺ Bash(cat >> docs/decisions.md <<'EOF'
+
+## 2026-10-05 — Ralph round 1: header date, progress on Exercices, status filter
+
+**What**
+- Header shows today's date (`formatToday()` in `src/lib/format-date.ts`, `Intl.DateTimeFormat` fr-FR, no dependency) next to the app name.
+- New `ProgressStrip` above the catalogue: "x réussis sur 14", "à revoir" count when > 0, same 3-segment bar as the notebook.
+- New status filter (Tous / À faire / À revoir / Réussi) under the subject chips; combines with search and subject.
+  The empty-result message now says "change un filtre".
+
+**Why**
+- Aminata sees her progress without switching tab, and can jump to what she has to redo. Cost: pure client state, no request, no new dependency.
+
+**Trade-offs / still open**
+- Not checked in a real browser at 360 px (jsdom tests only). The extra chip row makes the toolbar taller on small screens.
+- Notebook tab has no dedicated empty-state message for a brand-new notebook (progress at 0 and the list are shown).
+- Build: main JS 75.7 KB gzip, CSS 2.6 KB. `npm test` 48 passed, `check:answers` OK.
+EOF
+npm test 2>&1 | grep -E "Tests|failed")
+⏺ Je n'émets pas la promesse `POLISHED`. Le build passe, mais tous les points de la barre de qualité ne sont pas vérifiés.
+
+**Ce que j'ai fait au tour 1** (sur la branche `ralph`, rien n'est commité) :
+1. **En-tête** : il affiche maintenant la date du jour en français, à côté du nom de l'app.
+2. **Progression sur l'onglet Exercices** : une bande « x réussis sur 14 » avec la barre de progression, au-dessus du catalogue.
+3. **Filtre par statut** : Tous / À faire / À revoir / Réussi, qui se combine avec la recherche et le filtre de matière. Le message « aucun résultat » dit maintenant « change un filtre ».
+
+**Vérifications** :
+- `npm test` : 48 tests passent, dont un nouveau pour la date, la progression et le filtre.
+- `npm run build` et `check:answers` passent. Le JS principal fait 75,7 Ko en gzip.
+- Une entrée « Ralph round 1 » est ajoutée dans `docs/decisions.md`.
+
+**Ce qui reste ouvert pour le tour 2** :
+- Je n'ai pas vérifié l'affichage dans un vrai navigateur à 360 px, seulement avec les tests jsdom. La ligne de filtres en plus rend la barre d'outils plus haute sur petit écran.
+- Le carnet n'a pas de message dédié quand il est vide.
+- Je dois encore contrôler la cohérence des espacements et des états d'erreur du relais, sur le rendu réel.
+
+Tu peux observer les changements avec `npm run dev` : la date en haut à droite du bandeau vert, la barre de progression sous les onglets, et la rangée de pastilles de statut sous celles de matière.
+⏺ Tour 2 : j'ajoute l'état « carnet vide », qui manquait, et je contrôle le rendu à 360 px.
+⏺ Edit(/home/claude/claude-lab/jang-app/src/pages/NotebookPage.tsx)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/styles/global.css)
+⏺ Edit(/home/claude/claude-lab/jang-app/src/App.test.tsx)
+⏺ Bash(npm test 2>&1 | grep -E "Tests|FAIL|✗|Error" ; npm run build 2>&1 | tail -8)
+⏺ Bash(cat >> docs/decisions.md <<'EOF'
+
+## 2026-10-05 — Ralph round 2: empty notebook state
+
+**What**
+- Notebook tab shows "Ton carnet est vide pour l'instant…" when no exercise has a status or note yet. Test added.
+
+**Why**
+- Closes the last missing state from the brief (search with no result, relay error and empty notebook now all have a message).
+
+**Still open**
+- Layout at 360 px and on desktop was not checked in a real browser (jsdom only). Do it by hand with `npm run dev`.
+- Build: main JS 75.7 KB gzip. `npm test` 49 passed, `check:answers` OK.
+EOF)
+⏺ Tour 2 terminé. Je n'émets toujours pas `POLISHED`, parce que je n'ai pas vérifié le rendu dans un vrai navigateur.
+
+**Ce que j'ai fait** :
+- Le carnet affiche maintenant « Ton carnet est vide pour l'instant… » tant qu'aucun exercice n'a de statut ou de note. J'ai ajouté un test pour ça.
+- Les trois états demandés par le brief ont tous un message : recherche sans résultat, erreur du relais, carnet vide.
+
+**Vérifications** :
+- `npm test` : 49 tests passent.
+- `npm run build` et `check:answers` passent. Le JS principal fait 75,7 Ko en gzip.
+- Une entrée « Ralph round 2 » est ajoutée dans `docs/decisions.md`.
+
+**Ce qui reste à faire par toi** : ouvrir `npm run dev` et regarder à 360 px et sur ordinateur. Je regarderais surtout la hauteur de la barre d'outils, avec ses deux rangées de pastilles, et le bandeau d'en-tête avec la date. Je ne peux pas le garantir depuis les seuls tests jsdom.
+
+C'était la dernière itération prévue (max 2), donc la boucle s'arrête ici.
+== RESULT success cost 0.4863802000000001 turns 33

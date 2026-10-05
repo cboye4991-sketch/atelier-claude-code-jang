@@ -1,0 +1,86 @@
+[
+ {
+  "ID": "JNG-PC-01",
+  "Chapitre": "Chimie — Solutions et pH des bases fortes",
+  "Enonce": "On dissout 2,0 g d'hydroxyde de sodium (NaOH) dans de l'eau pour obtenir 500 mL de solution. Calculer la concentration molaire C de la solution puis son pH à 25 °C.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-02",
+  "Chapitre": "Chimie — Acides forts",
+  "Enonce": "Une solution d'acide chlorhydrique a une concentration C = 1,0×10^-2 mol/L. Calculer son pH. On dilue cette solution 10 fois : quel est le nouveau pH ?",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-03",
+  "Chapitre": "Chimie — Acides faibles, Ka et pKa",
+  "Enonce": "On prépare une solution d'acide éthanoïque CH3COOH de concentration C = 1,0×10^-2 mol/L. Calculer son pH en supposant l'acide faiblement dissocié.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-04",
+  "Chapitre": "Chimie — Dosage acide faible / base forte",
+  "Enonce": "On dose Va = 20,0 mL d'une solution d'acide éthanoïque par une solution d'hydroxyde de sodium de concentration Cb = 0,10 mol/L. L'équivalence est obtenue pour VbE = 16,0 mL. Calculer la concentration Ca de l'acide. Quel est le pH à la demi-équivalence ?",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-05",
+  "Chapitre": "Chimie — Cinétique chimique",
+  "Enonce": "Au cours d'une réaction totale, la concentration du réactif limitant A passe de 0,040 mol/L à t = 0 à 0,020 mol/L à t = 6,0 min. Calculer la vitesse moyenne de disparition de A entre 0 et 6,0 min, puis donner le temps de demi-réaction.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-06",
+  "Chapitre": "Chimie — Alcools et oxydation ménagée",
+  "Enonce": "On réalise l'oxydation ménagée du butan-2-ol par une solution acidifiée de dichromate de potassium. Donner la classe de l'alcool, le nom et la famille du produit obtenu.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-07",
+  "Chapitre": "Physique — Lois de Newton (plan incliné)",
+  "Enonce": "Un solide de masse m = 0,50 kg, lâché sans vitesse initiale, glisse sans frottement sur un plan incliné d'un angle α = 30° par rapport à l'horizontale. Calculer son accélération puis sa vitesse après un parcours de 2,0 m.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-08",
+  "Chapitre": "Physique — Mouvement dans le champ de pesanteur",
+  "Enonce": "Une bille est lancée horizontalement avec une vitesse v0 = 5,0 m/s depuis une hauteur h = 1,8 m. On néglige les frottements. Calculer la durée de chute puis la distance horizontale parcourue avant de toucher le sol.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-09",
+  "Chapitre": "Physique — Gravitation et satellites",
+  "Enonce": "Un satellite décrit une orbite circulaire à l'altitude h = 800 km autour de la Terre. Calculer sa vitesse puis sa période de révolution.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-10",
+  "Chapitre": "Physique — Dipôle RC",
+  "Enonce": "Un condensateur de capacité C = 100 µF, initialement déchargé, est chargé à travers une résistance R = 10 kΩ sous une tension E = 12 V. Calculer la constante de temps τ, la tension uC à t = τ et la durée pratique de la charge.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-11",
+  "Chapitre": "Physique — Particule dans un champ magnétique",
+  "Enonce": "Un proton pénètre avec une vitesse v = 1,0×10^6 m/s perpendiculairement à un champ magnétique uniforme B = 0,10 T. Montrer que le mouvement est circulaire uniforme et calculer le rayon de la trajectoire.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-12",
+  "Chapitre": "Physique — Effet photoélectrique",
+  "Enonce": "Une cellule au césium (travail d'extraction W0 = 1,9 eV) est éclairée par une lumière de longueur d'onde λ = 500 nm. Calculer l'énergie d'un photon en eV, l'énergie cinétique maximale des électrons émis et la longueur d'onde seuil λ0.",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-13",
+  "Chapitre": "Physique — Radioactivité et décroissance",
+  "Enonce": "L'iode 131 a une période radioactive T = 8,0 jours. Un échantillon a une activité A0 = 8,0×10^6 Bq. Quelle est son activité après 24 jours ?",
+  "Statut_validation": "À faire valider par un professeur"
+ },
+ {
+  "ID": "JNG-PC-14",
+  "Chapitre": "Physique — Interférences lumineuses (fentes de Young)",
+  "Enonce": "Deux fentes distantes de a = 1,0 mm sont éclairées par une lumière monochromatique de longueur d'onde λ = 600 nm. L'écran est à D = 2,0 m des fentes. Calculer l'interfrange i.",
+  "Statut_validation": "À faire valider par un professeur"
+ }
+]

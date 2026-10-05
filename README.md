@@ -1,4 +1,4 @@
-# claude-lab — Atelier Claude Code (E00 à E07), version Jàng
+# claude-lab — Atelier Claude Code (E00 à E14), version Jàng
 
 Travail réalisé le 29–30/09/2026 avec le vrai Claude Code (2.1.285), en mode non interactif (`claude -p`), prompt par prompt, dans l'ordre de l'atelier. Sujet : **Jàng** à la place d'ATA suarl ; projet fil rouge : **l'app web Jàng** à la place de PromptLens.
 
@@ -14,6 +14,9 @@ Travail réalisé le 29–30/09/2026 avec le vrai Claude Code (2.1.285), en mode
 | `06-plugins/` (git) | E06 | `sources/`, `competitive-analysis.md`, `marketing-plan.html` |
 | `jang-app/` | E07, E08, E09 | `CLAUDE.md` du projet fil rouge, protections des clés (`.gitignore`, `.env.example`, règles `deny`), app React/TypeScript : catalogue des 14 exercices, correction en direct via le relais Dify (phase 2), carnet de progression, export JSON |
 | `app/` | E08 | version compilée de l'app, publiée sur GitHub Pages |
+| `11-agent/` | E11 | skill externe `claude-api` (anthropics/skills), environnement Python, notebook agent avec/sans mémoire (à lancer avec ta clé API dans `.env`) |
+| `.claude/agents/` · `docs/audit-securite-e14.md` | E14 | sous-agent relecteur sécurité (lecture seule) et son rapport ; correctifs appliqués (limitation de débit du relais, règles deny, .gitignore) |
+| (hors dépôt) `personal-os/` | E12, E13 | agent personnel (SOUL.md, vault, /ingest, /lint, /morning-brief) — données personnelles, livré à part, **jamais sur un dépôt public** |
 | `dify-relay/` | E09 | relais Cloudflare entre la landing et Dify |
 | `_prompts/` | tous | les prompts exacts envoyés à Claude Code |
 | `_journal/` | tous | transcriptions de chaque session Claude Code, tests, sorties git |

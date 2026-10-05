@@ -1,0 +1,4 @@
+$ claude plugin install ralph-loop@claude-plugins-official --scope local
+Installing plugin "ralph-loop@claude-plugins-official"...√ Successfully installed plugin: ralph-loop@claude-plugins-official (scope: local)
+$ claude plugin install frontend-design@claude-plugins-official --scope local
+Installing plugin "frontend-design@claude-plugins-official"...√ Successfully installed plugin: frontend-design@claude-plugins-official (scope: local)

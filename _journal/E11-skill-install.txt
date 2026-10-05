@@ -1,0 +1,16 @@
+$ npx skills add anthropics/skills --skill claude-api --agent claude-code --copy -y
+[1G[Jo  Installation complete
+[?25h
+|
+o  Installed 1 skill ---------------+
+|                                   |
+|                                   |
+|  Claude Api                       |
+|  ✓ claude-api (copied)            |
+|    → ./.claude/skills/claude-api  |
+|                                   |
++-----------------------------------+
+
+|
+—  Done!  Review skills before use; they run with full agent permissions.
+

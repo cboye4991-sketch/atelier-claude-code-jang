@@ -23,6 +23,11 @@ export function NotebookPage({ api }: NotebookPageProps) {
           Ton carnet ne sera pas gardé si tu fermes la page.
         </p>
       )}
+      {isEmpty && (
+        <p className="empty">
+          Ton carnet est vide pour l'instant. Corrige un exercice dans l'onglet Exercices, ou choisis un statut ci-dessous.
+        </p>
+      )}
       <ProgressSummary summary={summary} />
       <section className="panel" aria-labelledby="notebook-title">
         <h2 id="notebook-title">Mes exercices</h2>

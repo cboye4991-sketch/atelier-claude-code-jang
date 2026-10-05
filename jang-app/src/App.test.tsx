@@ -13,6 +13,15 @@ async function openNotebook(user: ReturnType<typeof userEvent.setup>) {
   await screen.findByText('Mes exercices');
 }
 
+describe('Mon carnet, empty', () => {
+  it('explains that the notebook is empty', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await openNotebook(user);
+    expect(screen.getByText(/Ton carnet est vide/)).toBeTruthy();
+  });
+});
+
 describe('Exercices tab', () => {
   it('lists the 14 exercises with enabled correction buttons and the validation badge', () => {
     render(<App />);
@@ -34,6 +43,28 @@ describe('Exercices tab', () => {
     await user.clear(screen.getByRole('searchbox'));
     await user.type(screen.getByRole('searchbox'), 'zzzz');
     expect(screen.getByText(/Aucun exercice ne correspond/)).toBeTruthy();
+  });
+
+  it('shows the date, the overall progress and filters by notebook status', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    expect(document.querySelector('header time')?.textContent).toMatch(/\d/);
+    expect(screen.getByLabelText('Ma progression').textContent).toContain('0 réussi sur 14');
+
+    await user.click(screen.getByRole('button', { name: 'Réussi' }));
+    expect(screen.getByText(/Aucun exercice ne correspond/)).toBeTruthy();
+
+    await user.click(screen.getByRole('button', { name: 'Tous' }));
+    // Set one status through the notebook tab, then filter on it.
+    await user.click(screen.getByRole('tab', { name: 'Mon carnet' }));
+    await screen.findByText('Mes exercices');
+    await user.click(screen.getAllByLabelText('Réussi')[0]!);
+    await user.click(screen.getByRole('tab', { name: 'Exercices' }));
+    expect(screen.getByLabelText('Ma progression').textContent).toContain('1 réussi sur 14');
+    await user.click(screen.getByRole('button', { name: 'Réussi' }));
+    expect(screen.getByRole('status').textContent).toBe('1 exercice sur 14');
+    await user.click(screen.getByRole('button', { name: 'À faire' }));
+    expect(screen.getByRole('status').textContent).toBe('13 exercices sur 14');
   });
 });
 

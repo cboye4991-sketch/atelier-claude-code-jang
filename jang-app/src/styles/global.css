@@ -77,6 +77,40 @@ textarea {
   font-size: 1.75rem;
 }
 
+.brand-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 12px;
+}
+
+.today {
+  font-size: 0.875rem;
+}
+
+.strip {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--grid);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.strip-line {
+  font-size: 0.95rem;
+}
+
+.strip-extra {
+  color: var(--ink-soft);
+}
+
+.chip-small {
+  min-height: 36px;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+}
+
 .app-header .tagline {
   margin-top: 2px;
   font-size: 0.95rem;
@@ -345,6 +379,10 @@ main {
   border: 1px dashed var(--ink-soft);
   border-radius: var(--radius);
   background: var(--card);
+}
+
+.empty + .panel {
+  margin-top: 12px;
 }
 
 /* Notebook */

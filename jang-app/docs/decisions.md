@@ -90,3 +90,31 @@ One entry per decision: date, choice, reason.
 - Build measured: main JS 75.3 KB gzip + CSS 2.6 KB + panel chunk 1.8 KB (fonts not included). `check:answers` passes.
 - Not tested against the live relay or in a real browser here: behaviour is covered by mocked-fetch and jsdom tests. Check
   360 px rendering and one real correction by hand.
+
+## 2026-10-05 — Ralph round 1: header date, progress on Exercices, status filter
+
+**What**
+- Header shows today's date (`formatToday()` in `src/lib/format-date.ts`, `Intl.DateTimeFormat` fr-FR, no dependency) next to the app name.
+- New `ProgressStrip` above the catalogue: "x réussis sur 14", "à revoir" count when > 0, same 3-segment bar as the notebook.
+- New status filter (Tous / À faire / À revoir / Réussi) under the subject chips; combines with search and subject.
+  The empty-result message now says "change un filtre".
+
+**Why**
+- Aminata sees her progress without switching tab, and can jump to what she has to redo. Cost: pure client state, no request, no new dependency.
+
+**Trade-offs / still open**
+- Not checked in a real browser at 360 px (jsdom tests only). The extra chip row makes the toolbar taller on small screens.
+- Notebook tab has no dedicated empty-state message for a brand-new notebook (progress at 0 and the list are shown).
+- Build: main JS 75.7 KB gzip, CSS 2.6 KB. `npm test` 48 passed, `check:answers` OK.
+
+## 2026-10-05 — Ralph round 2: empty notebook state
+
+**What**
+- Notebook tab shows "Ton carnet est vide pour l'instant…" when no exercise has a status or note yet. Test added.
+
+**Why**
+- Closes the last missing state from the brief (search with no result, relay error and empty notebook now all have a message).
+
+**Still open**
+- Layout at 360 px and on desktop was not checked in a real browser (jsdom only). Do it by hand with `npm run dev`.
+- Build: main JS 75.7 KB gzip. `npm test` 49 passed, `check:answers` OK.

@@ -1,0 +1,40 @@
+⏺ Bash(python3 - <<'EOF'
+import json
+d=json.load(open('data/catalogue_public.json'))
+print(type(d), list(d)[:5] if isinstance(d,dict) else len(d))
+print(json.dumps(d,ensure_ascii=False,indent=1)[:3500])
+EOF
+sed -n 1,80p .claude/skills/claude-api/python/claude-api/README.md)
+⏺ Bash(cd /home/claude/claude-lab/11-agent/.claude/skills/claude-api/python/claude-api && grep -n -i -E "^#+ |multi-turn|stop_reason|system=" README.md | head -60; grep -n -i "haiku" README.md | head)
+⏺ Bash(sed -n 89,106p README.md; sed -n 277,305p README.md; sed -n 331,382p README.md)
+⏺ Write(/tmp/claude-0/-home-claude-claude-lab-11-agent/4d508ef9-01bd-58a9-87e8-0ebd63658769/scratchpad/build_nb.py)
+⏺ Bash(cd /home/claude/claude-lab/11-agent && S=/tmp/claude-0/-home-claude-claude-lab-11-agent/4d508ef9-01bd-58a9-87e8-0ebd63658769/scratchpad && .venv/bin/python $S/build_nb.py && .venv/bin/python - <<EOF
+import json
+nb=json.load(open('notebooks/agent_lab.ipynb'))
+src=[ "".join(c['source']) for c in nb['cells'] if c['cell_type']=='code']
+open('$S/extracted.py','w').write("\n\n".join(src)+"\n")
+print(len(nb['cells']),'cells,',len(src),'code')
+EOF
+.venv/bin/python -m py_compile $S/extracted.py && echo COMPILE_OK
+# dry run: no network, mocked client; cwd = notebooks/
+cd notebooks && ANTHROPIC_API_KEY=dummy .venv_unused 2>/dev/null; cd /home/claude/claude-lab/11-agent/notebooks && env -u ANTHROPIC_API_KEY ../.venv/bin/python $S/extracted.py 2>&1 | tail -3)
+⏺ Je génère le notebook puis je le valide (JSON, `py_compile`, test à sec sans appel réseau).
+⏺ Bash(cd /home/claude/claude-lab/11-agent && .venv/bin/python /tmp/claude-0/-home-claude-claude-lab-11-agent/4d508ef9-01bd-58a9-87e8-0ebd63658769/scratchpad/build_nb.py)
+⏺ Write(/tmp/claude-0/-home-claude-claude-lab-11-agent/4d508ef9-01bd-58a9-87e8-0ebd63658769/scratchpad/check_nb.py)
+⏺ Bash(.venv/bin/python /tmp/claude-0/-home-claude-claude-lab-11-agent/4d508ef9-01bd-58a9-87e8-0ebd63658769/scratchpad/check_nb.py 2>&1 | tail -30; git status --short)
+⏺ `notebooks/agent_lab.ipynb` est créé, mais je ne l'ai pas exécuté contre l'API (pas de clé ici). Ses 14 cellules (7 de code, 7 de texte) s'enchaînent de haut en bas.
+
+**Vérifié sans appel réseau**
+- Le JSON est valide et le kernel déclaré est `agents-lab`.
+- Le code extrait passe `py_compile`.
+- Un test à sec avec un faux client confirme que le catalogue se charge (14 exercices) et que l'historique alterne bien user/assistant. La section sans mémoire envoie 1 message par tour ; la section avec mémoire en envoie 1 puis 3.
+- Sans `ANTHROPIC_API_KEY`, l'erreur française attendue s'affiche. Le notebook ne contient aucune chaîne qui ressemble à une clé.
+
+**Contenu**
+- **Constantes :** `MODEL = "claude-haiku-4-5"`, `MAX_TOKENS = 120` et le chemin du catalogue sont en tête du notebook.
+- **Clé :** elle est chargée depuis `.env` avec python-dotenv, jamais affichée.
+- **Appel API :** un seul appel `client.messages.create`, selon la doc du skill. Il traduit les erreurs courantes (clé refusée, quota, réseau) en français. Il affiche le nombre de tokens de sortie et signale une réponse tronquée.
+- **Prompt système :** il contient le catalogue et impose de décrire sans inventer, sans résoudre ni corriger. Si la question est ambiguë (par exemple « le deuxième » sans liste évoquée avant), l'agent doit demander une précision.
+- **Section 1 (sans mémoire) :** chaque question est envoyée seule.
+- **Section 2 (avec mémoire) :** une liste `history` est renvoyée en entier à chaque tour. Un dernier
+== RESULT success cost 0.5927048 turns 9

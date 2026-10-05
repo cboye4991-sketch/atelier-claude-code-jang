@@ -1,0 +1,51 @@
+⏺ Agent({'description': 'Audit sécurité Jàng avant démo', 'subagent_type': 'jang-security-reviewer', 'prompt': 'Audit Jàng befor)
+⏺ Glob({'pattern': '**/*', 'path': '/home/claude/atelier-claude-code-jang/dify-relay'})
+⏺ Glob({'pattern': '**/.gitignore', 'path': '/home/claude/atelier-claude-code-jang'})
+⏺ Glob({'pattern': '.claude/**', 'path': '/home/claude/atelier-claude-code-jang'})
+⏺ Glob({'pattern': 'jang-app/src/**', 'path': '/home/claude/atelier-claude-code-jang'})
+⏺ Glob({'pattern': 'app/**', 'path': '/home/claude/atelier-claude-code-jang'})
+⏺ Read(/home/claude/atelier-claude-code-jang/dify-relay/src/index.js)
+⏺ Read(/home/claude/atelier-claude-code-jang/dify-relay/wrangler.toml)
+⏺ Read(/home/claude/atelier-claude-code-jang/.gitignore)
+⏺ Read(/home/claude/atelier-claude-code-jang/dify-relay/.gitignore)
+⏺ Read(/home/claude/atelier-claude-code-jang/jang-app/.gitignore)
+⏺ Read(/home/claude/atelier-claude-code-jang/jang-app/src/lib/correction-client.ts)
+⏺ Read(/home/claude/atelier-claude-code-jang/jang-app/src/lib/config.ts)
+⏺ Read(/home/claude/atelier-claude-code-jang/jang-app/src/components/CorrectionPanel.tsx)
+⏺ Grep({'pattern': 'innerHTML|dangerouslySetInnerHTML|app-[A-Za-z0-9]{8,}|AIza|private_key|Corrige_reference|Resultat_final|Rep)
+⏺ Bash(cd /home/claude/atelier-claude-code-jang && git ls-files | grep -Ei 'env|dev\.vars|secret|\.pem|\.key|service|credential' ; echo ---; git log --all --oneline -- '*.env*' '*.dev.vars' | head; ls -la .claude 03-landing 03-landing/v2-skill 2>&1 | head -30)
+⏺ Glob({'pattern': '**/{.env*,.dev.vars*,*serviceAccount*,*service-account*,*.pem,settings*.json}', 'path': '/home/claude/ateli)
+⏺ Grep({'pattern': '(app-[A-Za-z0-9]{16,}|AIza[0-9A-Za-z_-]{20,}|BEGIN (RSA |)PRIVATE KEY|sk-[A-Za-z0-9]{20,}|Bearer [A-Za-z0-9)
+⏺ Grep({'pattern': 'Corrige|Resultat|corrig[eé] de r|Erreur_frequente|Exercice_similaire|solution', 'path': '/home/claude/ateli)
+⏺ Grep({'pattern': 'jang-relay|workers\\.dev|api\\.dify|fetch\\(|innerHTML|localStorage|<script|key|token', 'path': '/home/clau)
+⏺ Read(/home/claude/atelier-claude-code-jang/jang-app/src/lib/repository.ts)
+⏺ Grep({'pattern': 'workers\\.dev|api\\.dify|Authorization|Bearer', 'path': '/home/claude/atelier-claude-code-jang/app', 'outpu)
+⏺ Read(/home/claude/atelier-claude-code-jang/jang-app/.claude/settings.json)
+⏺ Grep({'pattern': 'Corrige|Resultat|corrig[eé] de r|Erreur_frequente|Exercice_similaire|solution', 'path': '/home/claude/ateli)
+⏺ Read(/home/claude/atelier-claude-code-jang/03-landing/v2-skill/index.html)
+⏺ Read(/home/claude/atelier-claude-code-jang/03-landing/.claude/settings.local.json)
+⏺ Read(/home/claude/atelier-claude-code-jang/jang-app/.env.example)
+⏺ # Audit sécurité de Jàng avant la démo
+
+Le sous-agent `jang-security-reviewer` n'a trouvé **aucun secret en clair ni fuite de corrigé** dans le dépôt, mais deux points sérieux restent à traiter. Je n'ai modifié aucun fichier. Les correctifs ci-dessous sont des propositions.
+
+Cet audit ne couvre pas l'historique git. Le sous-agent n'avait pas Bash, donc `git ls-files` et `git log` n'ont pas été exécutés.
+
+## Critique
+Aucun.
+
+## Élevée
+
+1. **Pas de limitation de débit ni d'authentification sur le relais** (`dify-relay/src/index.js:161-200`).
+   - Un `curl` sans en-tête `Origin` passe (lignes 173-178), et chaque requête déclenche un appel Dify puis Gemini.
+   - Un abus peut épuiser le quota gratuit et rendre la démo indisponible.
+   - **Correctif :** ajouter une règle Cloudflare de limitation de débit par IP (environ 5 requêtes par minute) ou le binding Workers `ratelimit`. Ajouter Turnstile si possible. Fixer un plafond de quota côté Dify.
+
+2. **Requêtes sans `Origin` acceptées** (`index.js:176-186`).
+   - Le contrôle d'allowlist ne s'applique que si l'en-tête est présent.
+   - **Correctif :** exiger `Origin` ou `Sec-Fetch-Site` en production, avec un drapeau d'environnement pour les tests. Cela ne remplace pas le point 1.
+
+3. **Règles de refus de Claude Code insuffisantes.**
+   - Il n'y a pas de `.claude/settings.json` à la racine. Seul `jang-app/.claude/settings.json` existe.
+   - Il ne protège que `./.env`, `./.env.*`, `./functions/.secret.local` et `./.dev.vars`, avec des c
+== RESULT success cost 0.30161239999999995 turns 2

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formatToday } from './lib/format-date';
 import { useNotebook } from './lib/use-notebook';
 import { ExercisesPage } from './pages/ExercisesPage';
 import { NotebookPage } from './pages/NotebookPage';
@@ -18,7 +19,12 @@ export function App() {
     <div className="app">
       <header className="app-header">
         <div className="container">
-          <h1 className="brand">Jàng</h1>
+          <div className="brand-row">
+            <h1 className="brand">Jàng</h1>
+            <time className="today" dateTime={new Date().toISOString().slice(0, 10)}>
+              {formatToday()}
+            </time>
+          </div>
           <p className="tagline">Tu révises seul ? Jàng te montre où tu t'es trompé.</p>
           <div className="tabs" role="tablist" aria-label="Sections">
             {TABS.map((item) => (
@@ -42,7 +48,11 @@ export function App() {
       <main>
         <div className="container" role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
           {tab === 'exercises' ? (
-            <ExercisesPage notebook={notebookApi.notebook} onSetStatus={notebookApi.setStatus} />
+            <ExercisesPage
+              notebook={notebookApi.notebook}
+              summary={notebookApi.summary}
+              onSetStatus={notebookApi.setStatus}
+            />
           ) : (
             <NotebookPage api={notebookApi} />
           )}

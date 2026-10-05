@@ -3,3 +3,11 @@
 Thumbs.db
 .env
 .env.*
+.dev.vars*
+.wrangler/
+node_modules/
+*serviceAccount*.json
+*service-account*.json
+*.pem
+*.key
+**/.claude/settings.local.json

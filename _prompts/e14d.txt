@@ -1,0 +1,1 @@
+Use the jang-security-reviewer subagent to audit Jàng before the demo to the teacher: dify-relay/src/index.js and wrangler.toml, jang-app/src/**, the built bundle in app/, 03-landing/v2-skill/index.html, .gitignore files and .claude/settings.json deny rules. Report findings by severity with file:line, then propose fixes but do not apply them. Answer in French.
