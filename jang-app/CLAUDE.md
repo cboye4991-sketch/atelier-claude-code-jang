@@ -4,45 +4,60 @@
 - Web MVP of Jàng: a corrector for Senegalese Bac physics-chemistry exercises (Terminale S2).
 - Users: students in regional high schools who revise alone, without a teacher, on entry-level
   Android phones with a small daily data bundle.
-- Three pages:
-  - **Accueil**: presentation of Jàng.
+- Live at https://cboye4991-sketch.github.io/jang-bac-helper/ (repo `cboye4991-sketch/jang-bac-helper`).
+- Five pages:
+  - **Accueil**: presentation of Jàng and an animated phone demo (`HeroPhoneDemo`, kept isolated
+    from the real chat).
   - **Exercices**: catalogue of exercises (IDs `JNG-PC-xx`), filters by subject, and a WhatsApp-style
-    "Corrige mon exercice" chat.
+    "Corrige mon exercice" chat with hints (3 levels), a 15-min mock exam, dictation, read-aloud,
+    "Vérifie mon similaire" and a WhatsApp challenge link.
+  - **Historique**: the student's past corrections, stored only in the browser (`localStorage`).
+  - **Conseils**: revision tips.
   - **Contact**: the volunteer teachers.
 - The correction is produced by an existing Dify workflow, never by this repo.
 - Phase 2 will add a real WhatsApp channel. Do not build it until asked.
 
 ## Stack & versions
-- Vite + React + TypeScript (strict).
-- Firebase Hosting + Cloud Functions 2nd gen; the Dify key lives in a Functions secret.
-- Firestore later, for anonymous progress only.
-- Node 22 LTS.
-- The source of truth for exact versions is `package.json` and `functions/package.json`.
+- React 19 + TanStack Start/Router + Tailwind CSS 4 + Vite, TypeScript. Generated with Lovable (S4),
+  then continued in VS Code and Claude Code.
+- Hosting: **GitHub Pages**, static build (`GITHUB_PAGES=1`, routes prerendered), deployed by
+  `.github/workflows/pages.yml` on every push to `main`.
+- Correction endpoint: the **Supabase Edge Function `corriger`** (`deploy/supabase-corriger/index.ts`).
+  It holds `DIFY_API_KEY` as a Supabase secret, checks the origin, calls Dify and returns
+  `{kind: "ok", text}`, `{kind: "refus", message}` or `{kind: "erreur", detail}`.
+  The site reaches it through `VITE_CORRIGER_URL` (a public URL, set as a GitHub Actions variable).
+- Alternative deployment kept in `deploy/README.md`: the whole app on Cloudflare Workers
+  (`deployer_jang.command`, secret `DIFY_API_KEY` in Cloudflare). Vercel and Netlify are not allowed
+  for this course.
+- No database: the history stays in the student's browser.
+- Node 22 LTS. The source of truth for exact versions is `package.json`.
   Update this section whenever a major dependency changes.
 - Visual identity: use the `/jang-brand` skill ("le cahier corrigé"). Do not invent colors or fonts.
 
 ## Commands
 Run from the repo root unless noted. If a script does not exist yet, create it and document it here.
-- `npm run dev`: Vite dev server.
-- `npm run build`: type-check and production build into `dist/`.
-- `npm test`: unit tests (Vitest).
-- `npm --prefix functions run build`: compile the Cloud Functions.
-- `firebase emulators:start --only functions,hosting`: local Functions and Hosting.
-- `firebase deploy --only hosting,functions`: deploy. Only when the user asks.
+- `npm install`: install (use npm, not bun: Lovable's `bun.lock` points to a private registry).
+- `npm run dev`: Vite dev server (reads `DIFY_API_KEY` from git-ignored `.env.local`).
+- `GITHUB_PAGES=1 VITE_CORRIGER_URL=<url> npm run build`: static build into `dist/client/`,
+  the same build as GitHub Pages.
+- `npm run lint`: ESLint. There is no test suite yet: test by hand with T1–T15
+  (`07-s5plus/tests-t1-t6.md` and `dify/tests-rag.md` in the `jang` repo).
+- Deploy = push to `main` (GitHub Pages). Redeploy the Supabase function only when
+  `deploy/supabase-corriger/index.ts` changes (`supabase functions deploy corriger`). Only when the user asks.
 
 ## Folder structure (target)
 ```
 src/
-  pages/        Accueil, Exercices, Contact
-  components/   UI pieces (chat, exercise card, filters)
-  lib/          API client for the correction endpoint, formatting helpers
-  data/         exercises catalogue, mirrors the knowledge base
-  styles/       tokens and global CSS from /jang-brand
-functions/
-  src/          HTTP function that proxies the Dify workflow
-docs/
-  decisions.md  one entry per decision: date, choice, reason
-firebase.json   hosting rewrite /api/** to the function
+  routes/       index (Accueil), exercices, historique, conseils, contact, __root (layout, menu)
+  components/   ChatJang (real chat), HeroPhoneDemo (scripted demo), Illustrations (inline SVG)
+  lib/          corriger-client (Supabase call), corriger.functions (Lovable server function),
+                exercices-bac (catalogue, mirrors the knowledge base), historique, dictee, voix, defi
+  styles.css    tokens and global CSS
+deploy/
+  supabase-corriger/index.ts   Edge Function that proxies the Dify workflow
+  README.md                    deployment guide (GitHub Pages + Supabase, or Cloudflare)
+docs/captures/  screenshots used in the README
+.github/workflows/pages.yml    GitHub Pages build and deploy
 ```
 
 ## Conventions
@@ -81,16 +96,17 @@ firebase.json   hosting rewrite /api/** to the function
 ## Workflow
 1. Plan: state the small step and what to observe when it works.
 2. Implement: smallest change that works.
-3. Test: run `npm test`, `npm run build`, and check in the emulators when Functions are touched.
+3. Test: run `npm run build`, open the pages at 360 px, and run T1 (JNG-PC-01) on the live site
+   when the chat or the Supabase function is touched.
 4. Update `docs/decisions.md` when a decision was made, then update this file if a rule changed.
 - Before any large or risky change, ask the user to commit or branch first.
-- Config secrets go in git-ignored `.env*` files or Functions secrets, never in code.
+- Config secrets go in git-ignored `.env.local` or in Supabase/Cloudflare secrets, never in code.
 
 ## Never
-- Never commit `.env*` or `functions/.secret.local`.
+- Never commit `.env.local` or any file holding `DIFY_API_KEY`. (`.env` only holds Supabase publishable keys.)
+- Never commit `src/routeTree.gen.ts` changes made by a local build.
 - Never call Dify from the client. Never expose `DIFY_API_KEY` in the bundle, logs or responses.
 - Never invent exercises, reference answers, users or figures. Use real data or a clearly
   marked placeholder.
 - Never change an exercise ID without updating the knowledge base in the same change.
-- Never touch Firebase rules (Firestore, Storage, Hosting headers for access) without asking.
-  Never leave test-mode rules.
+- Never change the allowed origins of the Supabase function or its secrets without asking.
