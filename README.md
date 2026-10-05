@@ -1,6 +1,6 @@
 # claude-lab — Atelier Claude Code (E00 à E14), version Jàng
 
-Travail réalisé le 29–30/09/2026 avec le vrai Claude Code (2.1.285), en mode non interactif (`claude -p`), prompt par prompt, dans l'ordre de l'atelier. Sujet : **Jàng** à la place d'ATA suarl ; projet fil rouge : **l'app web Jàng** à la place de PromptLens.
+Travail réalisé du 29/09 au 05/10/2026 avec le vrai Claude Code (2.1.285), en mode non interactif (`claude -p`), prompt par prompt, dans l'ordre de l'atelier. Sujet : **Jàng** à la place d'ATA suarl ; projet fil rouge : **l'app web Jàng** à la place de PromptLens.
 
 ## Contenu
 
