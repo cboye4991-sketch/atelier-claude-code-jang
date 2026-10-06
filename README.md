@@ -2,13 +2,15 @@
 
 > 📦 **Rendu GET 409 du 6 octobre** : page d'accueil du projet, vidéo et liens vers tous les livrables → [dépôt `jang`](https://github.com/cboye4991-sketch/jang#-rendu-du-6-octobre--par-où-commencer)
 
-Travail réalisé du 29/09 au 05/10/2026 avec le vrai Claude Code (2.1.285), en mode non interactif (`claude -p`), prompt par prompt, dans l'ordre de l'atelier. Sujet : **Jàng** à la place d'ATA suarl ; projet fil rouge : **l'app web Jàng** à la place de PromptLens.
+> 📋 **Rendu détaillé, épisode par épisode (avec captures)** : [cboye4991-sketch.github.io/atelier-claude-code-jang/RENDU.html](https://cboye4991-sketch.github.io/atelier-claude-code-jang/RENDU.html)
+
+Travail réalisé du 29/09 au 06/10/2026 avec le vrai Claude Code (2.1.285), en mode non interactif (`claude -p`), prompt par prompt, dans l'ordre de l'atelier. Sujet : **Jàng** à la place d'ATA suarl ; projet fil rouge : **l'app web Jàng** à la place de PromptLens.
 
 ## Contenu
 
 | Dossier | Épisode | Livrables |
 |---|---|---|
-| `00-installation/` | E00 | `sortie-verifications.txt` (versions, doctor) · `verif-windows.ps1` à lancer sur ton PC |
+| `00-installation/` | E00 | `sortie-verifications.txt` (versions, doctor) · `verif-windows.ps1` (Windows) et `verif-mac.sh` (Mac, exécuté le 05/10) |
 | `01-hello/` (git) | E01, E02 | `jang-card.html` : carte + thème clair/sombre + bouton WhatsApp (3 commits) |
 | `03-landing/` (git) | E03, E04 | `v1-no-skill/index.html`, `v2-skill/index.html` (frontend-design), `v2-skill/CLAUDE.md` (49 lignes), `.claude/settings.local.json` (plugin local) |
 | `04-memoire-utilisateur/` | E04 | `CLAUDE.md` = ta mémoire utilisateur |
@@ -16,7 +18,7 @@ Travail réalisé du 29/09 au 05/10/2026 avec le vrai Claude Code (2.1.285), en 
 | `06-plugins/` (git) | E06 | `sources/`, `competitive-analysis.md`, `marketing-plan.html` |
 | `jang-app/` | E07, E08, E09 | `CLAUDE.md` du projet fil rouge, protections des clés (`.gitignore`, `.env.example`, règles `deny`), app React/TypeScript : catalogue des 14 exercices, correction en direct via le relais Dify (phase 2), carnet de progression, export JSON |
 | `app/` | E08 | version compilée de l'app, publiée sur GitHub Pages |
-| `11-agent/` | E11 | skill externe `claude-api` (anthropics/skills), environnement Python, notebook agent avec/sans mémoire (à lancer avec ta clé API dans `.env`) |
+| `11-agent/` | E11 | skill externe `claude-api` (anthropics/skills), environnement Python, notebooks agent avec/sans mémoire ; `agent_lab_gemini.ipynb` exécuté le 06/10 avec une vraie clé (sorties incluses, clé dans `.env` jamais commitée) |
 | `.claude/agents/` · `docs/audit-securite-e14.md` | E14 | sous-agent relecteur sécurité (lecture seule) et son rapport ; correctifs appliqués (limitation de débit du relais, règles deny, .gitignore) |
 | (hors dépôt) `personal-os/` | E12, E13 | agent personnel (SOUL.md, vault, /ingest, /lint, /morning-brief) — données personnelles, livré à part, **jamais sur un dépôt public** |
 | `dify-relay/` | E09 | relais Cloudflare entre la landing et Dify |
