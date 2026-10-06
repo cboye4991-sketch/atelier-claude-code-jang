@@ -17,7 +17,7 @@ Travail réalisé du 29/09 au 06/10/2026 avec le vrai Claude Code (2.1.285), en 
 | `05-brand/` (git) | E05 | skill `jang-brand`, `email-suivi-professeur.html`, `post-linkedin.md`, `flyer-appel-professeurs.html`, `hero.jpg` (capture réelle du MVP) |
 | `06-plugins/` (git) | E06 | `sources/`, `competitive-analysis.md`, `marketing-plan.html` |
 | `jang-app/` | E07, E08, E09 | `CLAUDE.md` du projet fil rouge, protections des clés (`.gitignore`, `.env.example`, règles `deny`), app React/TypeScript : catalogue des 14 exercices, correction en direct via le relais Dify (phase 2), carnet de progression, export JSON |
-| `app/` | E08 | version compilée de l'app, publiée sur GitHub Pages |
+| `app/` | E08 | version compilée de l'app **d'exercice** de l'atelier, publiée sur GitHub Pages (l'application du projet Jàng est [jang-bac-helper](https://github.com/cboye4991-sketch/jang-bac-helper)) |
 | `11-agent/` | E11 | skill externe `claude-api` (anthropics/skills), environnement Python, notebooks agent avec/sans mémoire ; `agent_lab_gemini.ipynb` exécuté le 06/10 avec une vraie clé (sorties incluses, clé dans `.env` jamais commitée) |
 | `.claude/agents/` · `docs/audit-securite-e14.md` | E14 | sous-agent relecteur sécurité (lecture seule) et son rapport ; correctifs appliqués (limitation de débit du relais, règles deny, .gitignore) |
 | (hors dépôt) `personal-os/` | E12, E13 | agent personnel (SOUL.md, vault, /ingest, /lint, /morning-brief) — données personnelles, livré à part, **jamais sur un dépôt public** |
