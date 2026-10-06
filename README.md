@@ -2,6 +2,8 @@
 
 > 📦 **Rendu GET 409 du 6 octobre** : page d'accueil du projet, vidéo et liens vers tous les livrables → [dépôt `jang`](https://github.com/cboye4991-sketch/jang#-rendu-du-6-octobre--par-où-commencer)
 
+> 🎨 **Design de la landing V2 (frontend-design)** : [en ligne](https://cboye4991-sketch.github.io/atelier-claude-code-jang/03-landing/v2-skill/) · V1 sans skill : [en ligne](https://cboye4991-sketch.github.io/atelier-claude-code-jang/03-landing/v1-no-skill/)
+>
 > 📋 **Rendu détaillé, épisode par épisode (avec captures)** : [cboye4991-sketch.github.io/atelier-claude-code-jang/RENDU.html](https://cboye4991-sketch.github.io/atelier-claude-code-jang/RENDU.html)
 
 Travail réalisé du 29/09 au 06/10/2026 avec le vrai Claude Code (2.1.285), en mode non interactif (`claude -p`), prompt par prompt, dans l'ordre de l'atelier. Sujet : **Jàng** à la place d'ATA suarl ; projet fil rouge : **l'app web Jàng** à la place de PromptLens.
